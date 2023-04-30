@@ -203,7 +203,7 @@ config.advancedbackups.frequency.shutdown=false
 #Options : true, false    #Default : false
 config.advancedbackups.frequency.startup=false
 
-#Whether to disable console and chat logging. Does not affect debug.log, does not affect information messages for server-shutdown backups.
+#Whether to disable console and chat logging. Does not affect debug.log, does not affect error messages.
 #Options : true, false    #Default : false
 config.advancedbackups.logging.silent=false
 
