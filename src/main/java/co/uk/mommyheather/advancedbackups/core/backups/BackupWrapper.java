@@ -1,15 +1,8 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.io.file.SimplePathVisitor;
 
 import co.uk.mommyheather.advancedbackups.PlatformMethodWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
