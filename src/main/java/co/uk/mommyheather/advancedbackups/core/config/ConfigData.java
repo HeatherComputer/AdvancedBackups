@@ -18,10 +18,6 @@ public class ConfigData {
     //Maximum size of backups. With zips, deletes the absolute oldest file if size is exceeded after making a backup, and repeats until below max size.
     //RANGE = 5GB - 9999GB
 
-    private float maxTimer;
-    //How often to make backups, in hours.
-    //RANGE = 0.5 - 500
-
     private float minTimer;
     //Ensure this amount of time is waited between backups, in hours.
     //RANGE = 0.5 - 500
