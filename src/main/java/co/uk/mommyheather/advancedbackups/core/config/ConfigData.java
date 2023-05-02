@@ -22,6 +22,10 @@ public class ConfigData {
     //Ensure this amount of time is waited between backups, in hours.
     //RANGE = 0.5 - 500
 
+    private float maxTimer;
+    //Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
+    //RANGE = 0.5 - 500
+
     private String path;
     //The path for backups. Defaults to ./backups. Can be absolute or relative.
     //ANY STRING IS TESTED, WILL CREATE DIRECTORIES IF MISSING
@@ -92,6 +96,15 @@ public class ConfigData {
 
     public void setMinTimer(String minTimer) {
         this.minTimer = Float.parseFloat(minTimer);
+    }
+
+
+    public float getMaxTimer() {
+        return maxTimer;
+    }
+
+    public void setMaxTimer(String maxTimer) {
+        this.maxTimer = Float.parseFloat(maxTimer);
     }
 
     public String getPath() {
@@ -178,6 +191,10 @@ config.advancedbackups.size=50
 #Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.
 #Range : 0.5 - 500    #Default : 0.5
 config.advancedbackups.frequency.min=0.5
+
+#Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
+#Range : 0.5 - 500    #Default : 24
+config.advancedbackups.frequency.max=24
 
 #Whether to force a backup on server shutdown. Respects min frequency.
 #Options : true, false    #Default : false
