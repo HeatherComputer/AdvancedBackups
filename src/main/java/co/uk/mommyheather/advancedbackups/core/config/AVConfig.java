@@ -64,6 +64,7 @@ public class AVConfig {
         config.setPath(props.getProperty("config.advancedbackups.path"));
         config.setMaxSize(props.getProperty("config.advancedbackups.size"));
         config.setMinTimer(props.getProperty("config.advancedbackups.frequency.min"));
+        config.setMaxTimer(props.getProperty("config.advancedbackups.frequency.max"));
         config.setForceOnShutdown(props.getProperty("config.advancedbackups.frequency.shutdown"));
         config.setForceOnStartup(props.getProperty("config.advancedbackups.frequency.startup"));
         config.setSilent(props.getProperty("config.advancedbackups.logging.silent"));
