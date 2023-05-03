@@ -24,7 +24,10 @@ public class ThreadedBackup extends Thread {
         File file = new File(AVConfig.config.getPath());
 
         switch(AVConfig.config.getBackupType()) {
-            case "zip" : makeZipBackup(file);
+            case "zip" : {
+                makeZipBackup(file);
+                break;
+            } 
         }
 
         BackupWrapper.finishBackup();
