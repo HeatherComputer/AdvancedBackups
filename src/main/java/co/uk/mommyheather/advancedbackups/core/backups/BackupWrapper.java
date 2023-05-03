@@ -1,6 +1,7 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -9,11 +10,15 @@ import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
 
 public class BackupWrapper {
 
+    public static ArrayList<Long> configuredPlaytime = new ArrayList<>();
+
 
     public static void checkStartupBackups () {
         if (AVConfig.config.getForceOnStartup()) {
             checkAndMakeBackups();
         }
+
+        new BackupTimingThread().start();
     }
 
     public static void checkShutdownBackups() {
@@ -56,9 +61,18 @@ public class BackupWrapper {
     }
 
 
-    private static boolean checkMostRecentBackup() {
+    public static boolean checkMostRecentBackup() {
         // Return true if the time difference between the most recent backup and the backup-to-be 
         //    is less than specified in the config.
+
+        Date date = new Date();
+        long configVal = (long) (3600000F * AVConfig.config.getMinTimer());
+        return (date.getTime() - mostRecentBackupTime()) < configVal;
+    }
+
+
+    public static long mostRecentBackupTime() {
+
         File directory = new File(AVConfig.config.getPath());
 
         switch(AVConfig.config.getBackupType()) {
@@ -79,16 +93,13 @@ public class BackupWrapper {
 
         File[] files = directory.listFiles();
         long lastModifiedTime = Long.MIN_VALUE;
-        if (files == null || files.length == 0) return false;
+        if (files == null || files.length == 0) return 0L;
         for (File file : files) {
             if (file.lastModified() > lastModifiedTime) {
                 lastModifiedTime = file.lastModified();
             } 
         }
-
-        Date date = new Date();
-        long configVal = (long) (3600000F * AVConfig.config.getMinTimer());
-        return (date.getTime() - lastModifiedTime) < configVal;
+        return lastModifiedTime;
     }
 
 
@@ -99,7 +110,7 @@ public class BackupWrapper {
 
         // Make new thread, run backup utility.
         ThreadedBackup threadedBackup = new ThreadedBackup();
-        threadedBackup.run();
+        threadedBackup.start();
         // Don't re-enable saving - leave that down to the backup thread.
         
     }
@@ -171,4 +182,6 @@ public class BackupWrapper {
         }
         return size;
     }
+
+
 }

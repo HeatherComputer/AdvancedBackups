@@ -26,6 +26,9 @@ public class ConfigData {
     //Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
     //RANGE = 0.5 - 500
 
+    private String schedule;
+    //A comma seperated schedule. About it.
+
     private String path;
     //The path for backups. Defaults to ./backups. Can be absolute or relative.
     //ANY STRING IS TESTED, WILL CREATE DIRECTORIES IF MISSING
@@ -101,6 +104,14 @@ public class ConfigData {
 
     public float getMaxTimer() {
         return maxTimer;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getSchedule() {
+        return schedule;
     }
 
     public void setMaxTimer(String maxTimer) {
@@ -195,6 +206,10 @@ config.advancedbackups.frequency.min=0.5
 #Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
 #Range : 0.5 - 500    #Default : 24
 config.advancedbackups.frequency.max=24
+
+#A looping comma-separated backup schedule, based off of server uptime. Hours:Minutes. In the example below, 6 entries are specified, so the 7th will be four hours after the 6th.
+#Default : 4:00,8:00,12:00,16:00,20:00,24:00
+config.advancedbackups.frequency.schedule=4:00,8:00,12:00,16:00,20:00,24:00
 
 #Whether to force a backup on server shutdown. Respects min frequency.
 #Options : true, false    #Default : false
