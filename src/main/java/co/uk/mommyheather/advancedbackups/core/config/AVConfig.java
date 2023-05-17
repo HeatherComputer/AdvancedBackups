@@ -62,15 +62,18 @@ public class AVConfig {
         config = new ConfigData();
 
         config.setEnabled(props.getProperty("config.advancedbackups.enabled"));
+        config.setSave(props.getProperty("config.advancedbackups.save"));
         config.setRequireActivity(props.getProperty("config.advancedbackups.activity"));
         config.setBackupType(props.getProperty("config.advancedbackups.type"));
         config.setPath(props.getProperty("config.advancedbackups.path"));
         config.setMaxSize(props.getProperty("config.advancedbackups.size"));
         config.setMinTimer(props.getProperty("config.advancedbackups.frequency.min"));
         config.setMaxTimer(props.getProperty("config.advancedbackups.frequency.max"));
+        config.setUptimeSchedule(props.getProperty("config.advancedbackups.frequency.uptime"));
         config.setSchedule(props.getProperty("config.advancedbackups.frequency.schedule"));
         config.setForceOnShutdown(props.getProperty("config.advancedbackups.frequency.shutdown"));
         config.setForceOnStartup(props.getProperty("config.advancedbackups.frequency.startup"));
+        config.setStartupDelay(props.getProperty("config.advancedbackups.frequency.delay"));
         config.setSilent(props.getProperty("config.advancedbackups.logging.silent"));
 
         config.setCompressionLevel(props.getProperty("config.advancedbackups.zips.compression"));
