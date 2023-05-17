@@ -15,7 +15,7 @@ public class BackupWrapper {
 
     public static void checkStartupBackups () {
         if (AVConfig.config.getForceOnStartup()) {
-            checkAndMakeBackups();
+            checkAndMakeBackups(Math.max(5000, AVConfig.config.getStartupDelay() * 1000));
         }
 
         new BackupTimingThread().start();
@@ -27,7 +27,7 @@ public class BackupWrapper {
         }
     }
 
-    public static void checkAndMakeBackups() {
+    public static void checkAndMakeBackups(long delay) {
         prepareBackupDestination();
 
         if (!AVConfig.config.getEnabled()) return;
@@ -35,9 +35,12 @@ public class BackupWrapper {
         if (checkMostRecentBackup()) return;
 
         // Finally :
-        makeSingleBackup();
+        makeSingleBackup(delay);
     }
 
+    public static void checkAndMakeBackups() {
+        checkAndMakeBackups(0);
+    }
     
 
     private static void prepareBackupDestination() {
@@ -95,7 +98,7 @@ public class BackupWrapper {
         long lastModifiedTime = Long.MIN_VALUE;
         if (files == null || files.length == 0) return 0L;
         for (File file : files) {
-            if (file.lastModified() > lastModifiedTime) {
+            if (file.lastModified() > lastModifiedTime && !file.getName().contains("manifest")) {
                 lastModifiedTime = file.lastModified();
             } 
         }
@@ -103,13 +106,15 @@ public class BackupWrapper {
     }
 
 
-    public static void makeSingleBackup() {
+    public static void makeSingleBackup(long delay) {
 
         PlatformMethodWrapper.disableSaving();
-        PlatformMethodWrapper.saveOnce();
+        if (AVConfig.config.getSave()) {
+            PlatformMethodWrapper.saveOnce();
+        }
 
         // Make new thread, run backup utility.
-        ThreadedBackup threadedBackup = new ThreadedBackup();
+        ThreadedBackup threadedBackup = new ThreadedBackup(delay);
         threadedBackup.start();
         // Don't re-enable saving - leave that down to the backup thread.
         
@@ -117,6 +122,7 @@ public class BackupWrapper {
 
     public static void finishBackup() {
         File directory = new File(AVConfig.config.getPath());
+        ThreadedBackup.running = false;
 
         switch(AVConfig.config.getBackupType()) {
             case "zip" : {
@@ -142,7 +148,7 @@ public class BackupWrapper {
             long lastModifiedTime = Long.MAX_VALUE;
             if (files == null || files.length == 0) break;
             for (File file : files) {
-                if (file.isFile()) {
+                if (file.isFile()) { 
                     totalLength += file.length();
                 }
                 else {
@@ -153,7 +159,7 @@ public class BackupWrapper {
                     oldestFile = file;
                 } 
             }    
-            if (oldestFile != null && totalLength >= AVConfig.config.getMaxSize() * 1000000000) {
+            if (oldestFile != null && totalLength >= AVConfig.config.getMaxSize() * 1000000000L) {
                 oldestFile.delete();
             }
             else {
