@@ -2,7 +2,6 @@ package co.uk.mommyheather.advancedbackups.cli;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,29 +19,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-import org.fusesource.jansi.AnsiConsole;
 
-import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
+import org.fusesource.jansi.AnsiConsole;
 
 public class AdvancedBackupsCLI {
 
     private static String backupLocation;
     private static File serverDir = new File(new File("").toPath().toAbsolutePath().getParent().toString());
     private static String type;
-    private static DifferentialManifest manifest;
     private static Scanner input = new Scanner(System.in);
     private static ArrayList<String> fileNames = new ArrayList<>();
-    private static int backupNumber;
     private static File worldFile;
-    private static String WINDOWS_SLASH = Pattern.quote("\\");
     public static void main(String args[]){  
         
         AnsiConsole.systemInstall(); //this gets ansi escape codes working on windows. this was a FUCKING PAIN IN MY ASS
