@@ -238,8 +238,8 @@ config.advancedbackups.save=false
 config.advancedbackups.activity=false
 
 #The type of backups to use.
-#Options : zip, differential, incremental    #Default : zip
-config.advancedbackups.type=zip
+#Options : zip, differential, incremental    #Default : differential
+config.advancedbackups.type=differential
 
 #The absolute or relative path to the backup location.
 #Options : any file path. Default : ./backups
