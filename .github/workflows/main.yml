@@ -12,6 +12,9 @@ jobs:
           fetch-depth: 0
       - name: Fabric 1.18
         run: |
+        
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${INPUT_EMAIL}"
           git fetch origin
           git checkout -b fabric-1.18 origin/fabric-1.18
           git checkout origin/core -- README.md
