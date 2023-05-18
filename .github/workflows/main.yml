@@ -32,7 +32,7 @@ jobs:
           git fetch origin
           git checkout -b forge-1.18 origin/forge-1.18
           git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cliTEST TO CHECK BREAKAGE
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cli
           git checkout origin/core -- README.md
           git commit -a -m "Update core files"
           git push
