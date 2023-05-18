@@ -223,104 +223,102 @@ public class ConfigData {
 
 
     //default config output - can be ignored
-    public static final String defaults = """
+    public static final String defaults = String.join("\n",
 
-#Enable or disable automatic backups.
-#Options : true, false   #Default : true
-config.advancedbackups.enabled=true
-
-#Whether to save before making a backup.
-#Options : true, false    #Default : false
-config.advancedbackups.save=false
-
-#Whether to require player activity between backups.
-#Options : true, false    #Default : false
-config.advancedbackups.activity=false
-
-#The type of backups to use.
-#Options : zip, differential, incremental    #Default : differential
-config.advancedbackups.type=differential
-
-#The absolute or relative path to the backup location.
-#Options : any file path. Default : ./backups
-config.advancedbackups.path=./backups
-
-#The maximum size to keep, in GB. Keep relatively high for zips, tighter space requirements should instead use differential or incremental backups.
-#Range : 5 - 9999   #Default : 50
-config.advancedbackups.size=50
-
-#Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.
-#Range : 0.5 - 500    #Default : 0.5
-config.advancedbackups.frequency.min=0.5
-
-#Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
-#Range : 0.5 - 500    #Default : 24
-config.advancedbackups.frequency.max=24
-
-#Whether the schedule below uses uptime (true) or real-world time (false).
-#Default : true
-config.advancedbackups.frequency.uptime=true
-
-#When using server uptime:
-    #A looping comma-separated backup schedule, based off of server uptime, hours:minutes. Examples:
-    #4:00 - Makes a backup every four hours.
-    #4:00,7:00 - Makes a backup after four hours, then three, then four, and so on.
-    #1:00 - Makes a backup every hour.
-    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup following a strict schedule.
-
-#When using real-world time:
-    #A strict schedule, using hours:minutes to follow real-world time. Examples:
-    #4:00 - Makes a backup at 4am each day.
-    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup at specific times of day.
-
-#Default : 12:00
-config.advancedbackups.frequency.schedule=12:00
-
-#Whether to force a backup on server shutdown. Respects min frequency.
-#Options : true, false    #Default : false
-config.advancedbackups.frequency.shutdown=false
-
-#Whether to force a backup on server startup. Respects min frequency.
-#Options : true, false    #Default : false
-config.advancedbackups.frequency.startup=false
-
-#Delay to use after startup, in seconds. Is always at least 5 seconds.
-#Range : 5-9999999999
-config.advancedbackups.frequency.delay=5
-
-#Whether to disable console and chat logging. Does not affect debug.log, does not affect error messages.
-#Options : true, false    #Default : false
-config.advancedbackups.logging.silent=false
-
-
-
-#--------------------------------------------------------------------------------------------------------------------
-##The following options only affect zip files, whether that's for zip backups, export commands or some other option.
-#--------------------------------------------------------------------------------------------------------------------
-
-#The compression level to use for zip files. Higher numbers space usage, but decrease performance.
-#Range : 1-9    #Default : 4
-config.advancedbackups.zips.compression=4
-
-
-
-#--------------------------------------------------------------------------------------------------------------------
-##The following options only affect differential and incremental backups.
-#--------------------------------------------------------------------------------------------------------------------
-
-#The maximum 'chain' length to keep.
-#Range : 5-500    #Default : 50
-config.advancedbackups.chains.length=50
-
-#Whether to compress 'chains'. This compresses the base backup and all sequential backups. Reduces space usage, but decreases performance.
-#Options : true, false    #Default : true
-config.advancedbackups.chains.compress=true
-
-#Whether to enable \"smart\" reset for chains - if every file is being backed up, mark the backup as complete and reset chain length regardless of intended backup type.
-#Options : true, false    #Default : true
-config.advancedbackups.chains.smart=true
-
-
-    """;
+"#Enable or disable automatic backups.",
+"#Options : true, false   #Default : true,",
+"config.advancedbackups.enabled=true",
+"",
+"#Whether to save before making a backup.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.save=false",
+"",
+"#Whether to require player activity between backups.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.activity=false",
+"",
+"#The type of backups to use.",
+"#Options : zip, differential, incremental    #Default : differential",
+"config.advancedbackups.type=differential",
+"",
+"#The absolute or relative path to the backup location.",
+"#Options : any file path. Default : ./backups",
+"config.advancedbackups.path=./backups",
+"",
+"#The maximum size to keep, in GB. Keep relatively high for zips, tighter space requirements should instead use differential or incremental backups.",
+"#Range : 5 - 9999   #Default : 50",
+"config.advancedbackups.size=50",
+"",
+"#Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.",
+"#Range : 0.5 - 500    #Default : 0.5",
+"config.advancedbackups.frequency.min=0.5",
+"",
+"#Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.",
+"#Range : 0.5 - 500    #Default : 24",
+"config.advancedbackups.frequency.max=24",
+"",
+"#Whether the schedule below uses uptime (true) or real-world time (false).",
+"#Default : true",
+"config.advancedbackups.frequency.uptime=true",
+"",
+"#When using server uptime:",
+"    #A looping comma-separated backup schedule, based off of server uptime, hours:minutes. Examples:",
+"    #4:00 - Makes a backup every four hours.",
+"    #4:00,7:00 - Makes a backup after four hours, then three, then four, and so on.",
+"    #1:00 - Makes a backup every hour.",
+"    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup following a strict schedule.",
+"",
+"#When using real-world time:",
+"    #A strict schedule, using hours:minutes to follow real-world time. Examples:",
+"    #4:00 - Makes a backup at 4am each day.",
+"    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup at specific times of day.",
+"",
+"#Default : 12:00",
+"config.advancedbackups.frequency.schedule=12:00",
+"",
+"#Whether to force a backup on server shutdown. Respects min frequency.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.frequency.shutdown=false",
+"",
+"#Whether to force a backup on server startup. Respects min frequency.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.frequency.startup=false",
+"",
+"#Delay to use after startup, in seconds. Is always at least 5 seconds.",
+"#Range : 5-9999999999",
+"config.advancedbackups.frequency.delay=5",
+"",
+"#Whether to disable console and chat logging. Does not affect debug.log, does not affect error messages.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.logging.silent=false",
+"",
+"",
+"",
+"#--------------------------------------------------------------------------------------------------------------------",
+"##The following options only affect zip files, whether that's for zip backups, export commands or some other option.",
+"#--------------------------------------------------------------------------------------------------------------------",
+"",
+"#The compression level to use for zip files. Higher numbers space usage, but decrease performance.",
+"#Range : 1-9    #Default : 4",
+"config.advancedbackups.zips.compression=4",
+"",
+"",
+"",
+"#--------------------------------------------------------------------------------------------------------------------",
+"##The following options only affect differential and incremental backups.",
+"#--------------------------------------------------------------------------------------------------------------------",
+"",
+"#The maximum 'chain' length to keep.",
+"#Range : 5-500    #Default : 50",
+"config.advancedbackups.chains.length=50",
+"",
+"#Whether to compress 'chains'. This compresses the base backup and all sequential backups. Reduces space usage, but decreases performance.",
+"#Options : true, false    #Default : true",
+"config.advancedbackups.chains.compress=true",
+"",
+"#Whether to enable \"smart\" reset for chains - if every file is being backed up, mark the backup as complete and reset chain length regardless of intended backup type.",
+"#Options : true, false    #Default : true",
+"config.advancedbackups.chains.smart=true"
+    );
 
 }
