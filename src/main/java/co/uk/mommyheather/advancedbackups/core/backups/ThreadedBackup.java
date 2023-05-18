@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.file.SimplePathVisitor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,7 +82,7 @@ public class ThreadedBackup extends Thread {
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(AVConfig.config.getCompressionLevel());
 
-            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimplePathVisitor() {
+            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
@@ -134,7 +134,7 @@ public class ThreadedBackup extends Thread {
 
             boolean complete = manifest.getComplete().size() == 0 || manifest.getChain() >= AVConfig.config.getMaxDepth() ? true : false;
             
-            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimplePathVisitor() {
+            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
