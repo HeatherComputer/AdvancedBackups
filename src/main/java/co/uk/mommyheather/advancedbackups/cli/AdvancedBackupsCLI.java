@@ -384,7 +384,6 @@ public class AdvancedBackupsCLI {
             FileInputStream fileInputStream = new FileInputStream(fileNames.get(index));
             ZipInputStream zip = new ZipInputStream(fileInputStream);
             while ((entry = zip.getNextEntry()) != null) {
-                info(entry.getName());
                 File outputFile;
 
                 //FTB Backups and some other mods need special handling.
@@ -509,8 +508,6 @@ public class AdvancedBackupsCLI {
             Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-                    info(file.toString());
-                    info(file.toAbsolutePath().toString());
                     entries.put(file.toString(), file);
                     return FileVisitResult.CONTINUE;
                 }
@@ -670,7 +667,6 @@ public class AdvancedBackupsCLI {
                         outputFile.getParentFile().mkdirs();
                     }
                     Files.copy(file, outputFile.toPath());
-                    info(outputFile.getName());
                     return FileVisitResult.CONTINUE;
                 }
             });
