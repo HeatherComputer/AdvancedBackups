@@ -14,4 +14,4 @@ jobs:
         uses: planetoftheweb/copy-to-branches@v1
         env:
           key: core
-          files: src/main/java/co/uk/mommyheather/advancedbackups/cli src/main/java/co/uk/mommyheather/advancedbackups/cli README.md
+          files: src/main/java/co/uk/mommyheather/advancedbackups/cli src/main/java/co/uk/mommyheather/advancedbackups/core README.md
