@@ -10,8 +10,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Copy core to other versions
-        uses: planetoftheweb/copy-to-branches@v1
-        env:
-          key: core
-          files: src/main/java/co/uk/mommyheather/advancedbackups/cli src/main/java/co/uk/mommyheather/advancedbackups/core README.md
+      - name: Fabric 1.18
+      run: |
+          git fetch origin
+          git checkout -b fabric-1.18 origin/fabric-1.18
+          git checkout origin/core -- README.md
+          git commit -a "Update core files"
+          git push
