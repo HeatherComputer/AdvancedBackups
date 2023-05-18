@@ -503,7 +503,7 @@ public class AdvancedBackupsCLI {
         HashMap<String, Path> entries = new HashMap<>();
 
         try {
-            FileSystem zipFs = FileSystems.newFileSystem(new File(fileNames.get(index)).toPath());
+            FileSystem zipFs = FileSystems.newFileSystem(new File(fileNames.get(index)).toPath(), AdvancedBackupsCLI.class.getClassLoader());
             Path root = zipFs.getPath("");
             Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
                 @Override
@@ -791,7 +791,7 @@ public class AdvancedBackupsCLI {
     private static void addBackupNamesToLists(File file, HashMap<String, Path> filePaths, HashMap<String, String> dates, String colour) throws IOException {
         
         if (file.isFile()) {
-            FileSystem zipFs = FileSystems.newFileSystem(file.toPath());
+            FileSystem zipFs = FileSystems.newFileSystem(file.toPath(), AdvancedBackupsCLI.class.getClassLoader());
             Path root = zipFs.getPath("");
             Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
                 @Override
