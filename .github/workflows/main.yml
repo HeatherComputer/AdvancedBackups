@@ -15,5 +15,5 @@ jobs:
           git fetch origin
           git checkout -b fabric-1.18 origin/fabric-1.18
           git checkout origin/core -- README.md
-          git commit -a "Update core files"
+          git commit -a -m "Update core files"
           git push
