@@ -18,3 +18,4 @@ jobs:
           title: Merge Core Library
           body: Merge Core Library
           branch: forge-1.18
+          branch: fabric-1.18
