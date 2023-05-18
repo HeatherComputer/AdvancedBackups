@@ -14,8 +14,15 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          commit-message: Merge Core Library
+          commit-message: Merge Core Library - Forge 1.18
           title: Merge Core Library
           body: Merge Core Library
           branch: forge-1.18
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: Merge Core Library - Fabric 1.18
+          title: Merge Core Library
+          body: Merge Core Library
           branch: fabric-1.18
