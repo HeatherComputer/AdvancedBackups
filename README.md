@@ -1,6 +1,6 @@
 # Advanced Backups
 
-# Note - early release. Some features here aren't implemented yet, and not all features are documented.
+# Note - early release. Some features here aren't implemented yet, and not all features are documented.   
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
@@ -15,7 +15,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 ## Current Versions:
 - Forge 1.18 
-
+- Fabric 1.18
 
 ## Features:
 Choose between zip, differential or incremental backups.
