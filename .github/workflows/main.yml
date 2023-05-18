@@ -18,6 +18,7 @@ jobs:
           title: Merge Core Library
           body: Merge Core Library
           branch: forge-1.18
+          branch-suffix: timestamp
           
       - name: Fabric 1.18
         uses: peter-evans/create-pull-request@v5
@@ -26,6 +27,7 @@ jobs:
           title: Merge Core Library
           body: Merge Core Library
           branch: fabric-1.18
+          branch-suffix: timestamp
           
       - name: Forge 1.16
         uses: peter-evans/create-pull-request@v5
@@ -34,3 +36,4 @@ jobs:
           title: Merge Core Library
           body: Merge Core Library
           branch: forge-1.16
+          branch-suffix: timestamp
