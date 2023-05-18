@@ -1,0 +1,20 @@
+name: Merge Core
+on:
+  push:
+    branches:
+      - core
+jobs:
+  updateAuthors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Merge core library
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: Merge Core Library
+          title: Merge Core Library
+          body: Merge Core Library
+          branch: forge-1.18
