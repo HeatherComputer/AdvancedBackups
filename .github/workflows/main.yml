@@ -11,39 +11,42 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fabric 1.18
+        if: always()
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${INPUT_EMAIL}"
           git fetch origin
           git checkout -b fabric-1.18 origin/fabric-1.18
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/core
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/cli
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cli
           git checkout origin/core -- README.md
           git commit -a -m "Update core files"
           git push
           
       - name: Forge 1.18
+        if: always()
         run: |
         
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${INPUT_EMAIL}"
           git fetch origin
           git checkout -b forge-1.18 origin/forge-1.18
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/core
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/cli
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cliTEST TO CHECK BREAKAGE
           git checkout origin/core -- README.md
           git commit -a -m "Update core files"
           git push
 
       - name: Forge 1.16
+        if: always()
         run: |
         
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${INPUT_EMAIL}"
           git fetch origin
           git checkout -b forge-1.16 origin/forge-1.16
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/core
-          git checkout origin/core -- src/main/java/co/uk/mommyheather/cli
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cli
           git checkout origin/core -- README.md
           git commit -a -m "Update core files"
           git push
