@@ -16,8 +16,8 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '0.1'
-group = 'com.github.raveninthedark.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '0.2'
+group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
