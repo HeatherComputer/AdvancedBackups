@@ -1,7 +1,6 @@
 # Advanced Backups
 
 # Note - early release. Some features here aren't implemented yet, and not all features are documented.   
-# TEST COMMIT 2
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
