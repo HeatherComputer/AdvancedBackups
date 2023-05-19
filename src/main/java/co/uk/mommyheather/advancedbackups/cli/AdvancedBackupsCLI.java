@@ -5,13 +5,27 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.file.*;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Properties;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import org.fusesource.jansi.AnsiConsole;
@@ -502,7 +516,7 @@ public class AdvancedBackupsCLI {
                 }
             });
 
-            file = getFileToRestore(entries, "", entries);
+            file = getFileToRestore(entries, "");
             info("Restoring " + file.toString() + "...");
             Path outputFile = new File(worldFile, file.toString()).toPath();
             Files.copy(file, outputFile, StandardCopyOption.REPLACE_EXISTING);
@@ -518,8 +532,9 @@ public class AdvancedBackupsCLI {
 
     private static void restorePartialDifferential(int index, File worldFile) {
         //Do we need to check for past backups? if selected is a full backup, we do not.
-        HashMap<String, Path> filePaths = new HashMap<>();
+        HashMap<String, Object> filePaths = new HashMap<>();
         HashMap<String, String> dates = new HashMap<>();
+        HashMap<String, ZipFile> entryOwners = new HashMap<>();
         try {
             File backup = new File(fileNames.get(index));
             if (!backup.getName().contains("-full")) {
@@ -527,16 +542,16 @@ public class AdvancedBackupsCLI {
                 for (int i = index;i>=0;i--) {
                     String name = fileNames.get(i);
                     if (name.contains("-full")) {
-                        addBackupNamesToLists(new File(name), filePaths, dates, "\u001b[31m");
+                        addBackupNamesToLists(new File(name), entryOwners, filePaths, dates, "\u001b[31m");
                         break;
                     }    
                 }
             }
 
             File file = new File(fileNames.get(index));
-            addBackupNamesToLists(file, filePaths, dates, "\u001B[32m");
+            addBackupNamesToLists(file, entryOwners, filePaths, dates, "\u001B[32m");
 
-            HashMap<String, Path> properMapping = new HashMap<>();
+            HashMap<String, Object> properMapping = new HashMap<>();
             for (String date : dates.keySet()) {
                 properMapping.put(
                     date + " " + dates.get(date),
@@ -544,28 +559,48 @@ public class AdvancedBackupsCLI {
                 );
             }
 
-            Path select = getFileToRestore(properMapping, "", properMapping);
-            Path input = select;
+            Object select = getFileToRestore(properMapping, "");
+            if (select instanceof Path) {
+                Path input = (Path) select;
 
-            if (select.toString().replace("\\", "/").contains("-full/")) {
-                select = new File(
-                    select.toString().replace("\\", "/")
-                    .split("-full/")[1]
-                ).toPath();
-            }
-            if (select.toString().replace("\\", "/").contains("-partial/")) {
-                select = new File(
-                    select.toString().replace("\\", "/")
-                    .split("-partial/")[1]
-                ).toPath();
-            }
 
-            File outputFile = new File(worldFile, select.toString());
-            if (!outputFile.getParentFile().exists()) {
-                outputFile.getParentFile().mkdirs();
+                if (select.toString().replace("\\", "/").contains("-full/")) {
+                    select = new File(
+                        select.toString().replace("\\", "/")
+                        .split("-full/")[1]
+                    ).toPath();
+                }
+                if (select.toString().replace("\\", "/").contains("-partial/")) {
+                    select = new File(
+                        select.toString().replace("\\", "/")
+                        .split("-partial/")[1]
+                    ).toPath();
+                }
+    
+                File outputFile = new File(worldFile, select.toString());
+                if (!outputFile.getParentFile().exists()) {
+                    outputFile.getParentFile().mkdirs();
+                }
+                info("\n\nRestoring file : " + select);
+                Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-            info("\n\nRestoring file : " + select);
-            Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            else if (select instanceof ZipEntry) {
+                ZipEntry entry = (ZipEntry) select;
+
+                File outputFile = new File(worldFile, entry.toString());
+                FileOutputStream outputStream = new FileOutputStream(outputFile);
+
+                info("Restoring " + entry.toString() + "...");
+
+                byte[] buffer = new byte[1028];
+                InputStream inputSteam = entryOwners.get(entry.toString()).getInputStream(entry);
+                int length;
+                while ((length = inputSteam.read(buffer, 0, buffer.length)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+                outputStream.flush();
+                outputStream.close();
+            }
 
 
         }
@@ -577,8 +612,9 @@ public class AdvancedBackupsCLI {
 
     private static void restorePartialIncremental(int index, File worldFile) {
         //Do we need to check for past backups? if selected is a full backup, we do not.
-        HashMap<String, Path> filePaths = new HashMap<>();
+        HashMap<String, Object> filePaths = new HashMap<>();
         HashMap<String, String> dates = new HashMap<>();
+        HashMap<String, ZipFile> entryOwners = new HashMap<>();
         try {
             File backup = new File(fileNames.get(index));
             if (!backup.getName().contains("-full")) {
@@ -587,22 +623,22 @@ public class AdvancedBackupsCLI {
                 for (i = index;i>=0;i--) {
                     String name = fileNames.get(i);
                     if (name.contains("-full")) {
-                        addBackupNamesToLists(new File(name), filePaths, dates, "\u001b[31m");
+                        addBackupNamesToLists(new File(name), entryOwners, filePaths, dates, "\u001b[31m");
                         break;
                     }    
                 }
                 while (i < index) {
                     String name = fileNames.get(i);
-                    addBackupNamesToLists(new File(name), filePaths, dates, "\u001b[31m");
+                    addBackupNamesToLists(new File(name), entryOwners, filePaths, dates, "\u001b[31m");
                     i++;
                 }
                 
             }
 
             File file = new File(fileNames.get(index));
-            addBackupNamesToLists(file, filePaths, dates, "\u001B[32m");
+            addBackupNamesToLists(file, entryOwners, filePaths, dates, "\u001B[32m");
 
-            HashMap<String, Path> properMapping = new HashMap<>();
+            HashMap<String, Object> properMapping = new HashMap<>();
             for (String date : dates.keySet()) {
                 properMapping.put(
                     date + " " + dates.get(date),
@@ -610,28 +646,48 @@ public class AdvancedBackupsCLI {
                 );
             }
 
-            Path select = getFileToRestore(properMapping, "", properMapping);
-            Path input = select;
+            Object select = getFileToRestore(properMapping, "");
+            if (select instanceof Path) {
+                Path input = (Path) select;
 
-            if (select.toString().replace("\\", "/").contains("-full/")) {
-                select = new File(
-                    select.toString().replace("\\", "/")
-                    .split("-full/")[1]
-                ).toPath();
-            }
-            if (select.toString().replace("\\", "/").contains("-partial/")) {
-                select = new File(
-                    select.toString().replace("\\", "/")
-                    .split("-partial/")[1]
-                ).toPath();
-            }
 
-            File outputFile = new File(worldFile, select.toString());
-            if (!outputFile.getParentFile().exists()) {
-                outputFile.getParentFile().mkdirs();
+                if (select.toString().replace("\\", "/").contains("-full/")) {
+                    select = new File(
+                        select.toString().replace("\\", "/")
+                        .split("-full/")[1]
+                    ).toPath();
+                }
+                if (select.toString().replace("\\", "/").contains("-partial/")) {
+                    select = new File(
+                        select.toString().replace("\\", "/")
+                        .split("-partial/")[1]
+                    ).toPath();
+                }
+    
+                File outputFile = new File(worldFile, select.toString());
+                if (!outputFile.getParentFile().exists()) {
+                    outputFile.getParentFile().mkdirs();
+                }
+                info("\n\nRestoring file : " + select);
+                Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-            info("\n\nRestoring file : " + select);
-            Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            else if (select instanceof ZipEntry) {
+                ZipEntry entry = (ZipEntry) select;
+
+                File outputFile = new File(worldFile, entry.toString());
+                FileOutputStream outputStream = new FileOutputStream(outputFile);
+
+                info("Restoring " + entry.toString() + "...");
+
+                byte[] buffer = new byte[1028];
+                InputStream inputSteam = entryOwners.get(entry.toString()).getInputStream(entry);
+                int length;
+                while ((length = inputSteam.read(buffer, 0, buffer.length)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+                outputStream.flush();
+                outputStream.close();
+            }
 
 
         }
@@ -690,7 +746,7 @@ public class AdvancedBackupsCLI {
     }
 
 
-    private static <T> T getFileToRestore(HashMap<String, T> files, String directory, HashMap<String, T> original) {
+    private static <T> T getFileToRestore(HashMap<String, T> files, String directory) {
         ArrayList<String> toDisplay = new ArrayList<>();
         HashMap<String, String> keyMap = new HashMap<>();
         int index = 1;
@@ -731,17 +787,17 @@ public class AdvancedBackupsCLI {
             String line = input.nextLine();
             if (line == "") {
                 warn("Please enter a number!");
-                return getFileToRestore(files, directory, original);
+                return getFileToRestore(files, directory);
             }
             userInput = Integer.parseInt(line);
         } catch (InputMismatchException | NumberFormatException e) {
             warn("That was not a number. Please enter a number.");
-            return getFileToRestore(files, directory, original);
+            return getFileToRestore(files, directory);
         }
 
         if (userInput <= 0 || userInput > (directory.equals("") ? toDisplay.size() : toDisplay.size() + 1)) {
             warn("Please enter a number in the specified range!");
-            return getFileToRestore(files, directory, original);
+            return getFileToRestore(files, directory);
         }
         else if (userInput > toDisplay.size()) {
             return null;
@@ -750,12 +806,12 @@ public class AdvancedBackupsCLI {
             return files.get(keyMap.get(toDisplay.get(userInput -1)));
         }
 
-        T result = getFileToRestore(files, directory + toDisplay.get(userInput -1).replace("\u001B[33m directory\u001B[0m   ", "") + "/", original);
+        T result = getFileToRestore(files, directory + toDisplay.get(userInput -1).replace("\u001B[33m directory\u001B[0m   ", "") + "/");
         if (result != null) {
             return result;
         }
         else {
-            return getFileToRestore(files, directory, original);
+            return getFileToRestore(files, directory);
         }
     }
 
@@ -777,28 +833,31 @@ public class AdvancedBackupsCLI {
     }
 
 
-    private static void addBackupNamesToLists(File file, HashMap<String, Path> filePaths, HashMap<String, String> dates, String colour) throws IOException {
+    private static void addBackupNamesToLists(File file, HashMap<String, ZipFile> entryOwners, HashMap<String, Object> filePaths, 
+        HashMap<String, String> dates, String colour) throws IOException {
         
         if (file.isFile()) {
-            FileSystem zipFs = FileSystems.newFileSystem(file.toPath(), AdvancedBackupsCLI.class.getClassLoader());
-            Path root = zipFs.getPath("");
-            Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {
-                    String backupName = file.toString().replace("\\", "/");
-                    filePaths.put(path.toString(), path);
-                    dates.put(path.toString(), colour
-                     + backupName
-                    .substring(backupName.toString().lastIndexOf("/") + 1) 
-                    .replace("backup-", "")
-                    .replace("-full.zip", "")
-                    .replace("-partial.zip", "")
-                    + "\u001B[0m");
-                    return FileVisitResult.CONTINUE;
-                }
-            });
             
+            ZipFile zipFile = new ZipFile(file);
+            Enumeration<? extends ZipEntry> entryEnum = zipFile.entries();
+
+            while (entryEnum.hasMoreElements()) {
+                ZipEntry entry = entryEnum.nextElement();
+
+                String backupName = file.toString().replace("\\", "/");
+                filePaths.put(entry.toString().replace("\\", "/"), entry);
+                dates.put(entry.toString().replace("\\", "/"), "\u001b[31m"
+                 + backupName
+                .substring(backupName.toString().lastIndexOf("/") + 1) 
+                .replace("backup-", "")
+                .replace("-full.zip", "")
+                .replace("-partial.zip", "")
+                + "\u001B[0m");
+                entryOwners.put(entry.toString(), zipFile);
+            }
+            error("aswdasdsa");
         }
+
         else {
             Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
                 @Override
