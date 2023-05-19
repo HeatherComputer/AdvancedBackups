@@ -39,8 +39,10 @@ public class AdvancedBackupsCLI {
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
     public static void main(String args[]){  
-        
-        AnsiConsole.systemInstall(); //this gets ansi escape codes working on windows. this was a FUCKING PAIN IN MY ASS
+
+        if (System.console() != null) {
+            AnsiConsole.systemInstall(); //this gets ansi escape codes working on windows. this was a FUCKING PAIN IN MY ASS
+        }
         
          
         info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
