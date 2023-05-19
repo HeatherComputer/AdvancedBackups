@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.function.Consumer;
 
 
-@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION)
+@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION, acceptableRemoteVersions = "*")
 public class AdvancedBackups
 {
     public static final String MODID = "advancedbackups";
