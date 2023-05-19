@@ -760,7 +760,7 @@ public class AdvancedBackupsCLI {
                     name2 = name2.replace(worldFile.getName() + "/", "");
                 }
                 if (name2.contains("/")) {
-                    name2 = "\u001B[33m directory\u001B[0m   " + name2.split("/")[0];
+                    name2 = "\u001B[33mdirectory\u001B[0m   " + name2.split("/")[0];
                 }
                 if (!toDisplay.contains(name2)) {
                     toDisplay.add(name2);
@@ -804,11 +804,11 @@ public class AdvancedBackupsCLI {
         else if (userInput > toDisplay.size()) {
             return null;
         }
-        else if (!toDisplay.get(userInput - 1).contains("\u001B[33m directory\u001B[0m   ")) {
+        else if (!toDisplay.get(userInput - 1).contains("\u001B[33mdirectory\u001B[0m   ")) {
             return files.get(keyMap.get(toDisplay.get(userInput -1)));
         }
 
-        T result = getFileToRestore(files, directory + toDisplay.get(userInput -1).replace("\u001B[33m directory\u001B[0m   ", "") + "/");
+        T result = getFileToRestore(files, directory + toDisplay.get(userInput -1).replace("\u001B[33mdirectory\u001B[0m   ", "") + "/");
         if (result != null) {
             return result;
         }
@@ -822,12 +822,12 @@ public class AdvancedBackupsCLI {
         ArrayList<String> out = new ArrayList<>();
         Collections.sort(in);
         for (String string : in) {
-            if (string.contains("\u001B[33m directory\u001B[0m")) {
+            if (string.contains("\u001B[33mdirectory\u001B[0m")) {
                 out.add(string);
             }
         }
         for (String string : in) {
-            if (!string.contains("\u001B[33m directory\u001B[0m")) {
+            if (!string.contains("\u001B[33mdirectory\u001B[0m")) {
                 out.add(string);
             }
         }
@@ -857,7 +857,6 @@ public class AdvancedBackupsCLI {
                 + "\u001B[0m");
                 entryOwners.put(entry.toString(), zipFile);
             }
-            error("aswdasdsa");
         }
 
         else {
