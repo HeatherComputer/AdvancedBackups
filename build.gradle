@@ -5,7 +5,7 @@ plugins {
 }
 
 
-version = '0.3'
+version = '0.3.1'
 group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
