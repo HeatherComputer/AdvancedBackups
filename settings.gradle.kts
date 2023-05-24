@@ -1,4 +1,4 @@
-rootProject.name = "RFGExampleMod"
+rootProject.name = "AdvancedBackups-forge-1.7.10"
 
 pluginManagement {
   repositories {

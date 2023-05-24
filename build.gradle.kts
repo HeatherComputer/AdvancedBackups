@@ -1,6 +1,6 @@
-import org.jetbrains.gradle.ext.Application
+/*import org.jetbrains.gradle.ext.Application
 import org.jetbrains.gradle.ext.Gradle
-import org.jetbrains.gradle.ext.RunConfigurationContainer
+import org.jetbrains.gradle.ext.RunConfigurationContainer*/
 
 plugins {
   id("java-library")
@@ -10,9 +10,13 @@ plugins {
   id("com.gtnewhorizons.retrofuturagradle") version "1.2.5"
 }
 
-// Project properties
-group = "rfg.examplemod"
-version = "1.0.0"
+
+
+
+version = "0.3"
+group = "co.uk.mommyheather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+//archivesBaseName = "AdvancedBackups-forge-1.7.10"
+
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -22,8 +26,8 @@ java {
     vendor.set(org.gradle.jvm.toolchain.JvmVendorSpec.AZUL)
   }
   // Generate sources and javadocs jars when building and publishing
-  withSourcesJar()
-  withJavadocJar()
+  //withSourcesJar()
+  //withJavadocJar()
 }
 
 // Most RFG configuration lives here, see the JavaDoc for com.gtnewhorizons.retrofuturagradle.MinecraftExtension
@@ -96,9 +100,17 @@ repositories {
   }
 }
 
+
+val extraLibs by configurations.creating
+//stick the dependency in the jar
+
+
 dependencies {
   // Adds NotEnoughItems and its dependencies (CCL&CCC) to runClient/runServer
   runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.3.39-GTNH:dev")
+  
+  implementation  (files("/dependencies/jansi-2.4.0.jar"))
+  extraLibs (files("/dependencies/jansi-2.4.0.jar"))
   // Example: grab the ic2 jar from curse maven and deobfuscate
   // api(rfg.deobf("curse.maven:ic2-242638:2353971"))
   // Example: grab the ic2 jar from libs/ in the workspace and deobfuscate
@@ -125,6 +137,22 @@ publishing {
   }
 }
 
+tasks.withType<Jar> {
+    from(zipTree("dependencies/jansi-2.4.0.jar"))
+    into("/")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(zipTree("dependencies/jna-platform-5.13.0.jar"))
+    into("/")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes["Main-Class"] = "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI"
+    } 
+}
+
+
+
+
+
 // IDE Settings
 eclipse {
   classpath {
@@ -133,7 +161,7 @@ eclipse {
   }
 }
 
-idea {
+/*idea {
   module {
     isDownloadJavadoc = true
     isDownloadSources = true
@@ -155,7 +183,7 @@ idea {
           })
           self.add(Gradle("4. Run Obfuscated Server").apply {
             setProperty("taskNames", listOf("runObfServer"))
-          })
+          })*/
           /*
           These require extra configuration in IntelliJ, so are not enabled by default
           self.add(Application("Run Client (IJ Native, Deprecated)", project).apply {
@@ -182,7 +210,7 @@ idea {
                 .joinToString(" ")
             }
           })
-          */
+          *//*
         }
         "compiler" {
           val self = this.delegate as org.jetbrains.gradle.ext.IdeaCompilerConfiguration
@@ -196,7 +224,7 @@ idea {
       }
     }
   }
-}
+}*/
 
 tasks.processIdeaSettings.configure {
   dependsOn(tasks.injectTags)
