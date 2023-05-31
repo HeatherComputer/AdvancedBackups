@@ -1,13 +1,13 @@
 [
   {
-    "modid": "RFGExampleMod",
-    "name": "RFG Example mod",
+    "modid": "advancedbackups",
+    "name": "Advanced Backups",
     "version": "${modVersion}",
     "mcversion": "1.7.10",
-    "description": "An example mod for Minecraft 1.7.10 with Forge built using RetroFuturaGradle.",
-    "url": "https://github.com/GTNewHorizons/RetroFuturaGradle/",
+    "description": "A highly advanced backup mod.",
+    "url": "https://github.com/MommyHeather/AdvancedBackups",
     "credits": "",
-    "authorList": ["eigenraven"],
+    "authorList": ["mommyheather"],
     "dependencies": []
   }
 ]
