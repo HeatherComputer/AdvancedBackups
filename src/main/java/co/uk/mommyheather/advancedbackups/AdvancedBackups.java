@@ -43,6 +43,7 @@ public class AdvancedBackups
         infoLogger = LOGGER::info;
         warningLogger = LOGGER::warn;
         errorLogger = LOGGER::error;
+        AVConfig.loadOrCreateConfig(); //doing this in init is better
     }
 
 
@@ -57,7 +58,7 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        AVConfig.loadOrCreateConfig();
+        AVConfig.loadConfig(); //and a reload upon server start
         LOGGER.info("Config loaded!!");
         PlatformMethodWrapper.worldName = event.getServer().worldServers[0].getWorldInfo().getWorldName();
         if (event.getSide() == Side.SERVER) {
