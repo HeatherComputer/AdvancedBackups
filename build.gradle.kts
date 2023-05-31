@@ -1,6 +1,3 @@
-/*import org.jetbrains.gradle.ext.Application
-import org.jetbrains.gradle.ext.Gradle
-import org.jetbrains.gradle.ext.RunConfigurationContainer*/
 
 plugins {
   id("java-library")
@@ -141,11 +138,12 @@ tasks.withType<Jar> {
     from(zipTree("dependencies/jansi-2.4.0.jar"))
     into("/")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(zipTree("dependencies/jna-platform-5.13.0.jar"))
-    into("/")
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    //from(zipTree("dependencies/jna-platform-5.13.0.jar"))
+    //into("/")
+    //duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes["Main-Class"] = "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI"
+        attributes["Implementation-Version"] = "${version}"
     } 
 }
 
