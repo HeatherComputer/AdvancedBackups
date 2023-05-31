@@ -1,5 +1,7 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
@@ -34,7 +36,7 @@ public class PlatformMethodWrapper {
 
     public static void enableSaving() {
         MinecraftServer server = AdvancedBackups.server;
-        for (WorldServer level : server.worlds) {
+        for (WorldServer level : server.worldServers) {
             if (level != null && !level.levelSaving) {
                 level.levelSaving = false;
             }
@@ -43,8 +45,16 @@ public class PlatformMethodWrapper {
     }
 
     public static void saveOnce() {
-        MinecraftServer server = AdvancedBackups.server;
-        server.saveAllWorlds(false);
-        warningLogger.accept(saveCompleteMessage);
+        try {
+            MinecraftServer server = AdvancedBackups.server;
+            Class<?>[] classes = {Boolean.class};
+            Method saveMethod = MinecraftServer.class.getMethod("saveAllWorlds", classes);
+            saveMethod.invoke(server, false);
+            warningLogger.accept(saveCompleteMessage);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+            // TODO Scream at user
+            errorLogger.accept("FAILED TO SAVE WORLD!");
+            e.printStackTrace();
+        }
     }
 }
