@@ -34,6 +34,7 @@ Customisable compression level.
 
 ### Ingame:
 \- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client root directory.
+
 \- Adjust this to suit your needs, then restart the server or use `/AdvancedBackups reload` to reload the config. A small description of each config entry is below.
 
 | Config      | Description | Default Value | Supported From |
