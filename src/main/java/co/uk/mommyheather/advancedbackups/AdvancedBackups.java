@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
@@ -41,6 +42,10 @@ public class AdvancedBackups implements ModInitializer {
         });
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
             BackupWrapper.checkShutdownBackups();
+        });
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            PlatformMethodWrapper.activity = true;
         });
     }
 }
