@@ -40,7 +40,7 @@ Customisable compression level.
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
-| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | N/A |
+| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | next release |
 | config.advancedbackups.save | Whether to save before making a backup. | false | 0.3 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
