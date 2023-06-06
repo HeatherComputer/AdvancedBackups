@@ -48,7 +48,7 @@ jobs:
           git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
           git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cli
           git checkout origin/core -- README.md
-          git diff-index HEAD || git commit -a -m "Update core files"
+          git diff-index --quiet HEAD || git commit -a -m "Update core files"
           git push
 
       - name: Forge 1.12
