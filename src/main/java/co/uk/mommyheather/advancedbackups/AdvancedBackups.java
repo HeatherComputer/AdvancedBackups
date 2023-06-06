@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -52,6 +53,12 @@ public class AdvancedBackups
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
         BackupWrapper.checkShutdownBackups();
+    }
+
+    
+    @SubscribeEvent
+    public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
+        PlatformMethodWrapper.activity = true;
     }
 
 }
