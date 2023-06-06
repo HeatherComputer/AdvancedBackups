@@ -1,11 +1,14 @@
 package co.uk.mommyheather.advancedbackups;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.relauncher.Side;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +40,7 @@ public class AdvancedBackups
     public static MinecraftServer server;
 
 
-    @Mod.EventHandler
+    @EventHandler
     @SuppressWarnings("unused")
     public void init(FMLInitializationEvent ev) {
         infoLogger = LOGGER::info;
@@ -52,6 +55,7 @@ public class AdvancedBackups
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        FMLCommonHandler.instance().bus().register(this);
     }
 
     @EventHandler
@@ -80,6 +84,11 @@ public class AdvancedBackups
     @EventHandler
     public void onServerStopping(FMLServerStoppingEvent event) {
         BackupWrapper.checkShutdownBackups();
+    }
+
+    @SubscribeEvent
+    public void onPlayerConnected(PlayerEvent.PlayerLoggedInEvent event) {
+        PlatformMethodWrapper.activity = true;
     }
 
 }
