@@ -49,7 +49,7 @@ Customisable compression level.
 | config.advancedbackups.frequency.max | If this time has passed since a backup was last made, one **will** be made. | 24 | 0.3 |
 | config.advancedbackups.frequency.uptime| Whether the schedule is based on uptime. If not. it uses real-time instead. | true | 0.3 |
 | config.advancedbackups.frequency.schedule | Uptime based : a looping uptime-based schedule. Real-time based : A strict schedule, following real-world time. | 12:00 | 0.3 |
-| config.advancedbackups.frequency.shutdown  | Whether to make a backup on server shutdown. | false | 0.0 |
+| config.advancedbackups.frequency.shutdown  | Whether to make a backup on server shutdown. | false | 0.3 |
 | config.advancedbackups.frequency.startup  | Whether to make a backup on server startup. | false | 0.3 |
 | config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 5 | 0.3 |
 | config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | N/A |
