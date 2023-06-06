@@ -4,6 +4,7 @@ package co.uk.mommyheather.advancedbackups;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -50,6 +51,11 @@ public class AdvancedBackups
     @SubscribeEvent
     public void onServerStopping(FMLServerStoppingEvent event) {
         BackupWrapper.checkShutdownBackups();
+    }
+
+    @SubscribeEvent
+    public void onPlayerConneccted(PlayerLoggedInEvent event) {
+        PlatformMethodWrapper.activity = true;
     }
 
 }
