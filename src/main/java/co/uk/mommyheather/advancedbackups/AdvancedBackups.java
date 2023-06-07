@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -59,6 +60,11 @@ public class AdvancedBackups
     @SubscribeEvent
     public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
         PlatformMethodWrapper.activity = true;
+    }
+
+    @SubscribeEvent
+    public void registerCommands(RegisterCommandsEvent event){
+        AdvancedBackupsCommand.register(event.getDispatcher());
     }
 
 }
