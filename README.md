@@ -21,13 +21,14 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 - Forge 1.7.10
 
 ## Features:
-Choose between zip, differential or incremental backups.
-Set a schedule to backup as and when you want.
-Optionally force a minimum time between backups to avoid doing so too frequently.
-Backup on server startup and / or shutdown, or neither.
-Set a cap to max backup sizes.
-Save anywhere on disk, including network locations.
-Customisable compression level.
+- Choose between zip, differential or incremental backups.
+- Set a schedule to backup as and when you want.
+- Optionally force a minimum time between backups to avoid doing so too frequently.
+- Backup on server startup and / or shutdown, or neither.
+- Set a cap to max backup sizes.
+- Save anywhere on disk, including network locations.
+- Customisable compression level.
+- Commandline restoration tool built into the jar.
 
 
 ## Usage:
@@ -35,7 +36,7 @@ Customisable compression level.
 ### Ingame:
 \- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client root directory.
 
-\- Adjust this to suit your needs, then restart the server or use `/AdvancedBackups reload` to reload the config. A small description of each config entry is below.
+\- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
 
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
@@ -60,7 +61,17 @@ Customisable compression level.
 
 #### Commands:
 
-None currently implemented. 
+\- All entries in the table below must be prefixed with `/advancedbackups`.
+
+- Example : `/advancedbackups force-backup`
+
+
+| Command | Description | Supported From |
+| ----------- | ----------- | -------------- |
+| check      | Checks if a backup would be made at this point in time, and tells you the result. Does not make a backup.| next release |
+| start | Starts a backup if all checks pass. Tells you check results.| next release |
+| reload | Reloads the config.| next release |
+| force-backup | Forces a backup without running any checks.| next release |
 
 
 ### Commandline:
