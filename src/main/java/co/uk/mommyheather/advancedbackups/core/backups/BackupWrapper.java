@@ -7,7 +7,6 @@ import java.util.Date;
 
 import co.uk.mommyheather.advancedbackups.PlatformMethodWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 
 public class BackupWrapper {
 
