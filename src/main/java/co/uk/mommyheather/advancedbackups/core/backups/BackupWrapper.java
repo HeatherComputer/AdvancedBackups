@@ -29,19 +29,25 @@ public class BackupWrapper {
 
     public static void checkAndMakeBackups(long delay) {
         prepareBackupDestination();
-
-        if (!AVConfig.config.getEnabled()) return;
-        if (AVConfig.config.getRequireActivity() && !PlatformMethodWrapper.activity) return;
-        if (checkMostRecentBackup()) return;
-
-        // Finally :
-        makeSingleBackup(delay);
+        BackupCheckEnum e = checkBackups();
+        if (e.success()) {
+            makeSingleBackup(delay);
+        }
     }
 
     public static void checkAndMakeBackups() {
         checkAndMakeBackups(0);
     }
-    
+
+
+    public static BackupCheckEnum checkBackups() {
+        if (!AVConfig.config.getEnabled()) return BackupCheckEnum.DISABLED;
+        if (AVConfig.config.getRequireActivity() && !PlatformMethodWrapper.activity) return BackupCheckEnum.NOACTIVITY;
+        if (checkMostRecentBackup()) return BackupCheckEnum.TOORECENT;
+
+        return BackupCheckEnum.SUCCESS;
+
+    }    
 
     private static void prepareBackupDestination() {
         File file = new File(AVConfig.config.getPath());
