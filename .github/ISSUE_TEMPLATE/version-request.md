@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**New Minecraft version : **
+**New Minecraft version :**
 
-**New modloader : **
+**New modloader :**
 
-*Please ensure you have checked that this is not currently a supported version.*
+*Please ensure you have checked that this is not currently a supported version. Remove this text.*
