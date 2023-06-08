@@ -2,7 +2,7 @@
 name: Version Request
 about: Request a port to a new minecraft version or modloader.
 title: 'Version request : **VERSION**'
-labels: ''
+labels: Version request
 assignees: ''
 
 ---
