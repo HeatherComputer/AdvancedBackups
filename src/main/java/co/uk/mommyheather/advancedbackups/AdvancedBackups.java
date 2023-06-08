@@ -4,6 +4,7 @@ package co.uk.mommyheather.advancedbackups;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,6 +57,11 @@ public class AdvancedBackups
     @SubscribeEvent
     public void onPlayerConneccted(PlayerLoggedInEvent event) {
         PlatformMethodWrapper.activity = true;
+    }
+
+    @SubscribeEvent
+    public void registerCommands(RegisterCommandsEvent event){
+        AdvancedBackupsCommand.register(event.getDispatcher());
     }
 
 }
