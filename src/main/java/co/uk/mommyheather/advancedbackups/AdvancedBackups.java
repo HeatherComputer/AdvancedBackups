@@ -71,6 +71,8 @@ public class AdvancedBackups
         }
 
         server = event.getServer();
+
+        event.registerServerCommand(new AdvancedBackupsCommand());
         
     }
 
