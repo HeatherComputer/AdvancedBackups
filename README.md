@@ -1,6 +1,5 @@
 # Advanced Backups
 
-# Note - early release. Some features here aren't implemented yet, and not all features are documented.   
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
@@ -41,7 +40,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
-| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | next release |
+| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | 1.0 |
 | config.advancedbackups.save | Whether to save before making a backup. | false | 0.3 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
@@ -68,10 +67,10 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 | Command | Description | Supported From |
 | ----------- | ----------- | -------------- |
-| check      | Checks if a backup would be made at this point in time, and tells you the result. Does not make a backup.| next release |
-| start | Starts a backup if all checks pass. Tells you check results.| next release |
-| reload | Reloads the config.| next release |
-| force-backup | Forces a backup without running any checks.| next release |
+| check      | Checks if a backup would be made at this point in time, and tells you the result. Does not make a backup.| 1.0 |
+| start | Starts a backup if all checks pass. Tells you check results.| 1.0 |
+| reload | Reloads the config.| 1.0 |
+| force-backup | Forces a backup without running any checks.| 1.0 |
 
 
 ### Commandline:
