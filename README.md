@@ -12,6 +12,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 [Command Line Usage](#commandline)
 
+[Future Plans](#future-plans)
+
 ## Current Versions:
 - Forge 1.18 
 - Fabric 1.18
@@ -113,3 +115,51 @@ Once you select a file, it will be restored. The program will then exit.
 
 ![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/7a2c5d4c-e8db-48c3-8353-46486b9f86b3)
 
+
+
+# Future Plans:
+- Note : these are in no particular order.
+- [Profiles](profiles)
+- [More Commands](more-commands)
+- [Client Feedback](client-feedback)
+
+## Profiles
+
+- Profiles plan to allow one server to have several backup configs active at once.
+- Say, take an incremental backup every day, but make sure a zip backup is made at least once a week.
+- Or maybe, you want to save a differential backup every hour on a remote drive, but keep a full-world zip backup ready locally every 24 hours.
+
+### Profiles can do this!
+
+Essentially, profiles will be an optional set of additional configs.
+
+These are completely separate - meaning they will not interfere with one another, at all.
+- Certain values, such as min and max, may have problems if two profiles use the same location and backup type. I am not sure if I will fix this yet.
+
+The profile system will not be compatible with versions that predate its release.
+- Backups themselves will be unaffected, and any version will be able to restore them. 
+- The backup location detection however may not work if your restoration cli predates the profile release.
+
+Upon first load with a version updated to use profiles, a default profile will be made.
+- If you have a config present from an older version, the changes you made will be automatically applied to the default profile for you.
+- *This means that a user who does not wish to use profiles will not be affected whatsoever. They can edit the default profile as they would with a standard config.*
+
+
+## More commands
+
+Shortly after release, I wish to add more commands.
+
+- Config editing on the fly
+- One-off backup types
+    - Currently, the `start` and `force-backup` commands only allow you to make a backup of the type specified in config. This will change.
+
+
+## Client feedback
+
+Having some client feedback would allow connected clients that have the mod view backup progress.
+- This should be toggleable in config.
+- A config option to only show progress to ops should exist.
+
+This might be in the form of either a progress bar, or a simple percentage.
+
+Clients with the mod should have a way to opt out of this.
