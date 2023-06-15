@@ -33,6 +33,7 @@ public class AVConfig {
         "config.advancedbackups.chains.length",
         "config.advancedbackups.chains.compress",
         "config.advancedbackups.chains.smart",
+        "config.advancedbackups.chains.maxpercent",
 
         "config.advancedbackups.purge.incrementals"
 
@@ -107,6 +108,7 @@ public class AVConfig {
         config.setMaxDepth(props.getProperty("config.advancedbackups.chains.length", "50"));
         config.setCompressChains(props.getProperty("config.advancedbackups.chains.compress", "true"));
         config.setSmartChains(props.getProperty("config.advancedbackups.chains.smart", "true"));
+        config.setMaxSizePercent(props.getProperty("config.advancedbackups.chains.maxpercent", "75"));
 
         config.setPurgeIncrementals(props.getProperty("config.advancedbackups.purge.incrementals", "false"));
 
