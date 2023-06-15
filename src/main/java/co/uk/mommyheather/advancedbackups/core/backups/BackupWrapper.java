@@ -129,54 +129,72 @@ public class BackupWrapper {
     public static void finishBackup() {
         File directory = new File(AVConfig.config.getPath());
         ThreadedBackup.running = false;
+        PlatformMethodWrapper.enableSaving();
 
         switch(AVConfig.config.getBackupType()) {
             case "zip" : {
                 directory = new File(directory, "/zips/");
-                break;
+                long date = Long.MIN_VALUE;
+                while (true) {
+                    if (calculateDirectorySize(directory) < AVConfig.config.getMaxSize() * 1000000000L) return;
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    file.delete();
+                }
             }
             case "differential" : {
                 directory = new File(directory, "/differential/");
-                break;
+                long date = Long.MIN_VALUE;
+                while (true) {
+                    if (calculateDirectorySize(directory) < AVConfig.config.getMaxSize() * 1000000000L) return;
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    if (file.getName().contains("full")) {
+                        File nextFile = getFirstBackupAfterDate(directory, date);
+                        if (nextFile.getName().contains("partial")) {
+                            nextFile.delete();
+                        }
+                        else {
+                            file.delete();
+                        }
+                    }
+                    else {
+                        file.delete();
+                    }
+
+                }
             }
             case "incremental" : {
                 directory = new File(directory, "/incremental/");
-                break;
+                if (!AVConfig.config.getPurgeIncrementals()) return;
+                long date = Long.MIN_VALUE;
+                while (true) {
+                    if (calculateDirectorySize(directory) < AVConfig.config.getMaxSize() * 1000000000L) return;
+                    if (calculateChainCount(directory) < 2) return;
+                    PlatformMethodWrapper.errorLogger.accept("Purging incremental backup chain - too much space taken up!");
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    if (file.getName().contains("full")) {
+                        file.delete();
+                        while (true) {
+                            file = getFirstBackupAfterDate(directory, date);
+                            date = file.lastModified();
+                            if (file.getName().contains("full")) {
+                                file.delete();
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        file.delete();
+                    }
+
+                }
             }
 
         }
-
-        while (true)
-        {
-            File[] files = directory.listFiles();
-            File oldestFile = null;
-            long totalLength = 0;
-            long lastModifiedTime = Long.MAX_VALUE;
-            if (files == null || files.length == 0) break;
-            for (File file : files) {
-                if (file.isFile()) { 
-                    totalLength += file.length();
-                }
-                else {
-                    totalLength += calculateDirectorySize(file);
-                }
-                if (file.lastModified() < lastModifiedTime) {
-                    lastModifiedTime = file.lastModified();
-                    oldestFile = file;
-                } 
-            }    
-            if (oldestFile != null && totalLength >= AVConfig.config.getMaxSize() * 1000000000L) {
-                oldestFile.delete();
-            }
-            else {
-                break;
-            }
-        }
-
-        
-        PlatformMethodWrapper.enableSaving();
-
-
     }
 
 
@@ -195,5 +213,30 @@ public class BackupWrapper {
         return size;
     }
 
+    public static File getFirstBackupAfterDate(File directory, long date) {
+        File[] files = directory.listFiles();
+        File oldestFile = null;
+        long currentDate = Long.MAX_VALUE;
+        if (files == null || files.length == 0) return null;
+        for (File file : files) {
+            if (file.lastModified() < currentDate && file.lastModified() > date) {
+                currentDate = file.lastModified();
+                oldestFile = file;
+            } 
+        }
 
+        return oldestFile;
+    }
+
+    public static int calculateChainCount(File directory) {
+        int count = 0;
+        File[] files = directory.listFiles();
+        if (files == null || files.length == 0) return 0;
+        for (File file : files) {
+            if (file.getName().contains("full")) {
+                count++;
+            } 
+        }
+        return count;
+    }
 }
