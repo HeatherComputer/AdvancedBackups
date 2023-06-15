@@ -7,10 +7,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import co.uk.mommyheather.advancedbackups.PlatformMethodWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 
 public class AVConfig {
 
+    private static final String[] supportedProps = {
+        "config.advancedbackups.enabled",
+        "config.advancedbackups.save",
+        "config.advancedbackups.activity",
+        "config.advancedbackups.type",
+        "config.advancedbackups.path",
+        "config.advancedbackups.size",
+        "config.advancedbackups.frequency.min",
+        "config.advancedbackups.frequency.max",
+        "config.advancedbackups.frequency.uptime",
+        "config.advancedbackups.frequency.schedule",
+        "config.advancedbackups.frequency.shutdown",
+        "config.advancedbackups.frequency.startup",
+        "config.advancedbackups.frequency.delay",
+        "config.advancedbackups.logging.silent",
+
+        "config.advancedbackups.zips.compression",
+
+        "config.advancedbackups.chains.length",
+        "config.advancedbackups.chains.compress",
+        "config.advancedbackups.chains.smart"
+
+    };
 
     public static ConfigData config;
 
@@ -61,25 +85,26 @@ public class AVConfig {
 
         config = new ConfigData();
 
-        config.setEnabled(props.getProperty("config.advancedbackups.enabled"));
-        config.setSave(props.getProperty("config.advancedbackups.save"));
-        config.setRequireActivity(props.getProperty("config.advancedbackups.activity"));
-        config.setBackupType(props.getProperty("config.advancedbackups.type"));
-        config.setPath(props.getProperty("config.advancedbackups.path"));
-        config.setMaxSize(props.getProperty("config.advancedbackups.size"));
-        config.setMinTimer(props.getProperty("config.advancedbackups.frequency.min"));
-        config.setMaxTimer(props.getProperty("config.advancedbackups.frequency.max"));
-        config.setUptimeSchedule(props.getProperty("config.advancedbackups.frequency.uptime"));
-        config.setSchedule(props.getProperty("config.advancedbackups.frequency.schedule"));
-        config.setForceOnShutdown(props.getProperty("config.advancedbackups.frequency.shutdown"));
-        config.setForceOnStartup(props.getProperty("config.advancedbackups.frequency.startup"));
-        config.setStartupDelay(props.getProperty("config.advancedbackups.frequency.delay"));
-        config.setSilent(props.getProperty("config.advancedbackups.logging.silent"));
+        config.setEnabled(props.getProperty("config.advancedbackups.enabled", "true"));
+        config.setSave(props.getProperty("config.advancedbackups.save", "false"));
+        config.setRequireActivity(props.getProperty("config.advancedbackups.activity", "false"));
+        config.setBackupType(props.getProperty("config.advancedbackups.type", "differential"));
+        config.setPath(props.getProperty("config.advancedbackups.path", "./backups"));
+        config.setMaxSize(props.getProperty("config.advancedbackups.size", "50"));
+        config.setMinTimer(props.getProperty("config.advancedbackups.frequency.min", "0.5"));
+        config.setMaxTimer(props.getProperty("config.advancedbackups.frequency.max", "24"));
+        config.setUptimeSchedule(props.getProperty("config.advancedbackups.frequency.uptime", "true"));
+        config.setSchedule(props.getProperty("config.advancedbackups.frequency.schedule", "12:00"));
+        config.setForceOnShutdown(props.getProperty("config.advancedbackups.frequency.shutdown", "false"));
+        config.setForceOnStartup(props.getProperty("config.advancedbackups.frequency.startup", "false"));
+        config.setStartupDelay(props.getProperty("config.advancedbackups.frequency.delay", "5"));
+        config.setSilent(props.getProperty("config.advancedbackups.logging.silent", "false"));
 
-        config.setCompressionLevel(props.getProperty("config.advancedbackups.zips.compression"));
+        config.setCompressionLevel(props.getProperty("config.advancedbackups.zips.compression", "5"));
 
-        config.setMaxDepth(props.getProperty("config.advancedbackups.chains.length"));
-        config.setCompressChains(props.getProperty("config.advancedbackups.chains.compress"));
+        config.setMaxDepth(props.getProperty("config.advancedbackups.chains.length", "50"));
+        config.setCompressChains(props.getProperty("config.advancedbackups.chains.compress", "true"));
+        config.setSmartChains(props.getProperty("config.advancedbackups.chains.smart", "true"));
 
 
         
@@ -92,6 +117,41 @@ public class AVConfig {
                 long mins = Long.parseLong(hm[1]) * 60000;
                 BackupWrapper.configuredPlaytime.add(hours + mins);
             }
+        }
+
+        boolean flag = false;
+
+        for (String prop : supportedProps) {
+            if (!props.containsKey(prop)) {
+                flag = true;
+                break;
+            }
+        }
+
+        if (flag) {
+            PlatformMethodWrapper.warningLogger.accept("Broken, incomplete or misising config found! Generating new file whilst preserving any existing config values...");
+
+            File newPropsFile = new File("./AdvancedBackups.properties");
+            try {
+                if (!newPropsFile.exists()) {
+                    newPropsFile.createNewFile();
+                }
+                FileWriter writer = new FileWriter(newPropsFile);
+                writer.write(String.format(ConfigData.plainConfig, config.getEnabled(),
+                config.getSave(), config.getRequireActivity(), config.getBackupType(),
+                config.getPath(), config.getMaxSize(), config.getMinTimer(),
+                config.getMaxTimer(), config.getUptimeSchedule(), config.getSchedule(),
+                config.getForceOnShutdown(), config.getStartupDelay(), config.getStartupDelay(),
+                config.getSilent(), config.getCompressionLevel(), config.getMaxDepth(),
+                config.getCompressChains(), config.getSmartChains()
+                    ));
+                writer.close();
+            } catch (IOException e) {
+                // TODO : Scream to user
+                e.printStackTrace();
+            
+            }
+            loadConfig();
         }
 
     }
