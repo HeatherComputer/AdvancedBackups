@@ -74,6 +74,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | start | Starts a backup if all checks pass. Tells you check results.| 1.0 |
 | reload | Reloads the config.| 1.0 |
 | force-backup | Forces a backup without running any checks.| 1.0 |
+| reset-chain | Resets any current chain length.| 1.0 |
 
 
 ### Commandline:
