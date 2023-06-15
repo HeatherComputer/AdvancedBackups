@@ -77,6 +77,10 @@ public class ConfigData {
     // Smart chain resetting.
     // TRUE OR FALSE
 
+    private boolean purgeIncrementals;
+    // Whether to purge incremental backups if over the limit.
+    // TRUE OR FALSE
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -221,6 +225,15 @@ public class ConfigData {
     public void setSmartChains(String smartChains) {
         this.smartChains = Boolean.parseBoolean(smartChains);
     }
+
+    
+    public boolean getPurgeIncrementals() {
+        return purgeIncrementals;
+    }
+
+    public void setPurgeIncrementals(String purgeIncrementals) {
+        this.purgeIncrementals = Boolean.parseBoolean(purgeIncrementals);
+    }
    
 
 
@@ -320,7 +333,13 @@ public class ConfigData {
 "",
 "#Whether to enable \"smart\" reset for chains - if every file is being backed up, mark the backup as complete and reset chain length regardless of intended backup type.",
 "#Options : true, false    #Default : true",
-"config.advancedbackups.chains.smart=%s"
+"config.advancedbackups.chains.smart=%s",
+"",
+"#Whether to delete incremental backup chains if max size is exceeded. If not, incremental backups do not respect the max size config and never delete.",
+"#Options : true, false    #Default : false",
+"config.advancedbackups.purge.incrementals=%s"
+
+
     );
 
     public static final String defaults = String.format(plainConfig, 
@@ -329,6 +348,7 @@ public class ConfigData {
     "0.5", "24", "true",
     "12:00", "false", "false",
     "5", "false", "4",
-    "50", "true", "true");
+    "50", "true", "true",
+    "false");
 
 }
