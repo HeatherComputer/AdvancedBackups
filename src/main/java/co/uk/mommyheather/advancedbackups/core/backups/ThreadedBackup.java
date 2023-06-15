@@ -28,6 +28,8 @@ public class ThreadedBackup extends Thread {
     private static Gson gson;
     private long delay;
     private static int count;
+    private static float partialSize;
+    private static float completeSize;
     public static boolean running = false;
     
     static {
@@ -39,6 +41,8 @@ public class ThreadedBackup extends Thread {
         setName("AB Active Backup Thread");
         this.delay = delay;
         count = 0;
+        partialSize = 0F;
+        completeSize = 0F;
     }
 
     @Override
@@ -131,8 +135,10 @@ public class ThreadedBackup extends Thread {
 
             long comp = differential ? manifest.getLastFull() : manifest.getLastPartial();
             ArrayList<Path> toBackup = new ArrayList<>();
+            ArrayList<Path> completeBackup = new ArrayList<>();
 
-            boolean complete = manifest.getComplete().size() == 0 || manifest.getChain() >= AVConfig.config.getMaxDepth() ? true : false;
+
+            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= AVConfig.config.getMaxDepth() ? true : false;
             
             Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
@@ -143,19 +149,26 @@ public class ThreadedBackup extends Thread {
                         return FileVisitResult.CONTINUE;
                     }
                     count++;
-                    if (complete || attributes.lastModifiedTime().toMillis() >= comp) {
+                    completeSize += attributes.size();
+                    completeBackup.add(targetFile);
+                    if (completeTemp || attributes.lastModifiedTime().toMillis() >= comp) {
                         toBackup.add(targetFile);
+                        partialSize += attributes.size();
                     }
                     return FileVisitResult.CONTINUE;
                 }
             });
-
+            boolean complete = completeTemp;
             if (toBackup.size() >= count) {
-                name += "-full";
+                complete = true;
             }
-            else {
-                name += complete? "-full":"-partial";
+            if ((partialSize / completeSize) * 100F > AVConfig.config.getMaxSizePercent()) {
+                complete = true;
+                toBackup.clear();
+                toBackup.addAll(completeBackup);
             }
+            
+            name += complete? "-full":"-partial";
 
             
 
