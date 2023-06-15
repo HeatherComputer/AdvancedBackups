@@ -32,7 +32,9 @@ public class AVConfig {
 
         "config.advancedbackups.chains.length",
         "config.advancedbackups.chains.compress",
-        "config.advancedbackups.chains.smart"
+        "config.advancedbackups.chains.smart",
+
+        "config.advancedbackups.purge.incrementals"
 
     };
 
@@ -106,6 +108,8 @@ public class AVConfig {
         config.setCompressChains(props.getProperty("config.advancedbackups.chains.compress", "true"));
         config.setSmartChains(props.getProperty("config.advancedbackups.chains.smart", "true"));
 
+        config.setPurgeIncrementals(props.getProperty("config.advancedbackups.purge.incrementals", "false"));
+
 
         
         String timingsString = config.getSchedule();
@@ -143,7 +147,7 @@ public class AVConfig {
                 config.getMaxTimer(), config.getUptimeSchedule(), config.getSchedule(),
                 config.getForceOnShutdown(), config.getStartupDelay(), config.getStartupDelay(),
                 config.getSilent(), config.getCompressionLevel(), config.getMaxDepth(),
-                config.getCompressChains(), config.getSmartChains()
+                config.getCompressChains(), config.getSmartChains(), config.getPurgeIncrementals()
                     ));
                 writer.close();
             } catch (IOException e) {
