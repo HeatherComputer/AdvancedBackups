@@ -57,7 +57,7 @@ public class CoreCommandSystem {
         try {
             if (manifestFile.exists()) {
                manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), DifferentialManifest.class);
-               manifest.setChain(manifest.getChain() + 1);
+               manifest.setChain(manifest.getChain() + AVConfig.config.getMaxDepth());
                FileWriter writer = new FileWriter(manifestFile);
                writer.write(gson.toJson(manifest));
                writer.flush();
