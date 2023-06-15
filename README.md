@@ -59,6 +59,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.chains.length  | The maximum chain length for incremental and differential backups. | 50 | 0.3 |
 | config.advancedbackups.chains.compress  | Whether to compress incremental and differential backups into zip files. | true | 0.3 |
 | config.advancedbackups.chains.smart | For differential and incremental backups. Resets the chain length if every file is being backed up. | true | 0.3 |
+| config.advancedbackups.purge.incremental | For incremental backups only. Enable to allow purging incremental backup chains if the defined storage usage is limit exceeded. | false | 1.0 |
 
 #### Commands:
 
