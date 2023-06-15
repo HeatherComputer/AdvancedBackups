@@ -1,6 +1,5 @@
 # Advanced Backups
 
-# Note - early release. Some features here aren't implemented yet, and not all features are documented.   
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
@@ -13,6 +12,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 [Command Line Usage](#commandline)
 
+[Future Plans](#future-plans)
+
 ## Current Versions:
 - Forge 1.18 
 - Fabric 1.18
@@ -21,13 +22,14 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 - Forge 1.7.10
 
 ## Features:
-Choose between zip, differential or incremental backups.
-Set a schedule to backup as and when you want.
-Optionally force a minimum time between backups to avoid doing so too frequently.
-Backup on server startup and / or shutdown, or neither.
-Set a cap to max backup sizes.
-Save anywhere on disk, including network locations.
-Customisable compression level.
+- Choose between zip, differential or incremental backups.
+- Set a schedule to backup as and when you want.
+- Optionally force a minimum time between backups to avoid doing so too frequently.
+- Backup on server startup and / or shutdown, or neither.
+- Set a cap to max backup sizes.
+- Save anywhere on disk, including network locations.
+- Customisable compression level.
+- Commandline restoration tool built into the jar.
 
 
 ## Usage:
@@ -35,12 +37,12 @@ Customisable compression level.
 ### Ingame:
 \- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client root directory.
 
-\- Adjust this to suit your needs, then restart the server or use `/AdvancedBackups reload` to reload the config. A small description of each config entry is below.
+\- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
 
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
-| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | next release |
+| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | 1.0 |
 | config.advancedbackups.save | Whether to save before making a backup. | false | 0.3 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
@@ -60,7 +62,17 @@ Customisable compression level.
 
 #### Commands:
 
-None currently implemented. 
+\- All entries in the table below must be prefixed with `/advancedbackups`.
+
+- Example : `/advancedbackups force-backup`
+
+
+| Command | Description | Supported From |
+| ----------- | ----------- | -------------- |
+| check      | Checks if a backup would be made at this point in time, and tells you the result. Does not make a backup.| 1.0 |
+| start | Starts a backup if all checks pass. Tells you check results.| 1.0 |
+| reload | Reloads the config.| 1.0 |
+| force-backup | Forces a backup without running any checks.| 1.0 |
 
 
 ### Commandline:
@@ -103,3 +115,51 @@ Once you select a file, it will be restored. The program will then exit.
 
 ![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/7a2c5d4c-e8db-48c3-8353-46486b9f86b3)
 
+
+
+# Future Plans:
+- Note : these are in no particular order.
+- [Profiles](profiles)
+- [More Commands](more-commands)
+- [Client Feedback](client-feedback)
+
+## Profiles
+
+- Profiles plan to allow one server to have several backup configs active at once.
+- Say, take an incremental backup every day, but make sure a zip backup is made at least once a week.
+- Or maybe, you want to save a differential backup every hour on a remote drive, but keep a full-world zip backup ready locally every 24 hours.
+
+### Profiles can do this!
+
+Essentially, profiles will be an optional set of additional configs.
+
+These are completely separate - meaning they will not interfere with one another, at all.
+- Certain values, such as min and max, may have problems if two profiles use the same location and backup type. I am not sure if I will fix this yet.
+
+The profile system will not be compatible with versions that predate its release.
+- Backups themselves will be unaffected, and any version will be able to restore them. 
+- The backup location detection however may not work if your restoration cli predates the profile release.
+
+Upon first load with a version updated to use profiles, a default profile will be made.
+- If you have a config present from an older version, the changes you made will be automatically applied to the default profile for you.
+- *This means that a user who does not wish to use profiles will not be affected whatsoever. They can edit the default profile as they would with a standard config.*
+
+
+## More commands
+
+Shortly after release, I wish to add more commands.
+
+- Config editing on the fly
+- One-off backup types
+    - Currently, the `start` and `force-backup` commands only allow you to make a backup of the type specified in config. This will change.
+
+
+## Client feedback
+
+Having some client feedback would allow connected clients that have the mod view backup progress.
+- This should be toggleable in config.
+- A config option to only show progress to ops should exist.
+
+This might be in the form of either a progress bar, or a simple percentage.
+
+Clients with the mod should have a way to opt out of this.
