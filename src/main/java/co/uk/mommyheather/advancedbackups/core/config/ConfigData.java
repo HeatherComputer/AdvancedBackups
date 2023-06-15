@@ -1,7 +1,5 @@
 package co.uk.mommyheather.advancedbackups.core.config;
 
-import org.checkerframework.checker.units.qual.m;
-
 public class ConfigData {
     
     private Boolean enabled;
@@ -76,6 +74,10 @@ public class ConfigData {
     private boolean smartChains;
     // Smart chain resetting.
     // TRUE OR FALSE
+
+    private int maxSizePercent;
+    // Resets chain length if what gets backed up is over the defined % size.
+    // 1-100 range.
 
     private boolean purgeIncrementals;
     // Whether to purge incremental backups if over the limit.
@@ -234,6 +236,15 @@ public class ConfigData {
     public void setPurgeIncrementals(String purgeIncrementals) {
         this.purgeIncrementals = Boolean.parseBoolean(purgeIncrementals);
     }
+    
+    public int getMaxSizePercent() {
+        return maxSizePercent;
+    }
+
+    public void setMaxSizePercent(String maxSizePercent) {
+        this.maxSizePercent = Integer.parseInt(maxSizePercent);
+    }
+
    
 
 
@@ -335,6 +346,9 @@ public class ConfigData {
 "#Options : true, false    #Default : true",
 "config.advancedbackups.chains.smart=%s",
 "",
+"#What % of a full backup is allowed to be contained in a partial before forcing it into a full backup. Useful for reducing partial backup size.",
+"config.advancedbackups.chains.maxpercent=%s",
+"",
 "#Whether to delete incremental backup chains if max size is exceeded. If not, incremental backups do not respect the max size config and never delete.",
 "#Options : true, false    #Default : false",
 "config.advancedbackups.purge.incrementals=%s"
@@ -349,6 +363,6 @@ public class ConfigData {
     "12:00", "false", "false",
     "5", "false", "4",
     "50", "true", "true",
-    "false");
+    "75","false");
 
 }
