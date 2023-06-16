@@ -121,10 +121,10 @@ Once you select a file, it will be restored. The program will then exit.
 
 # Future Plans:
 - Note : these are in no particular order.
-- [Profiles](profiles)
-- [More Commands](more-commands)
-- [Client Feedback](client-feedback)
-- [Commandline Improvements](commandline)
+- [Profiles](#profiles)
+- [More Commands](#more-commands)
+- [Client Feedback](#client-feedback)
+- [Commandline Improvements](#commandline)
 
 ## Profiles
 
