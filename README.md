@@ -124,6 +124,7 @@ Once you select a file, it will be restored. The program will then exit.
 - [Profiles](profiles)
 - [More Commands](more-commands)
 - [Client Feedback](client-feedback)
+- [Commandline Improvements](commandline)
 
 ## Profiles
 
@@ -165,3 +166,12 @@ Having some client feedback would allow connected clients that have the mod view
 This might be in the form of either a progress bar, or a simple percentage.
 
 Clients with the mod should have a way to opt out of this.
+
+
+## Commandline
+
+Export feature :
+- When asked whether restoring a singular file or the whole world, a third option will be present : export.
+- This will package the backup into a singular zip file (...so yeah, just copy over the backup in the case of zip backups).
+- It will leave the actual world intact.
+  
