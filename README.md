@@ -124,7 +124,7 @@ Once you select a file, it will be restored. The program will then exit.
 - [Profiles](#profiles)
 - [More Commands](#more-commands)
 - [Client Feedback](#client-feedback)
-- [Commandline Improvements](#commandline)
+- [Commandline Improvements](#commandline-improvements)
 
 ## Profiles
 
@@ -168,7 +168,7 @@ This might be in the form of either a progress bar, or a simple percentage.
 Clients with the mod should have a way to opt out of this.
 
 
-## Commandline
+## Commandline improvements
 
 Export feature :
 - When asked whether restoring a singular file or the whole world, a third option will be present : export.
