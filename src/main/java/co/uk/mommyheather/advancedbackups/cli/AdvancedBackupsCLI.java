@@ -282,21 +282,49 @@ public class AdvancedBackupsCLI {
             ret = new File(ret, "/saves/");
         }
 
-        ret = new File(ret, getWorldName());
+        ret = new File(ret, getWorldName(ret));
         return ret;
 
     }
 
-    private static String getWorldName() {
-
-
-        info("Please enter your world name. Default for servers is \"world\".");
-        String line = input.nextLine();
-        if (line == "") {
-            warn("Please enter a name.");
-            return getWorldName();
+    private static String getWorldName(File dir) {
+        ArrayList<String> worlds = new ArrayList<>();
+        int worldIndex;
+        for (File file : dir.listFiles()) {
+            boolean flag = false;
+            if (!file.isDirectory()) continue;
+            for (File file2 : file.listFiles()) {
+                if (file2.getName().contains("level.dat")) {
+                    flag = true;
+                }
+            }
+            if (flag) {
+                worlds.add(file.getName());
+            }
         }
-        return line;
+        info("Please select your world. Default for servers is \"world\".");
+        int index = 1;
+        for (String world : worlds) {
+            info (index + ". " + world);
+            index++;
+        }        
+        try {
+            String line = input.nextLine();
+            if (line == "") {
+                warn("Please enter a number.");
+                return getWorldName(dir);
+            }
+            worldIndex = Integer.parseInt(line);
+        } catch (InputMismatchException | NumberFormatException e) {
+            warn("That was not a number. Please enter a number.");
+            return getWorldName(dir);
+        }
+        if (worldIndex < 1 || worldIndex > worlds.size()) {
+            warn("Please enter a number between " + worlds.size() + ".");
+            return getWorldName(dir);
+        }
+
+        return worlds.get(worldIndex - 1);
 
     }
 
