@@ -61,7 +61,7 @@ public class AVConfig {
                 file.setWritable(true); 
             }
             FileWriter writer = new FileWriter(file);
-            writer.write(ConfigData.defaults);
+            writer.write(ConfigData.defaults());
             writer.close();
         } catch (IOException e) {
             // TODO : Scream to user
@@ -143,13 +143,13 @@ public class AVConfig {
                     newPropsFile.createNewFile();
                 }
                 FileWriter writer = new FileWriter(newPropsFile);
-                writer.write(String.format(ConfigData.plainConfig, config.getEnabled(),
-                config.getSave(), config.getRequireActivity(), config.getBackupType(),
-                config.getPath(), config.getMaxSize(), config.getMinTimer(),
-                config.getMaxTimer(), config.getUptimeSchedule(), config.getSchedule(),
-                config.getForceOnShutdown(), config.getStartupDelay(), config.getStartupDelay(),
-                config.getSilent(), config.getCompressionLevel(), config.getMaxDepth(),
-                config.getCompressChains(), config.getSmartChains(), config.getPurgeIncrementals()
+                writer.write(ConfigData.config(config.getEnabled(), config.getSave(), 
+                config.getRequireActivity(), config.getBackupType(), config.getPath(), 
+                config.getMaxSize(), config.getMinTimer(), config.getMaxTimer(), 
+                config.getUptimeSchedule(), config.getSchedule(), config.getForceOnShutdown(), 
+                config.getForceOnStartup(), config.getStartupDelay(), config.getSilent(), 
+                config.getCompressionLevel(), config.getMaxDepth(), config.getCompressChains(), 
+                config.getSmartChains(), config.getMaxSizePercent(), config.getPurgeIncrementals()
                     ));
                 writer.close();
             } catch (IOException e) {
