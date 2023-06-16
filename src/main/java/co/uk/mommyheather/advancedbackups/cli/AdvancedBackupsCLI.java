@@ -27,8 +27,11 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import org.fusesource.jansi.AnsiConsole;
+
+import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 
 public class AdvancedBackupsCLI {
 
@@ -753,6 +756,7 @@ public class AdvancedBackupsCLI {
 
 
     private static void deleteEntireWorld(File worldDir) {
+        backupExistingWorld(worldDir);
         try {
             Files.walkFileTree(worldDir.toPath(), new SimpleFileVisitor<Path>() {
                 @Override
@@ -772,6 +776,41 @@ public class AdvancedBackupsCLI {
         } catch (IOException e) {
             warn("Failed to delete file :");
             e.printStackTrace();
+        }
+    }
+
+    private static void backupExistingWorld(File worldDir) {
+        try {
+            File out = new File(worldDir, "../cli" + ThreadedBackup.serialiseBackupName() + ".zip");
+            FileOutputStream outputStream = new FileOutputStream(out);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
+            zipOutputStream.setLevel(4);
+            Files.walkFileTree(worldDir.toPath(), new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
+                    Path targetFile;
+                    try {
+                        targetFile = worldDir.toPath().relativize(file);
+                        if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
+                            return FileVisitResult.CONTINUE;
+                        }
+                        zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
+                        byte[] bytes = Files.readAllBytes(file);
+                        zipOutputStream.write(bytes, 0, bytes.length);
+                        zipOutputStream.closeEntry();
+
+                    } catch (IOException e) {
+                        // TODO : Scream at user
+                        e.printStackTrace();
+                    }
+                    
+                        return FileVisitResult.CONTINUE;
+                }
+            });
+            zipOutputStream.flush();
+            zipOutputStream.close();
+        } catch (Exception e) {
+            
         }
     }
 
