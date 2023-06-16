@@ -228,7 +228,7 @@ public class ThreadedBackup extends Thread {
     }
 
 
-    private static String serialiseBackupName() {
+    public static String serialiseBackupName() {
         Date date = new Date();
         String pattern = "yyyy-MM-dd hh-mm-ss";
         
