@@ -33,6 +33,8 @@ public class BackupTimingThread extends Thread {
 
     private long calculateNextBackupTime() {
         long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (AVConfig.config.getMaxTimer() * 3600000L);
+        if (forcedMillis == AVConfig.config.getMaxTimer() * 3600000L) forcedMillis = 300000; //sets it to 5m if no backup exists, to get the chain going
+        else forcedMillis -= System.currentTimeMillis();
         long ret = Long.MAX_VALUE;
         if (AVConfig.config.getUptimeSchedule() && !BackupWrapper.configuredPlaytime.isEmpty()) {
             ArrayList<Long> timings = new ArrayList<Long>(BackupWrapper.configuredPlaytime);
@@ -48,7 +50,7 @@ public class BackupTimingThread extends Thread {
 
         else if (!BackupWrapper.configuredPlaytime.isEmpty()) {
             long nextTime = 0;
-            long currentTime = (LocalDateTime.now().getHour() * 3600000) + (LocalDateTime.now().getMinute() * 60000);
+            long currentTime = System.currentTimeMillis();
             ArrayList<Long> timings = new ArrayList<Long>(BackupWrapper.configuredPlaytime);
             for (long time : timings) {
                 if (time >= currentTime) {

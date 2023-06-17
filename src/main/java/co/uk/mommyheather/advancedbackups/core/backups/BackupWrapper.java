@@ -28,7 +28,6 @@ public class BackupWrapper {
     }
 
     public static void checkAndMakeBackups(long delay) {
-        prepareBackupDestination();
         BackupCheckEnum e = checkBackups();
         if (e.success()) {
             makeSingleBackup(delay);
@@ -41,6 +40,7 @@ public class BackupWrapper {
 
 
     public static BackupCheckEnum checkBackups() {
+        prepareBackupDestination();
         if (!AVConfig.config.getEnabled()) return BackupCheckEnum.DISABLED;
         if (AVConfig.config.getRequireActivity() && !PlatformMethodWrapper.activity) return BackupCheckEnum.NOACTIVITY;
         if (checkMostRecentBackup()) return BackupCheckEnum.TOORECENT;
