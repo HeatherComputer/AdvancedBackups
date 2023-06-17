@@ -9,6 +9,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import scala.collection.script.Reset;
 
 public class AdvancedBackupsCommand extends CommandBase
 {
@@ -35,7 +36,7 @@ public class AdvancedBackupsCommand extends CommandBase
 
     public String getCommandUsage(ICommandSender icommandsender)
     {
-        return "/advancedbackups (check|start|force-backup|reload)";
+        return "/advancedbackups (check|start|force-backup|reload|reset-chain)";
     }
 
 
@@ -60,6 +61,9 @@ public class AdvancedBackupsCommand extends CommandBase
         else if ("reload".equals(args[0]))
         {
             Reload.execute(sender);
+        }
+        else if ("reset-chain".equals(args[0])) {
+            ResetChain.execute(sender);
         }
         else
         {
@@ -92,6 +96,14 @@ public class AdvancedBackupsCommand extends CommandBase
     public static class Start {
         public static void execute(ICommandSender sender) {
             CoreCommandSystem.startBackup((response) -> {
+                sender.addChatMessage(new ChatComponentText(response));
+            });
+        }
+    } 
+    
+    public static class ResetChain {
+        public static void execute(ICommandSender sender) {
+            CoreCommandSystem.resetChainLength((response) -> {
                 sender.addChatMessage(new ChatComponentText(response));
             });
         }
