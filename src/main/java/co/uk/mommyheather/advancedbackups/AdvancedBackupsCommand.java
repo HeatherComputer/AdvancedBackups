@@ -17,6 +17,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         addSubcommand(new Start());
         addSubcommand(new Force());
         addSubcommand(new Reload());
+        addSubcommand(new ResetChain());
     }
 
     @Override
@@ -111,6 +112,25 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.advancedbackups.start.usage";
+        }
+    }
+    
+    public static class ResetChain extends CommandTreeBase {
+        public ResetChain(){}
+        @Override
+        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+            CoreCommandSystem.resetChainLength((response) -> {
+                sender.sendMessage(new TextComponentString(response));
+            });
+        }    
+        @Override
+        public String getName()
+        {
+            return "reset-chain";
+        }
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.advancedbackups.resetchain.usage";
         }
     }
 }
