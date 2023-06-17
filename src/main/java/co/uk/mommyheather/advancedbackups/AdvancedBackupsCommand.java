@@ -38,6 +38,13 @@ public class AdvancedBackupsCommand {
             });
             return 1;
          }))
+
+         .then(Commands.literal("reset-chain").executes((runner) -> {
+            CoreCommandSystem.resetChainLength((response) -> {
+                runner.getSource().sendSuccess(new StringTextComponent(response), true);
+            });
+            return 1;
+         }))
     
         );
     }

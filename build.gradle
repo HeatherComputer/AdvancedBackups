@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.3'
+version = '1.0'
 group = 'com.github.raveninthedark.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
