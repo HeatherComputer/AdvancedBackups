@@ -25,9 +25,9 @@ If applicable, add screenshots to help explain your problem.
 
 **Versioning (please complete the following information):**
  - OS: [e.g. Debian]
- - Minecraft Version(s) [e.g 1.18, 1.12]
- - Modloader(s) [e.g. Forge]
- - Mod Version [e.g 1.0]
+ - Minecraft Version(s): [e.g 1.18, 1.12]
+ - Modloader(s): [e.g. Forge]
+ - Mod Version: [e.g 1.0]
 
 **Additional context**
 Add any other context about the problem here.
