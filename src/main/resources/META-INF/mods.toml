@@ -57,6 +57,6 @@ Config file and github contain documentation.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18.2,1.19)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"
