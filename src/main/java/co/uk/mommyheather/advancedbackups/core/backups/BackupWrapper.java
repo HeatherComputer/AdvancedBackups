@@ -1,6 +1,12 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -55,6 +61,8 @@ public class BackupWrapper {
         if (!file.exists()) {
             file.mkdirs();
         }
+        prepareReadMe(file);
+
         File zipFile = new File(file, "/zips/");
         if (!zipFile.exists()) {
             zipFile.mkdirs();
@@ -66,6 +74,29 @@ public class BackupWrapper {
         File incremental = new File(file, "/incremental/");
         if (!incremental.exists()) {
             incremental.mkdirs();
+        }
+    }
+
+    private static void prepareReadMe(File path) {
+        File readme = new File(path, "README-BEFORE-RESTORING.txt");
+        if (!readme.exists()) {
+            try {
+                InputStream is = BackupWrapper.class.getClassLoader().getResourceAsStream("advancedbackups-readme.txt");
+                readme.createNewFile();
+                FileOutputStream outputStream = new FileOutputStream(readme);
+                byte[] buf = new byte[1028];
+                int n;
+                while ((n = is.read(buf)) > 0) {
+                    outputStream.write(buf, 0, n);
+                }
+                outputStream.flush();
+                outputStream.close();
+                   
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
         }
     }
 
