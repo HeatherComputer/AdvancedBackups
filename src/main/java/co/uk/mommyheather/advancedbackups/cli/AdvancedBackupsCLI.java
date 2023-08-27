@@ -41,6 +41,7 @@ public class AdvancedBackupsCLI {
     private static Scanner input = new Scanner(System.in);
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
+    private static String worldPath;
     public static void main(String args[]){  
 
         if (System.console() != null) {
@@ -327,6 +328,7 @@ public class AdvancedBackupsCLI {
             return getWorldName(dir);
         }
 
+        worldPath = worlds.get(worldIndex -1).replaceAll(" ", "_");
         return worlds.get(worldIndex - 1);
 
     }
@@ -339,11 +341,11 @@ public class AdvancedBackupsCLI {
         info("Select a backup to restore.");
 
         for (File file : backupDir.listFiles()) {
-            if (file.getName().contains("manifest.json")) continue;
+            if (!file.getName().contains(worldPath)) continue;
             fileNames.add(file.getAbsolutePath());
             String out = file.getName();
             out = out.replaceAll(".zip", "");
-            out = out.replaceAll("backup-", ": ");
+            out = out.replaceAll(worldPath + "_", ": ");
             out = out.replaceAll("-partial", "\u001B[33m partial\u001B[0m");
             out = out.replaceAll("-full", "\u001B[32m full\u001B[0m");
             info(fileNames.size() + out);
@@ -781,7 +783,7 @@ public class AdvancedBackupsCLI {
 
     private static void backupExistingWorld(File worldDir) {
         try {
-            File out = new File(worldDir, "../cli" + ThreadedBackup.serialiseBackupName() + ".zip");
+            File out = new File(worldDir, "../cli" + ThreadedBackup.serialiseBackupName("backup") + ".zip");
             FileOutputStream outputStream = new FileOutputStream(out);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(4);
@@ -918,7 +920,7 @@ public class AdvancedBackupsCLI {
                 dates.put(entry.toString().replace("\\", "/"), "\u001b[31m"
                  + backupName
                 .substring(backupName.toString().lastIndexOf("/") + 1) 
-                .replace("backup-", "")
+                .replace(worldPath + "_", "")
                 .replace("-full.zip", "")
                 .replace("-partial.zip", "")
                 + "\u001B[0m");
@@ -935,7 +937,7 @@ public class AdvancedBackupsCLI {
                     dates.put(file.toPath().relativize(path).toString().replace("\\", "/"), "\u001b[31m"
                      + backupName
                     .substring(backupName.toString().lastIndexOf("/") + 1) 
-                    .replace("backup-", "")
+                    .replace(worldPath + "_", "")
                     .replace("-full", "")
                     .replace("-partial", "")
                     + "\u001B[0m");
