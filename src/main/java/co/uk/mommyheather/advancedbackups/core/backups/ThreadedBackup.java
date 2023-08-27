@@ -31,6 +31,7 @@ public class ThreadedBackup extends Thread {
     private static float partialSize;
     private static float completeSize;
     public static boolean running = false;
+    private static String backupName;
     
     static {
         builder.setPrettyPrinting();
@@ -58,6 +59,7 @@ public class ThreadedBackup extends Thread {
         running = true;
 
         File file = new File(AVConfig.config.getPath());
+        backupName = serialiseBackupName(PlatformMethodWrapper.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
 
         switch(AVConfig.config.getBackupType()) {
             case "zip" : {
@@ -81,7 +83,8 @@ public class ThreadedBackup extends Thread {
     private static void makeZipBackup(File file) {
         try {
 
-            File zip = new File(file.toString() + "/zips/", serialiseBackupName() + ".zip");
+            File zip = new File(file.toString() + "/zips/", backupName + ".zip");
+            PlatformMethodWrapper.infoLogger.accept("Preparing zip backup name: " + zip.getName());
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(AVConfig.config.getCompressionLevel());
@@ -122,7 +125,7 @@ public class ThreadedBackup extends Thread {
 
     private static void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
         try {
-            String name = serialiseBackupName();
+            PlatformMethodWrapper.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
             long time = 0;
             File manifestFile = differential ? new File(location.toString() + "/differential/manifest.json") : new File(location.toString() + "/incremental/manifest.json");
             DifferentialManifest manifest;
@@ -168,12 +171,12 @@ public class ThreadedBackup extends Thread {
                 toBackup.addAll(completeBackup);
             }
             
-            name += complete? "-full":"-partial";
+            backupName += complete? "-full":"-partial";
 
             
 
             if (AVConfig.config.getCompressChains()) {
-                File zip = differential ? new File(location.toString() + "/differential/", name +".zip") : new File(location.toString() + "/incremental/", name +".zip");
+                File zip = differential ? new File(location.toString() + "/differential/", backupName +".zip") : new File(location.toString() + "/incremental/", backupName +".zip");
                 FileOutputStream outputStream = new FileOutputStream(zip);
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 zipOutputStream.setLevel(AVConfig.config.getCompressionLevel());
@@ -190,7 +193,7 @@ public class ThreadedBackup extends Thread {
                 time = zip.lastModified();
             }
             else {
-                File dest = differential ? new File(location.toString() + "/differential/", name + "/") :new File(location.toString() + "/incremental/", name + "/");
+                File dest = differential ? new File(location.toString() + "/differential/", backupName + "/") :new File(location.toString() + "/incremental/", backupName + "/");
                 dest.mkdirs();
                 for (Path path : toBackup) {
                     File out = new File(dest, path.toString());
@@ -228,10 +231,10 @@ public class ThreadedBackup extends Thread {
     }
 
 
-    public static String serialiseBackupName() {
+    public static String serialiseBackupName(String in) {
         Date date = new Date();
-        String pattern = "yyyy-MM-dd hh-mm-ss";
+        String pattern = "yyyy-MM-dd_hh-mm-ss";
         
-        return "backup-" + new SimpleDateFormat(pattern).format(date);
+        return in + "_" + new SimpleDateFormat(pattern).format(date);
     }
 }
