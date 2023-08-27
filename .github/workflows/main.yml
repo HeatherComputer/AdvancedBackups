@@ -10,6 +10,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          
+      - name: Forge 1.19
+        if: always()
+        run: |
+        
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${INPUT_EMAIL}"
+          git fetch origin
+          git checkout -b forge-1.19 origin/forge-1.19
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/core
+          git checkout origin/core -- src/main/java/co/uk/mommyheather/advancedbackups/cli
+          git checkout origin/core -- README.md
+          git diff-index --quiet HEAD || git commit -a -m "Update core files"
+          git push
+
       - name: Fabric 1.18
         if: always()
         run: |
