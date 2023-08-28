@@ -42,7 +42,11 @@ public class AdvancedBackupsCLI {
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
     private static String worldPath;
-    public static void main(String args[]){  
+    public static void main(String args[]){ 
+        
+        
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
         if (System.console() != null) {
             AnsiConsole.systemInstall(); //this gets ansi escape codes working on windows. this was a FUCKING PAIN IN MY ASS
