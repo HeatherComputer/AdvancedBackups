@@ -16,7 +16,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 ## Current Versions:
 - Forge 1.19
-- Forge 1.19
+- Forge 1.18
 - Fabric 1.18
 - Forge 1.16
 - Forge 1.12
