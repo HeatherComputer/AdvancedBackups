@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.fusesource.jansi.AnsiConsole;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 
 public class AdvancedBackupsCLI {
@@ -787,7 +788,7 @@ public class AdvancedBackupsCLI {
 
     private static void backupExistingWorld(File worldDir) {
         try {
-            File out = new File(worldDir, "../cli" + ThreadedBackup.serialiseBackupName("backup") + ".zip");
+            File out = new File(worldDir, "../cli" + ABCore.serialiseBackupName("backup") + ".zip");
             FileOutputStream outputStream = new FileOutputStream(out);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(4);
