@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.WorldSavePath;
 
 import java.util.function.Consumer;
@@ -12,8 +13,9 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
 
 public class AdvancedBackups implements ModInitializer {
     // This logger is used to write text to the console and the log file.
@@ -32,10 +34,18 @@ public class AdvancedBackups implements ModInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             AdvancedBackups.server = server;
-            AVConfig.loadOrCreateConfig();
+            ABConfig.loadOrCreateConfig();
             LOGGER.info("Config loaded!!");
-            PlatformMethodWrapper.worldName = server.getSaveProperties().getLevelName();
-            PlatformMethodWrapper.worldDir = server.getSavePath(WorldSavePath.ROOT);
+            ABCore.worldName = server.getSaveProperties().getLevelName();
+            ABCore.worldDir = server.getSavePath(WorldSavePath.ROOT);
+
+            ABCore.disableSaving = AdvancedBackups::disableSaving;
+            ABCore.enableSaving = AdvancedBackups::enableSaving;
+            ABCore.saveOnce = AdvancedBackups::saveOnce;
+
+            ABCore.infoLogger = infoLogger;
+            ABCore.warningLogger = warningLogger;
+            ABCore.errorLogger = errorLogger;
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
@@ -46,12 +56,61 @@ public class AdvancedBackups implements ModInitializer {
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            PlatformMethodWrapper.activity = true;
+            ABCore.setActivity();
         });
 
         CommandRegistrationCallback.EVENT.register((dispatcher, isDedicated) -> {
             AdvancedBackupsCommand.register(dispatcher);
         });
             
+    }
+
+    public static final String savesDisabledMessage = """
+
+
+    ***************************************
+    SAVING DISABLED - PREPARING FOR BACKUP!
+    ***************************************
+    """;
+    public static final String savesEnabledMessage = """
+
+
+    *********************************
+    SAVING ENABLED - BACKUP COMPLETE!
+    *********************************
+    """;
+    public static final String saveCompleteMessage = """
+
+
+    *************************************
+    SAVE COMPLETE - PREPARING FOR BACKUP!
+    *************************************
+    """;
+
+
+    public static void disableSaving() {
+        MinecraftServer server = AdvancedBackups.server;
+        for (ServerWorld level : server.getWorlds()) {
+            if (level != null && !level.savingDisabled) {
+                level.savingDisabled = true;
+            }
+        }
+        warningLogger.accept(savesDisabledMessage);
+    }
+
+    public static void enableSaving() {
+        MinecraftServer server = AdvancedBackups.server;
+        for (ServerWorld level : server.getWorlds()) {
+            if (level != null && !level.savingDisabled) {
+                level.savingDisabled = false;
+            }
+        }
+        warningLogger.accept(savesEnabledMessage);
+    }
+
+    public static void saveOnce() {
+        MinecraftServer server = AdvancedBackups.server;
+        server.saveAll(true, true, true);
+        warningLogger.accept(saveCompleteMessage);
     }
 }
