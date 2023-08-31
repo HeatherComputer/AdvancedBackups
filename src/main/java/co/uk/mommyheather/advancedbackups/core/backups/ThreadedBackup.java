@@ -59,7 +59,7 @@ public class ThreadedBackup extends Thread {
         running = true;
 
         File file = new File(ABConfig.config.getPath());
-        backupName = serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
+        backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
 
         switch(ABConfig.config.getBackupType()) {
             case "zip" : {
@@ -230,11 +230,4 @@ public class ThreadedBackup extends Thread {
 
     }
 
-
-    public static String serialiseBackupName(String in) {
-        Date date = new Date();
-        String pattern = "yyyy-MM-dd_hh-mm-ss";
-        
-        return in + "_" + new SimpleDateFormat(pattern).format(date);
-    }
 }

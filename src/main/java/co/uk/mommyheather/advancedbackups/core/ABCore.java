@@ -1,6 +1,8 @@
 package co.uk.mommyheather.advancedbackups.core;
 
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Consumer;
 
 public class ABCore {
@@ -32,5 +34,14 @@ public class ABCore {
 
     public static void setActivity() {
         activity = true;
+    }
+
+    
+
+    public static String serialiseBackupName(String in) {
+        Date date = new Date();
+        String pattern = "yyyy-MM-dd_hh-mm-ss";
+        
+        return in + "_" + new SimpleDateFormat(pattern).format(date);
     }
 }
