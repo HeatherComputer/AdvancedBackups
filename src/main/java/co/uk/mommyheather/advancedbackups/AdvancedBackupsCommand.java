@@ -40,7 +40,7 @@ public class AdvancedBackupsCommand {
          }))
          
          .then(CommandManager.literal("reset-chain").executes((runner) -> {
-            CoreCommandSystem.reloadConfig((response) -> {
+            CoreCommandSystem.resetChainLength((response) -> {
                 runner.getSource().sendFeedback(Text.of(response), true);
             });
             return 1;
