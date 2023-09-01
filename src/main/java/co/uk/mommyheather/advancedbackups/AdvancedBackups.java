@@ -1,8 +1,12 @@
 package co.uk.mommyheather.advancedbackups;
 
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.FolderName;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
@@ -11,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
@@ -37,10 +42,19 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        AVConfig.loadOrCreateConfig();
+        ABConfig.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
-        PlatformMethodWrapper.worldName = event.getServer().getWorldData().getLevelName();
-        PlatformMethodWrapper.worldDir = event.getServer().storageSource.getWorldDir();
+        ABCore.worldName = event.getServer().getWorldData().getLevelName();
+        ABCore.worldDir = event.getServer().getWorldPath(FolderName.ROOT);
+
+
+        ABCore.disableSaving = AdvancedBackups::disableSaving;
+        ABCore.enableSaving = AdvancedBackups::enableSaving;
+        ABCore.saveOnce = AdvancedBackups::saveOnce;
+
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
         
     }
 
@@ -56,12 +70,45 @@ public class AdvancedBackups
 
     @SubscribeEvent
     public void onPlayerConneccted(PlayerLoggedInEvent event) {
-        PlatformMethodWrapper.activity = true;
+        ABCore.activity = true;
     }
 
     @SubscribeEvent
     public void registerCommands(RegisterCommandsEvent event){
         AdvancedBackupsCommand.register(event.getDispatcher());
+    }
+
+
+        
+    public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
+    public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
+    public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
+
+
+    public static void disableSaving() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        for (ServerWorld level : server.getAllLevels()) {
+            if (level != null && !level.noSave) {
+                level.noSave = true;
+            }
+        }
+        warningLogger.accept(savesDisabledMessage);
+    }
+
+    public static void enableSaving() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        for (ServerWorld level : server.getAllLevels()) {
+            if (level != null && !level.noSave) {
+                level.noSave = false;
+            }
+        }
+        warningLogger.accept(savesEnabledMessage);
+    }
+
+    public static void saveOnce() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        server.saveAllChunks(true, true, true);
+        warningLogger.accept(saveCompleteMessage);
     }
 
 }
