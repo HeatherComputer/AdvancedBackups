@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -43,8 +44,6 @@ public class AdvancedBackups
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        ABConfig.loadOrCreateConfig();
-        LOGGER.info("Config loaded!!");
         ABCore.worldName = event.getServer().getWorldData().getLevelName();
         ABCore.worldDir = event.getServer().getWorldPath(LevelResource.ROOT);
 
@@ -56,6 +55,12 @@ public class AdvancedBackups
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
+        
+        ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
+
+        
+        ABConfig.loadOrCreateConfig();
+        LOGGER.info("Config loaded!!");
         
         
     }
