@@ -12,7 +12,7 @@ import com.google.gson.GsonBuilder;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
-import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
 
 public class CoreCommandSystem {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -45,19 +45,19 @@ public class CoreCommandSystem {
 
     public static void reloadConfig(Consumer<String> chat) {
         chat.accept("Reloading config...");
-        AVConfig.loadConfig();
+        ABConfig.loadConfig();
         chat.accept("Done!");
     }
 
     public static void resetChainLength(Consumer<String> chat) {
         chat.accept("Resetting chain length... The next backup will be a complete backup.");
-        boolean differential = AVConfig.config.getBackupType().equals("differential") ? true : false;
-        File manifestFile = differential ? new File(AVConfig.config.getPath() + "/differential/manifest.json") : new File(AVConfig.config.getPath() + "/incremental/manifest.json");
+        boolean differential = ABConfig.config.getBackupType().equals("differential") ? true : false;
+        File manifestFile = differential ? new File(ABConfig.config.getPath() + "/differential/manifest.json") : new File(ABConfig.config.getPath() + "/incremental/manifest.json");
         DifferentialManifest manifest;
         try {
             if (manifestFile.exists()) {
                manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), DifferentialManifest.class);
-               manifest.setChain(manifest.getChain() + AVConfig.config.getMaxDepth());
+               manifest.setChain(manifest.getChain() + ABConfig.config.getMaxDepth());
                FileWriter writer = new FileWriter(manifestFile);
                writer.write(gson.toJson(manifest));
                writer.flush();
