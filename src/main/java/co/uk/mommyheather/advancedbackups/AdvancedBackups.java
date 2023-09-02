@@ -4,10 +4,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.WorldSavePath;
 
+import java.io.File;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -34,8 +36,6 @@ public class AdvancedBackups implements ModInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             AdvancedBackups.server = server;
-            ABConfig.loadOrCreateConfig();
-            LOGGER.info("Config loaded!!");
             ABCore.worldName = server.getSaveProperties().getLevelName();
             ABCore.worldDir = server.getSavePath(WorldSavePath.ROOT);
 
@@ -46,6 +46,13 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.infoLogger = infoLogger;
             ABCore.warningLogger = warningLogger;
             ABCore.errorLogger = errorLogger;
+
+            
+            ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().toString());
+            
+            
+            ABConfig.loadOrCreateConfig();
+            LOGGER.info("Config loaded!!");
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
@@ -62,6 +69,8 @@ public class AdvancedBackups implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, isDedicated) -> {
             AdvancedBackupsCommand.register(dispatcher);
         });
+
+        
             
     }
 
