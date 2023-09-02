@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -61,8 +62,6 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        ABConfig.loadOrCreateConfig();
-        LOGGER.info("Config loaded!!");
         ABCore.worldName = event.getServer().worldServers[0].getWorldInfo().getWorldName();
 
         //Yes, this works. Yes, it feels FUCKING ILLEGAL
@@ -85,6 +84,11 @@ public class AdvancedBackups
         ABCore.errorLogger = errorLogger;
 
         event.registerServerCommand(new AdvancedBackupsCommand());
+
+        ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
+
+        ABConfig.loadOrCreateConfig();
+        LOGGER.info("Config loaded!!");
         
     }
 
