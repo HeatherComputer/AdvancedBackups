@@ -3,13 +3,10 @@ package co.uk.mommyheather.advancedbackups;
 import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import scala.collection.script.Reset;
 
 public class AdvancedBackupsCommand extends CommandBase
 {
