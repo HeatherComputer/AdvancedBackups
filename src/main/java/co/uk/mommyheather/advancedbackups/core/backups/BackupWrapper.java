@@ -113,7 +113,7 @@ public class BackupWrapper {
     
             else script = new File(path, "restore-script.sh");
     
-            if (script.exists()) return;
+            if (script.exists()) script.delete();
     
             script.createNewFile();
     
