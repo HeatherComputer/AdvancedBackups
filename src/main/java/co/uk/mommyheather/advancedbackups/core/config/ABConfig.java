@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import co.uk.mommyheather.advancedbackups.PlatformMethodWrapper;
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 
-public class AVConfig {
+public class ABConfig {
 
     private static final String[] supportedProps = {
         "config.advancedbackups.enabled",
@@ -135,7 +135,7 @@ public class AVConfig {
         }
 
         if (flag) {
-            PlatformMethodWrapper.warningLogger.accept("Broken, incomplete or misising config found! Generating new file whilst preserving any existing config values...");
+            ABCore.warningLogger.accept("Broken, incomplete or misising config found! Generating new file whilst preserving any existing config values...");
 
             File newPropsFile = new File("./AdvancedBackups.properties");
             try {

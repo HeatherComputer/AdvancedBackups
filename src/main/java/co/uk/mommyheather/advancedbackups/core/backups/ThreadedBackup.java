@@ -19,9 +19,9 @@ import java.util.zip.ZipOutputStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import co.uk.mommyheather.advancedbackups.PlatformMethodWrapper;
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
-import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
 
 public class ThreadedBackup extends Thread {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -58,10 +58,10 @@ public class ThreadedBackup extends Thread {
         }
         running = true;
 
-        File file = new File(AVConfig.config.getPath());
-        backupName = serialiseBackupName(PlatformMethodWrapper.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
+        File file = new File(ABConfig.config.getPath());
+        backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
 
-        switch(AVConfig.config.getBackupType()) {
+        switch(ABConfig.config.getBackupType()) {
             case "zip" : {
                 makeZipBackup(file);
                 break;
@@ -84,17 +84,17 @@ public class ThreadedBackup extends Thread {
         try {
 
             File zip = new File(file.toString() + "/zips/", backupName + ".zip");
-            PlatformMethodWrapper.infoLogger.accept("Preparing zip backup name: " + zip.getName());
+            ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-            zipOutputStream.setLevel(AVConfig.config.getCompressionLevel());
+            zipOutputStream.setLevel(ABConfig.config.getCompressionLevel());
 
-            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
                     try {
-                        targetFile = PlatformMethodWrapper.worldDir.relativize(file);
+                        targetFile = ABCore.worldDir.relativize(file);
                         if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                             return FileVisitResult.CONTINUE;
                         }
@@ -106,7 +106,7 @@ public class ThreadedBackup extends Thread {
                     } catch (IOException e) {
                         // TODO : Scream at user
                         e.printStackTrace();
-                        PlatformMethodWrapper.errorLogger.accept(file.toString());
+                        ABCore.errorLogger.accept(file.toString());
                     }
                     
                         return FileVisitResult.CONTINUE;
@@ -125,7 +125,7 @@ public class ThreadedBackup extends Thread {
 
     private static void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
         try {
-            PlatformMethodWrapper.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
+            ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
             long time = 0;
             File manifestFile = differential ? new File(location.toString() + "/differential/manifest.json") : new File(location.toString() + "/incremental/manifest.json");
             DifferentialManifest manifest;
@@ -141,13 +141,13 @@ public class ThreadedBackup extends Thread {
             ArrayList<Path> completeBackup = new ArrayList<>();
 
 
-            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= AVConfig.config.getMaxDepth() ? true : false;
+            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= ABConfig.config.getMaxDepth() ? true : false;
             
-            Files.walkFileTree(PlatformMethodWrapper.worldDir, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
-                    targetFile = PlatformMethodWrapper.worldDir.relativize(file);
+                    targetFile = ABCore.worldDir.relativize(file);
                     if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
                     }
@@ -165,7 +165,7 @@ public class ThreadedBackup extends Thread {
             if (toBackup.size() >= count) {
                 complete = true;
             }
-            if ((partialSize / completeSize) * 100F > AVConfig.config.getMaxSizePercent()) {
+            if ((partialSize / completeSize) * 100F > ABConfig.config.getMaxSizePercent()) {
                 complete = true;
                 toBackup.clear();
                 toBackup.addAll(completeBackup);
@@ -175,15 +175,15 @@ public class ThreadedBackup extends Thread {
 
             
 
-            if (AVConfig.config.getCompressChains()) {
+            if (ABConfig.config.getCompressChains()) {
                 File zip = differential ? new File(location.toString() + "/differential/", backupName +".zip") : new File(location.toString() + "/incremental/", backupName +".zip");
                 FileOutputStream outputStream = new FileOutputStream(zip);
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-                zipOutputStream.setLevel(AVConfig.config.getCompressionLevel());
+                zipOutputStream.setLevel(ABConfig.config.getCompressionLevel());
 
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
-                    byte[] bytes = Files.readAllBytes(new File(PlatformMethodWrapper.worldDir.toString(), path.toString()).toPath());
+                    byte[] bytes = Files.readAllBytes(new File(ABCore.worldDir.toString(), path.toString()).toPath());
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                 }
@@ -200,7 +200,7 @@ public class ThreadedBackup extends Thread {
                     if (!out.getParentFile().exists()) {
                         out.getParentFile().mkdirs();
                     }
-                    Files.copy(new File(PlatformMethodWrapper.worldDir.toString(), path.toString()).toPath(), out.toPath());
+                    Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
                 }
                 time = dest.lastModified();
             }
@@ -230,11 +230,4 @@ public class ThreadedBackup extends Thread {
 
     }
 
-
-    public static String serialiseBackupName(String in) {
-        Date date = new Date();
-        String pattern = "yyyy-MM-dd_hh-mm-ss";
-        
-        return in + "_" + new SimpleDateFormat(pattern).format(date);
-    }
 }
