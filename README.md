@@ -82,6 +82,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 TODO - export option for backups.
 
 \- Run the jar directly from the mods folder. `java -jar AdvancedBackups-modloader-mcversion-modversion` for example, replacing the filename with the correct one for your installation.
+- As of version 2.0, the mod creates bat or sh scripts you can use instead.
 
 \- It will read your config. Then, it will ask you which backup type to restore.
 
