@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,8 +17,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.logging.log4j.Logger;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.AVConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -60,17 +62,28 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        AVConfig.loadOrCreateConfig();
+        ABConfig.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
-        PlatformMethodWrapper.worldName = event.getServer().worlds[0].getWorldInfo().getWorldName();
+        ABCore.worldName = event.getServer().worlds[0].getWorldInfo().getWorldName();
+
+        //Yes, this works. Yes, it feels FUCKING ILLEGAL
         if (event.getSide() == Side.SERVER) {
-            PlatformMethodWrapper.worldDir = new File(event.getServer().getFolderName()).toPath();
+            ABCore.worldDir = new File(event.getServer().getFolderName(), "./").toPath();
         }
         else {
-            PlatformMethodWrapper.worldDir = new File("saves/" + event.getServer().getFolderName()).toPath();
+            ABCore.worldDir = new File("saves/" + event.getServer().getFolderName(), "./").toPath();
         }
+        // the extra ./ is because some of the code in core calls a getParent as it was required when devving in my forge 1.18 instance, but versions earlier than 1.16 do not have this requirement
 
         server = event.getServer();
+
+        ABCore.disableSaving = AdvancedBackups::disableSaving;
+        ABCore.enableSaving = AdvancedBackups::enableSaving;
+        ABCore.saveOnce = AdvancedBackups::saveOnce;
+
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
 
         event.registerServerCommand(new AdvancedBackupsCommand());
         
@@ -88,7 +101,37 @@ public class AdvancedBackups
 
     @SubscribeEvent
     public void onPlayerConnect(PlayerEvent.PlayerLoggedInEvent event) {
-        PlatformMethodWrapper.activity = true;
+        ABCore.activity = true;
+    }
+
+    
+    
+    public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
+    public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
+    public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
+
+
+    public static void disableSaving() {
+        for (WorldServer level : server.worlds) {
+            if (level != null && !level.disableLevelSaving) {
+                level.disableLevelSaving = true;
+            }
+        }
+        warningLogger.accept(savesDisabledMessage);
+    }
+
+    public static void enableSaving() {
+        for (WorldServer level : server.worlds) {
+            if (level != null && !level.disableLevelSaving) {
+                level.disableLevelSaving = false;
+            }
+        }
+        warningLogger.accept(savesEnabledMessage);
+    }
+
+    public static void saveOnce() {
+        server.saveAllWorlds(false);
+        warningLogger.accept(saveCompleteMessage);
     }
 
 }
