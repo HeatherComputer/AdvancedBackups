@@ -3,6 +3,7 @@ package co.uk.mommyheather.advancedbackups;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -62,8 +63,6 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        ABConfig.loadOrCreateConfig();
-        LOGGER.info("Config loaded!!");
         ABCore.worldName = event.getServer().worlds[0].getWorldInfo().getWorldName();
 
         //Yes, this works. Yes, it feels FUCKING ILLEGAL
@@ -84,6 +83,14 @@ public class AdvancedBackups
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
+
+        
+        ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
+        //ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
+        ABConfig.loadOrCreateConfig();
+        LOGGER.info("Config loaded!!");
+
+
 
         event.registerServerCommand(new AdvancedBackupsCommand());
         
