@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -42,8 +43,6 @@ public class AdvancedBackups
     public void onServerStarting(FMLServerStartingEvent event)
     {
         // Do something when the server starts
-        ABConfig.loadOrCreateConfig();
-        LOGGER.info("Config loaded!!");
         ABCore.worldName = event.getServer().getWorldData().getLevelName();
         ABCore.worldDir = event.getServer().getWorldPath(FolderName.ROOT);
 
@@ -55,6 +54,12 @@ public class AdvancedBackups
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
+
+        ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
+
+        
+        ABConfig.loadOrCreateConfig();
+        LOGGER.info("Config loaded!!");
         
     }
 
