@@ -1,12 +1,13 @@
 There is a commandline restoration tool - using this is STRONGLY recommended! Basic instructions for this or manual restoration are below.
 
+Java 8 or newer needs to be on your PATH. If you have manually installed java, it will most likely be on your PATH.
+    - If you have java installed but not on PATH, the bat and bash scripts won't work but you can still run the jar manually.
 
-You can run it by navigating to your mods folder and running "java -jar <filename.jar>", of course replacing <filename> with the actual filename.
-Full documentation for this is available at https://github.com/MommyHeather/AdvancedBackups#commandline
+Restoration scripts now exist alongside this folder. If you are using the bash script, you may need to use chmod to make it executable.
+All these two do is run the commandline tool using your system java - if you can't or don't want to use these, you can run the jar manually :
 
-This file was created in a version that doesn't support it - but newer versions will have a client command to run the restoration utility.
-See https://github.com/MommyHeather/AdvancedBackups#commandline to see if this is supported.
-
+    You can run it by navigating to your mods folder and running "java -jar <filename.jar>", of course replacing <filename> with the actual filename.
+    Full documentation for this is available at https://github.com/MommyHeather/AdvancedBackups#commandline
 
 
 

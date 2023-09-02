@@ -62,6 +62,7 @@ public class BackupWrapper {
             file.mkdirs();
         }
         prepareReadMe(file);
+        prepareRestorationScripts(file);
 
         File zipFile = new File(file, "/zips/");
         if (!zipFile.exists()) {
@@ -98,6 +99,46 @@ public class BackupWrapper {
             }
             
         }
+    }
+
+    //generate scripts that run the `java -jar` command.
+    private static void prepareRestorationScripts(File path) {
+        try {
+            String dir = ABCore.modJar.getParent();
+            String file = ABCore.modJar.getName();
+            File script;
+            Boolean flag = System.getProperty("os.name").toLowerCase().contains("windows");
+    
+            if (flag) script = new File(path, "restore-script.bat");
+    
+            else script = new File(path, "restore-script.sh");
+    
+            if (script.exists()) return;
+    
+            script.createNewFile();
+    
+            FileWriter writer = new FileWriter(script);
+    
+            if (flag) {
+                writer.append("@echo off \n");
+                writer.append(dir.charAt(0) + ":\n"); // command prompt defaults to c:, if this is wrong then we need to change drive.
+                writer.append("cd \"" + dir + "\"\n");
+                writer.append("java -jar \"" + file + "\"\n");
+            }
+            else {
+                writer.append("cd \"" + dir + "\"\n");
+                writer.append("java -jar \"" + file + "\"\n");
+            }
+            
+            writer.flush();
+            writer.close(); 
+
+        }
+        catch (IOException e) {
+            ABCore.errorLogger.accept("Error writing restoration scripts! Manual running of jar will still work.");
+            e.printStackTrace();
+        }
+
     }
 
 
