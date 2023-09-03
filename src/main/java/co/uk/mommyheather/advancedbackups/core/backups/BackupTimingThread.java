@@ -3,7 +3,8 @@ package co.uk.mommyheather.advancedbackups.core.backups;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+
 
 public class BackupTimingThread extends Thread {
     private int loops = 0;
@@ -32,11 +33,11 @@ public class BackupTimingThread extends Thread {
 
 
     private long calculateNextBackupTime() {
-        long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (ABConfig.config.getMaxTimer() * 3600000L);
-        if (forcedMillis == ABConfig.config.getMaxTimer() * 3600000L || forcedMillis <= System.currentTimeMillis()) forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
+        long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (ConfigManager.maxFrequency.get() * 3600000L);
+        if (forcedMillis == ConfigManager.maxFrequency.get() * 3600000L || forcedMillis <= System.currentTimeMillis()) forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
         else forcedMillis -= System.currentTimeMillis();
         long ret = Long.MAX_VALUE;
-        if (ABConfig.config.getUptimeSchedule() && !BackupWrapper.configuredPlaytime.isEmpty()) {
+        if (ConfigManager.uptime.get() && !BackupWrapper.configuredPlaytime.isEmpty()) {
             ArrayList<Long> timings = new ArrayList<Long>(BackupWrapper.configuredPlaytime);
             if (index >= timings.size()) {
                 index = 0;
@@ -62,11 +63,6 @@ public class BackupTimingThread extends Thread {
         }
 
         return Math.min(forcedMillis, ret);
-
-
-
-        
-
 
     }
 
