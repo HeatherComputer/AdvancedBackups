@@ -63,7 +63,6 @@ public class AdvancedBackupsCLI {
         info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
         info("Searching for properties...", true);
 
-        ConfigManager.loadOrCreateConfig();
         
         Properties props = new Properties();
         File file = new File(serverDir, "AdvancedBackups.properties");
