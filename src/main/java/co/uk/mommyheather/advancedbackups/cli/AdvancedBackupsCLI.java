@@ -33,6 +33,7 @@ import org.fusesource.jansi.AnsiConsole;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class AdvancedBackupsCLI {
 
@@ -43,7 +44,12 @@ public class AdvancedBackupsCLI {
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
     private static String worldPath;
-    public static void main(String args[]){ 
+    public static void main(String args[]){
+
+        //Loggers
+        ABCore.infoLogger = AdvancedBackupsCLI::info;
+        ABCore.warningLogger = AdvancedBackupsCLI::warn;
+        ABCore.errorLogger = AdvancedBackupsCLI::error;
         
         
         System.out.print("\033[H\033[2J");
@@ -55,7 +61,9 @@ public class AdvancedBackupsCLI {
         
          
         info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
-        info("Searching for properties...", false);
+        info("Searching for properties...", true);
+
+        ConfigManager.loadOrCreateConfig();
         
         Properties props = new Properties();
         File file = new File(serverDir, "AdvancedBackups.properties");
