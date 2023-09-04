@@ -12,7 +12,7 @@ import java.util.Date;
 
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class BackupWrapper {
 
@@ -20,15 +20,15 @@ public class BackupWrapper {
 
 
     public static void checkStartupBackups () {
-        if (ABConfig.config.getForceOnStartup()) {
-            checkAndMakeBackups(Math.max(5000, ABConfig.config.getStartupDelay() * 1000));
+        if (ConfigManager.startup.get()) {
+            checkAndMakeBackups(Math.max(5000, ConfigManager.delay.get() * 1000));
         }
 
         new BackupTimingThread().start();
     }
 
     public static void checkShutdownBackups() {
-        if (ABConfig.config.getForceOnShutdown()) {
+        if (ConfigManager.shutdown.get()) {
             checkAndMakeBackups();
         }
     }
@@ -47,8 +47,8 @@ public class BackupWrapper {
 
     public static BackupCheckEnum checkBackups() {
         prepareBackupDestination();
-        if (!ABConfig.config.getEnabled()) return BackupCheckEnum.DISABLED;
-        if (ABConfig.config.getRequireActivity() && !ABCore.activity) return BackupCheckEnum.NOACTIVITY;
+        if (!ConfigManager.enabled.get()) return BackupCheckEnum.DISABLED;
+        if (ConfigManager.activity.get() && !ABCore.activity) return BackupCheckEnum.NOACTIVITY;
         if (checkMostRecentBackup()) return BackupCheckEnum.TOORECENT;
 
         return BackupCheckEnum.SUCCESS;
@@ -56,7 +56,7 @@ public class BackupWrapper {
     }    
 
     private static void prepareBackupDestination() {
-        File file = new File(ABConfig.config.getPath());
+        File file = new File(ConfigManager.path.get());
 
         if (!file.exists()) {
             file.mkdirs();
@@ -147,16 +147,16 @@ public class BackupWrapper {
         //    is less than specified in the config.
 
         Date date = new Date();
-        long configVal = (long) (3600000F * ABConfig.config.getMinTimer());
+        long configVal = (long) (3600000F * ConfigManager.minFrequency.get());
         return (date.getTime() - mostRecentBackupTime()) < configVal;
     }
 
 
     public static long mostRecentBackupTime() {
 
-        File directory = new File(ABConfig.config.getPath());
+        File directory = new File(ConfigManager.path.get());
 
-        switch(ABConfig.config.getBackupType()) {
+        switch(ConfigManager.type.get()) {
             case "zip" : {
                 directory = new File(directory, "/zips/");
                 break;
@@ -187,7 +187,7 @@ public class BackupWrapper {
     public static void makeSingleBackup(long delay) {
 
         ABCore.disableSaving();
-        if (ABConfig.config.getSave()) {
+        if (ConfigManager.save.get()) {
             ABCore.saveOnce();
         }
 
@@ -199,16 +199,16 @@ public class BackupWrapper {
     }
 
     public static void finishBackup() {
-        File directory = new File(ABConfig.config.getPath());
+        File directory = new File(ConfigManager.path.get());
         ThreadedBackup.running = false;
         ABCore.enableSaving();
 
-        switch(ABConfig.config.getBackupType()) {
+        switch(ConfigManager.type.get()) {
             case "zip" : {
                 directory = new File(directory, "/zips/");
                 long date = Long.MIN_VALUE;
                 while (true) {
-                    if (calculateDirectorySize(directory) < ABConfig.config.getMaxSize() * 1000000000L) return;
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
                     File file = getFirstBackupAfterDate(directory, date);
                     date = file.lastModified();
                     file.delete();
@@ -218,7 +218,7 @@ public class BackupWrapper {
                 directory = new File(directory, "/differential/");
                 long date = Long.MIN_VALUE;
                 while (true) {
-                    if (calculateDirectorySize(directory) < ABConfig.config.getMaxSize() * 1000000000L) return;
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
                     File file = getFirstBackupAfterDate(directory, date);
                     date = file.lastModified();
                     if (file.getName().contains("full")) {
@@ -238,10 +238,10 @@ public class BackupWrapper {
             }
             case "incremental" : {
                 directory = new File(directory, "/incremental/");
-                if (!ABConfig.config.getPurgeIncrementals()) return;
+                if (!ConfigManager.purgeIncrementals.get()) return;
                 long date = Long.MIN_VALUE;
                 while (true) {
-                    if (calculateDirectorySize(directory) < ABConfig.config.getMaxSize() * 1000000000L) return;
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
                     if (calculateChainCount(directory) < 2) return;
                     ABCore.errorLogger.accept("Purging incremental backup chain - too much space taken up!");
                     File file = getFirstBackupAfterDate(directory, date);
