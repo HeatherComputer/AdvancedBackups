@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -87,7 +87,7 @@ public class AdvancedBackups
 
         ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
 
-        ABConfig.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
         
     }
