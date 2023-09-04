@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class ThreadedBackup extends Thread {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -58,10 +58,10 @@ public class ThreadedBackup extends Thread {
         }
         running = true;
 
-        File file = new File(ABConfig.config.getPath());
+        File file = new File(ConfigManager.path.get());
         backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
 
-        switch(ABConfig.config.getBackupType()) {
+        switch(ConfigManager.type.get()) {
             case "zip" : {
                 makeZipBackup(file);
                 break;
@@ -87,7 +87,7 @@ public class ThreadedBackup extends Thread {
             ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-            zipOutputStream.setLevel(ABConfig.config.getCompressionLevel());
+            zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
@@ -141,7 +141,7 @@ public class ThreadedBackup extends Thread {
             ArrayList<Path> completeBackup = new ArrayList<>();
 
 
-            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= ABConfig.config.getMaxDepth() ? true : false;
+            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= ConfigManager.length.get() ? true : false;
             
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
@@ -165,7 +165,7 @@ public class ThreadedBackup extends Thread {
             if (toBackup.size() >= count) {
                 complete = true;
             }
-            if ((partialSize / completeSize) * 100F > ABConfig.config.getMaxSizePercent()) {
+            if ((partialSize / completeSize) * 100F > ConfigManager.chainsPercent.get()) {
                 complete = true;
                 toBackup.clear();
                 toBackup.addAll(completeBackup);
@@ -175,11 +175,11 @@ public class ThreadedBackup extends Thread {
 
             
 
-            if (ABConfig.config.getCompressChains()) {
+            if (ConfigManager.compressChains.get()) {
                 File zip = differential ? new File(location.toString() + "/differential/", backupName +".zip") : new File(location.toString() + "/incremental/", backupName +".zip");
                 FileOutputStream outputStream = new FileOutputStream(zip);
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-                zipOutputStream.setLevel(ABConfig.config.getCompressionLevel());
+                zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));

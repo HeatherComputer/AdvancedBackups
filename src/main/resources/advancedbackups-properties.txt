@@ -1,0 +1,102 @@
+#Enable or disable automatic backups.
+#Options : true, false   #Default : true,
+config.advancedbackups.enabled
+
+#Whether to save before making a backup.
+#Options : true, false    #Default : true
+config.advancedbackups.save
+
+#Whether to require player activity between backups.
+#Options : true, false    #Default : true
+config.advancedbackups.activity
+
+#The type of backups to use.
+#Options : zip, differential, incremental    #Default : differential
+config.advancedbackups.type
+
+#The absolute or relative path to the backup location.
+#Options : any file path. Default : ./backups
+config.advancedbackups.path
+
+#The maximum size to keep, in GB. Keep relatively high for zips, tighter space requirements should instead use differential or incremental backups.
+#Range : 5 - 9999   #Default : 50
+config.advancedbackups.size
+
+#Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.
+#Range : 0.5 - 500    #Default : 0.5
+config.advancedbackups.frequency.min
+
+#Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
+#Range : 0.5 - 500    #Default : 24
+config.advancedbackups.frequency.max
+
+#Whether the schedule below uses uptime (true) or real-world time (false).
+#Default : true
+config.advancedbackups.frequency.uptime
+
+#When using server uptime:
+    #A looping comma-separated backup schedule, based off of server uptime, hours:minutes. Examples:
+    #4:00 - Makes a backup every four hours.
+    #4:00,7:00 - Makes a backup after four hours, then three, then four, and so on.
+    #1:00 - Makes a backup every hour.
+    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup following a strict schedule.
+
+#When using real-world time:
+    #A strict schedule, using hours:minutes to follow real-world time. Examples:
+    #4:00 - Makes a backup at 4am each day.
+    #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup at specific times of day.
+
+#Default : 1:00
+config.advancedbackups.frequency.schedule
+
+#Whether to force a backup on server shutdown. Respects min frequency.
+#Options : true, false    #Default : false
+config.advancedbackups.frequency.shutdown
+
+#Whether to force a backup on server startup. Respects min frequency.
+#Options : true, false    #Default : false
+config.advancedbackups.frequency.startup
+
+#Delay to use after startup, in seconds. Is always at least 5 seconds.
+#Range : 5-1000    #Default : 30
+config.advancedbackups.frequency.delay
+
+#Whether to disable console and chat logging. Does not affect debug.log, does not affect error messages.
+#Options : true, false    #Default : false
+config.advancedbackups.logging.silent
+
+
+
+#--------------------------------------------------------------------------------------------------------------------
+##The following options only affect zip files, whether that's for zip backups, export commands or some other option.
+#--------------------------------------------------------------------------------------------------------------------
+
+#The compression level to use for zip files. Higher numbers space usage, but decrease performance.
+#Range : 1-9    #Default : 4
+config.advancedbackups.zips.compression
+
+
+
+#--------------------------------------------------------------------------------------------------------------------
+##The following options only affect differential and incremental backups.
+#--------------------------------------------------------------------------------------------------------------------
+
+#The maximum 'chain' length to keep.
+#Range : 5-500    #Default : 50
+config.advancedbackups.chains.length
+
+#Whether to compress 'chains'. This compresses the base backup and all sequential backups. Reduces space usage, but decreases performance.
+#Options : true, false    #Default : true
+config.advancedbackups.chains.compress
+
+#Whether to enable "smart" reset for chains - if every file is being backed up, mark the backup as complete and reset chain length regardless of intended backup type.
+#Options : true, false    #Default : true
+config.advancedbackups.chains.smart
+
+#What % of a full backup is allowed to be contained in a partial before forcing it into a full backup. Useful for reducing partial backup size.
+#Range : 1-100    #Default : 50
+config.advancedbackups.chains.maxpercent
+
+#Whether to delete incremental backup chains if max size is exceeded. If not, incremental backups do not respect the max size config and never delete.
+#Options : true, false    #Default : true
+config.advancedbackups.purge.incrementals
