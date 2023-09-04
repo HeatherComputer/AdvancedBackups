@@ -32,9 +32,6 @@ import java.util.zip.ZipOutputStream;
 import org.fusesource.jansi.AnsiConsole;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-
 public class AdvancedBackupsCLI {
 
     private static String backupLocation;
@@ -61,7 +58,7 @@ public class AdvancedBackupsCLI {
         
          
         info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
-        info("Searching for properties...", true);
+        info("Searching for properties...", false);
 
         
         Properties props = new Properties();
