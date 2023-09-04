@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public class AdvancedBackups
         
         ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
         //ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
-        ABConfig.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
 
 
