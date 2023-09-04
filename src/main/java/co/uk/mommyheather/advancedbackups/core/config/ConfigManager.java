@@ -115,7 +115,15 @@ public class ConfigManager {
         for (String key : entries.keySet()) {
             if (!props.containsKey(key)) {
                 missingProps.add(key);
+                ABCore.warningLogger.accept("Missing key : " + key);
                 continue;
+            }
+            ConfigValidationEnum valid = entries.get(key).validate(props.getProperty(key));
+            if (valid != ConfigValidationEnum.VALID) {
+                missingProps.add(key);
+                ABCore.warningLogger.accept(valid.getError() + " : " + key);
+                continue;
+
             }
             entries.get(key).load(props.getProperty(key));
         }
