@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
@@ -58,7 +58,7 @@ public class AdvancedBackups
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
 
         
-        ABConfig.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
         
     }
