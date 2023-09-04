@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class AdvancedBackups implements ModInitializer {
     // This logger is used to write text to the console and the log file.
@@ -51,7 +51,7 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().toString());
             
             
-            ABConfig.loadOrCreateConfig();
+            ConfigManager.loadOrCreateConfig();
             LOGGER.info("Config loaded!!");
         });
 
