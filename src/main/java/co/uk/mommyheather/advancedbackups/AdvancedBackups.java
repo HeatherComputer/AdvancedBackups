@@ -3,7 +3,7 @@ package co.uk.mommyheather.advancedbackups;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ABConfig;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.FolderName;
@@ -58,7 +58,7 @@ public class AdvancedBackups
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
 
         
-        ABConfig.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
         
     }
