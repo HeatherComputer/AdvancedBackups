@@ -17,6 +17,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -32,21 +33,21 @@ import java.util.zip.ZipOutputStream;
 import org.fusesource.jansi.AnsiConsole;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.cli.CLIIOHelpers;
 public class AdvancedBackupsCLI {
 
     private static String backupLocation;
     private static File serverDir = new File(new File("").toPath().toAbsolutePath().getParent().toString());
     private static String type;
-    private static Scanner input = new Scanner(System.in);
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
     private static String worldPath;
     public static void main(String args[]){
 
         //Loggers
-        ABCore.infoLogger = AdvancedBackupsCLI::info;
-        ABCore.warningLogger = AdvancedBackupsCLI::warn;
-        ABCore.errorLogger = AdvancedBackupsCLI::error;
+        ABCore.infoLogger = CLIIOHelpers::info;
+        ABCore.warningLogger = CLIIOHelpers::warn;
+        ABCore.errorLogger = CLIIOHelpers::error;
         
         
 
@@ -58,8 +59,8 @@ public class AdvancedBackupsCLI {
         System.out.flush();
         
          
-        info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
-        info("Searching for properties...", false);
+        CLIIOHelpers.info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
+        CLIIOHelpers.info("Searching for properties...", false);
 
         
         Properties props = new Properties();
@@ -72,41 +73,60 @@ public class AdvancedBackupsCLI {
             backupLocation = props.getProperty("config.advancedbackups.path");
             type = props.getProperty("config.advancedbackups.type");
         } catch (Exception e) {
-            error("ERROR LOADING PROPERTIES!");
-            error(getStackTrace(e));
-            error("");
-            error("");
-            error("Ensure you're running this from within the mods directory, and the config file is in the parent directory!");
+            CLIIOHelpers.error("ERROR LOADING PROPERTIES!");
+            CLIIOHelpers.error(getStackTrace(e));
+            CLIIOHelpers.error("");
+            CLIIOHelpers.error("");
+            CLIIOHelpers.error("Ensure you're running this from within the mods directory, and the config file is in the parent directory!");
             // Fatal, cannot proceed
             return;
         }
 
         if (backupLocation == null || type == null) {
-            error("ERROR LOADING PROPERTIES!");
-            error("Backup location : " + backupLocation);
-            error("Type : " + type);
+            CLIIOHelpers.error("ERROR LOADING PROPERTIES!");
+            CLIIOHelpers.error("Backup location : " + backupLocation);
+            CLIIOHelpers.error("Type : " + type);
             // Fatal, cannot proceed
             return;
         }
 
-        info("Config loaded!");
-
-        type = getBackupType();
-
-        worldFile = getWorldFile();
-
-        if (!worldFile.exists()) {
-            error("Unable to find world folder!");
-            error(worldFile.getAbsolutePath());
-            error("Check if the location exists and the name is correct and try again.");
-            return;
-
-        }
-        
+        CLIIOHelpers.info("Config loaded!");
 
         File backupDir;
 
-        if (backupLocation.startsWith(Pattern.quote(File.separator))) {
+        
+        if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
+            backupDir = new File(backupLocation, File.separator + type + File.separator);
+        }
+        else {
+            backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
+        }
+
+        
+        //check for backups from "other mods"
+        boolean flag = false;
+        ArrayList<File> otherBackups = new ArrayList<>();
+        for (File b : backupDir.getParentFile().listFiles()) {
+            if (b.getName().endsWith("zip")) {
+                flag = true;
+                otherBackups.add(b);
+            }
+
+        }
+
+        if (flag) {
+            String result = CLIIOHelpers.getSelectionFromList("Backups from another mod have been found. These can be restored if you want.\nWould you want to work with these backups?", 
+            Arrays.asList(new String[]{"Use backups from AdvancedBackups", "Use backups from other mod"}));
+            if (result == "Use backups from other mod") {
+                restoreOtherModZip(backupDir);
+                return;
+            }
+        }
+
+        type = CLIIOHelpers.getBackupType(type);
+
+        
+        if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
             backupDir = new File(backupLocation, File.separator + type + File.separator);
         }
         else {
@@ -114,39 +134,75 @@ public class AdvancedBackupsCLI {
         }
            
         if (!backupDir.exists()) {
-            error("Could not find backup directory!");
-            error(backupDir.getAbsolutePath());
-            error("Have you made any backups before?");
+            CLIIOHelpers.error("Could not find backup directory!");
+            CLIIOHelpers.error(backupDir.getAbsolutePath());
+            CLIIOHelpers.error("Have you made any backups before?");
             //Fatal, cannot continue
             return;
         }
 
+        
+
+
+        
+
+
+        boolean exportMode = false;
+
+        
+
+        CLIIOHelpers.info("Do you want to export a backup, restore the entire world state at this point, or a singular file?");
+
+        String restore = CLIIOHelpers.getSelectionFromList("Enter a number.",
+            Arrays.asList(new String[]{"Export backup as zip", "Restore single file", "Restore entire world"}));
+        
+            
+        if (restore.equals("Export backup as zip")) {
+            worldFile = new File(serverDir, "AdvancedBackups.temp");
+            worldFile.mkdirs();
+            exportMode = true;
+        }
+        
+        
+        else {
+            worldFile = CLIIOHelpers.getWorldFile(serverDir);
+            worldPath = worldFile.getName().replace(" ", "_");
+        }
+
+
+        if (!worldFile.exists()) {
+            CLIIOHelpers.error("Unable to find world folder!");
+            CLIIOHelpers.error(worldFile.getAbsolutePath());
+            CLIIOHelpers.error("Check if the location exists and the name is correct and try again.");
+            return;
+
+        }
+
+
         int backupDateIndex;
         try {
-            backupDateIndex = getBackupDate(backupDir);
+            backupDateIndex = getBackupDate(backupDir, exportMode);
         } catch (IOException e) {
-            error("ERROR VIEWING BACKUPS!");
+            CLIIOHelpers.error("ERROR VIEWING BACKUPS!");
             e.printStackTrace();
             return;
         }
 
 
-        String restore = restoreWorldOrFile();
-
-        if (!confirmWarningMessage()) {
-            error("ABORTED - WILL NOT PROCEED.");
+        if (!CLIIOHelpers.confirmWarningMessage()) {
+            CLIIOHelpers.error("ABORTED - WILL NOT PROCEED.");
             return;
         }
 
-        info("Preparing...");
+        CLIIOHelpers.info("Preparing...");
         
 
 
         switch(restore) {
-            case "world" : {
+            case "Restore entire world" : {
                 //No going back now!
-                //TODO : make a backup of current world state.
-                deleteEntireWorld(worldFile);
+                CLIIOHelpers.info("Backing up current world state...");
+                CLIIOHelpers.info("Backup saved to : " + deleteEntireWorld(worldFile, false));
                 switch(type) {
                     case "zips" : { 
                         restoreFullZip(backupDateIndex, worldFile);
@@ -162,7 +218,7 @@ public class AdvancedBackupsCLI {
                     }
                 }
             }
-            case "file" : {
+            case "Restore single file" : {
                 switch(type) {
                     case "zips" : {
                         restorePartialZip(backupDateIndex, worldFile);
@@ -178,57 +234,30 @@ public class AdvancedBackupsCLI {
                     }
                 }
             }
+            case "Export backup as zip" : {
+
+                CLIIOHelpers.info("Restoring to temporary directory...");
+
+                switch(type) {
+                    case "zips" : { 
+                        restoreFullZip(backupDateIndex, worldFile);
+                        break;
+                    }
+                    case "differential" : {
+                        restoreFullDifferential(backupDateIndex, worldFile);
+                        break;
+                    }
+                    case "incremental" : {
+                        restoreFullIncremental(backupDateIndex, worldFile);
+                        break;
+                    }
+                }
+
+                CLIIOHelpers.info("Done. Preparing to write to zip...");
+                CLIIOHelpers.info("Export saved to : " + deleteEntireWorld(worldFile, true));
+            }
+
         }
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //HELPER METHODS!
-    private static void info(String out, boolean line) {
-        if (line) System.out.println(out);
-        else System.out.print(out);
-        
-    }
-
-    private static void warn(String out, boolean line) {
-        if (line) System.out.println("\u001B[33m" + out + "\u001B[0m");
-        else System.out.print("\u001B[33m" + out + "\u001B[0m");
-        
-    }
-
-    private static void error(String out, boolean line) {
-        if (line) System.out.println("\u001B[31m" + out + "\u001B[0m");
-        else System.out.print("\u001B[31m" + out + "\u001B[0m");
-        
-    }
-  
-    private static void info(String out) {
-        info(out, true);
-    }
-
-    private static void warn(String out) {
-        warn(out, true);
-    }
-
-    private static void error(String out) {
-        error(out, true);
     }
 
 
@@ -239,189 +268,62 @@ public class AdvancedBackupsCLI {
         return sw.getBuffer().toString();
     }
 
-    private static String getBackupType() {
-        // Select a type of backup to restore
-        info("Select a backup type to restore. Your server is currently set to use " + type + " backups.");
-        info("1: zip\n2: differential\n3: incremental");
-        info("Enter a number or leave blank for " + type + ".");
-        int inputType;
-        try {
-            String line = input.nextLine();
-            if (line == "") {
-                return type;
-            }
-            inputType = Integer.parseInt(line);
-        } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return getBackupType();
-        }
-        switch (inputType) {
-            case 1 : return "zips";
-            case 2 : return "differential";
-            case 3 : return "incremental";
-            default : {
-                warn("Please pick an option between 1 and 3 inclusive.");
-                return getBackupType();
-            }
-        }
-    }
 
 
-    private static File getWorldFile() {
-        info("Are you on a client or server?");
-        info("1: Client\n2: Server");
-        info("Enter a number.");
-
-        int inputType;
-        File ret = new File(serverDir.getAbsolutePath());
-        
-        try {
-            String line = input.nextLine();
-            if (line == "") {
-                warn("Please enter a number.");
-                return getWorldFile();
-            }
-            inputType = Integer.parseInt(line);
-        } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return getWorldFile();
-        }
-
-        if (inputType < 1 || inputType > 2) {
-            warn("Please enter 1 or 2.");
-            return getWorldFile();
-        }
-
-        if (inputType == 1) {
-            ret = new File(ret, "/saves/");
-        }
-
-        ret = new File(ret, getWorldName(ret));
-        return ret;
-
-    }
-
-    private static String getWorldName(File dir) {
-        ArrayList<String> worlds = new ArrayList<>();
-        int worldIndex;
-        for (File file : dir.listFiles()) {
-            boolean flag = false;
-            if (!file.isDirectory()) continue;
-            for (File file2 : file.listFiles()) {
-                if (file2.getName().contains("level.dat")) {
-                    flag = true;
-                }
-            }
-            if (flag) {
-                worlds.add(file.getName());
-            }
-        }
-        info("Please select your world. Default for servers is \"world\".");
-        int index = 1;
-        for (String world : worlds) {
-            info (index + ". " + world);
-            index++;
-        }        
-        try {
-            String line = input.nextLine();
-            if (line == "") {
-                warn("Please enter a number.");
-                return getWorldName(dir);
-            }
-            worldIndex = Integer.parseInt(line);
-        } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return getWorldName(dir);
-        }
-        if (worldIndex < 1 || worldIndex > worlds.size()) {
-            warn("Please enter a number between " + worlds.size() + ".");
-            return getWorldName(dir);
-        }
-
-        worldPath = worlds.get(worldIndex -1).replaceAll(" ", "_");
-        return worlds.get(worldIndex - 1);
-
-    }
-
-
-    private static int getBackupDate(File backupDir) throws IOException {
+    private static int getBackupDate(File backupDir, boolean exportMode) throws IOException {
         fileNames.clear();
         int inputType;
 
-        info("Select a backup to restore.");
+        CLIIOHelpers.info("Select a backup to restore.");
 
         for (File file : backupDir.listFiles()) {
-            if (!file.getName().contains(worldPath)) continue;
-            fileNames.add(file.getAbsolutePath());
-            String out = file.getName();
-            out = out.replaceAll(".zip", "");
-            out = out.replaceAll(worldPath + "_", ": ");
-            out = out.replaceAll("-partial", "\u001B[33m partial\u001B[0m");
-            out = out.replaceAll("-full", "\u001B[32m full\u001B[0m");
-            info(fileNames.size() + out);
+            if (exportMode) {
+                if (file.getName().endsWith("json")) continue;
+                fileNames.add(file.getAbsolutePath());
+                String out = file.getName();
+                String[] outs = out.split("\\_");
+                if (outs.length >=2) {
+                    out = ". " + outs[outs.length-2] + "_" + outs[outs.length-1];
+                }
+                else {
+                    out = ". " + out;
+                }
+                CLIIOHelpers.info(fileNames.size() + out);
+
+            }
+            else {
+                if (!file.getName().contains(worldPath)) continue;
+                fileNames.add(file.getAbsolutePath());
+                String out = file.getName();
+                out = out.replaceAll(".zip", "");
+                out = out.replaceAll(worldPath + "_", ": ");
+                out = out.replaceAll("-partial", "\u001B[33m partial\u001B[0m");
+                out = out.replaceAll("-full", "\u001B[32m full\u001B[0m");
+                CLIIOHelpers.info(fileNames.size() + out);
+
+            }
         }
 
         try {
-            String line = input.nextLine();
+            String line = CLIIOHelpers.input.nextLine();
             if (line == "") {
-                warn("Please enter a number.");
-                return getBackupDate(backupDir);
+                CLIIOHelpers.warn("Please enter a number.");
+                return getBackupDate(backupDir, exportMode);
             }
             inputType = Integer.parseInt(line);
         } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return getBackupDate(backupDir);
+            CLIIOHelpers.warn("That was not a number. Please enter a number.");
+            return getBackupDate(backupDir, exportMode);
         }
 
         if (inputType < 1 || inputType > fileNames.size()) {
-            warn("Please enter a number between " + fileNames.size() + ".");
-            return getBackupDate(backupDir);
+            CLIIOHelpers.warn("Please enter a number between " + fileNames.size() + ".");
+            return getBackupDate(backupDir, exportMode);
         }
         
         return inputType - 1;
     }
 
-    private static String restoreWorldOrFile() {
-        info("Do you want to restore the entire world state at this point, or a singular file?");
-        info("1: Entire world\n2: Single file");
-        info("Enter a number.");
-        int inputType;
-        try {
-            String line = input.nextLine();
-            if (line == "") {
-                return type;
-            }
-            inputType = Integer.parseInt(line);
-        } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return restoreWorldOrFile();
-        }
-        switch (inputType) {
-            case 1 : return "world";
-            case 2 : return "file";
-            default : {
-                warn("Please pick 1 or 2.");
-                return restoreWorldOrFile();
-            }
-        }
-        
-    }
-
-
-
-    private static boolean confirmWarningMessage() {
-        warn("");
-        warn("");
-        warn("WARNING! DOING THIS WHILST THE SERVER IS RUNNING CAN CAUSE SEVERE CORRUPTION, PARTIAL RESTORATION, AND OTHER ISSUES.");
-        warn("TYPE \"continue\" IF YOU WISH TO CONTINUE...", false);
-
-        
-        String line = input.nextLine();
-        if (line.equals("")) {
-            return confirmWarningMessage();
-        }
-        return line.equals("continue");
-    }
 
 
     private static void restoreFullZip(int index, File worldFile) {
@@ -434,17 +336,13 @@ public class AdvancedBackupsCLI {
             while ((entry = zip.getNextEntry()) != null) {
                 File outputFile;
 
-                //FTB Backups and some other mods need special handling.
-                if (entry.getName().startsWith(worldFile.getName())) {
-                    outputFile = new File(worldFile.getParentFile(), entry.getName());
-                }
-                else {
-                    outputFile = new File(worldFile, entry.getName());
-                }
+                outputFile = new File(worldFile, entry.getName());
                 
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
                 }
+
+                CLIIOHelpers.info("Restoring " + outputFile.getName());
 
                 FileOutputStream outputStream = new FileOutputStream(outputFile);
                 int length = 0;
@@ -471,10 +369,10 @@ public class AdvancedBackupsCLI {
             return;
         }
         //find last FULL backup
-        for (int i = index;i>0;i--) {
+        for (int i = index;i>=0;i--) {
             String name = fileNames.get(i);
             if (name.contains("-full")) {
-                info("Restoring last full backup...");
+                CLIIOHelpers.info("Restoring last full backup...");
                 File file = new File(name);
                 if (file.isFile()) {
                     restoreFullZip(i, worldFile);
@@ -485,7 +383,7 @@ public class AdvancedBackupsCLI {
                 break;
             }
         }
-        info("\n\nRestoring selected backup...");
+        CLIIOHelpers.info("\n\nRestoring selected backup...");
         if (backup.isFile()) {
             restoreFullZip(index, worldFile);
         }
@@ -510,7 +408,7 @@ public class AdvancedBackupsCLI {
         while(i >= 0) {
             String name = fileNames.get(i);
             if (name.contains("-full")) {
-                info("Restoring last full backup...");
+                CLIIOHelpers.info("Restoring last full backup...");
                 File file = new File(name);
                 if (file.isFile()) {
                     restoreFullZip(i, worldFile);
@@ -525,7 +423,7 @@ public class AdvancedBackupsCLI {
         //restore backups up until the selected one
         while(i < index) {
             String name = fileNames.get(i);
-            info("Restoring chained backup...");
+            CLIIOHelpers.info("Restoring chained backup...");
             File file = new File(name);
             if (file.isFile()) {
                 restoreFullZip(i, worldFile);
@@ -537,7 +435,7 @@ public class AdvancedBackupsCLI {
         }
         
         
-        info("\n\nRestoring selected backup...");
+        CLIIOHelpers.info("\n\nRestoring selected backup...");
         if (backup.isFile()) {
             restoreFullZip(index, worldFile);
         }
@@ -561,11 +459,11 @@ public class AdvancedBackupsCLI {
                 }
             });
 
-            file = getFileToRestore(entries, "");
-            info("Restoring " + file.toString() + "...");
+            file = CLIIOHelpers.getFileToRestore(entries, "", worldFile);
+            CLIIOHelpers.info("Restoring " + file.toString() + "...");
             Path outputFile = new File(worldFile, file.toString()).toPath();
             Files.copy(file, outputFile, StandardCopyOption.REPLACE_EXISTING);
-            info("Done.");
+            CLIIOHelpers.info("Done.");
             
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -604,7 +502,7 @@ public class AdvancedBackupsCLI {
                 );
             }
 
-            Object select = getFileToRestore(properMapping, "");
+            Object select = CLIIOHelpers.getFileToRestore(properMapping, "", worldFile);
             if (select instanceof Path) {
                 Path input = (Path) select;
 
@@ -626,7 +524,7 @@ public class AdvancedBackupsCLI {
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
                 }
-                info("\n\nRestoring file : " + select);
+                CLIIOHelpers.info("\n\nRestoring file : " + select);
                 Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
             else if (select instanceof ZipEntry) {
@@ -635,7 +533,7 @@ public class AdvancedBackupsCLI {
                 File outputFile = new File(worldFile, entry.toString());
                 FileOutputStream outputStream = new FileOutputStream(outputFile);
 
-                info("Restoring " + entry.toString() + "...");
+                CLIIOHelpers.info("Restoring " + entry.toString() + "...");
 
                 byte[] buffer = new byte[1028];
                 InputStream inputSteam = entryOwners.get(entry.toString()).getInputStream(entry);
@@ -691,7 +589,7 @@ public class AdvancedBackupsCLI {
                 );
             }
 
-            Object select = getFileToRestore(properMapping, "");
+            Object select = CLIIOHelpers.getFileToRestore(properMapping, "", worldFile);
             if (select instanceof Path) {
                 Path input = (Path) select;
 
@@ -713,7 +611,7 @@ public class AdvancedBackupsCLI {
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
                 }
-                info("\n\nRestoring file : " + select);
+                CLIIOHelpers.info("\n\nRestoring file : " + select);
                 Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
             else if (select instanceof ZipEntry) {
@@ -722,7 +620,7 @@ public class AdvancedBackupsCLI {
                 File outputFile = new File(worldFile, entry.toString());
                 FileOutputStream outputStream = new FileOutputStream(outputFile);
 
-                info("Restoring " + entry.toString() + "...");
+                CLIIOHelpers.info("Restoring " + entry.toString() + "...");
 
                 byte[] buffer = new byte[1028];
                 InputStream inputSteam = entryOwners.get(entry.toString()).getInputStream(entry);
@@ -756,6 +654,8 @@ public class AdvancedBackupsCLI {
                     if (!outputFile.getParentFile().exists()) {
                         outputFile.getParentFile().mkdirs();
                     }
+                    
+                    CLIIOHelpers.info("Restoring " + outputFile.getName());
                     Files.copy(file, outputFile.toPath());
                     return FileVisitResult.CONTINUE;
                 }
@@ -766,9 +666,115 @@ public class AdvancedBackupsCLI {
         }
     }
 
+    
+    private static void restoreOtherModZip(File backupDir) {
+        worldFile = serverDir;
+        Path file;
+        HashMap<String, File> backups = new HashMap<>();
+        HashMap<String, Path> entries = new HashMap<>();
 
-    private static void deleteEntireWorld(File worldDir) {
-        backupExistingWorld(worldDir);
+        for (File b : backupDir.getParentFile().listFiles()) {
+            if (b.getName().endsWith("zip")) {
+                backups.put(b.getName(), b);
+            }
+        }
+
+        String backupName = CLIIOHelpers.getSelectionFromList("Select a backup to restore from.", new ArrayList<String>(backups.keySet()));
+        
+        boolean fullWorld = CLIIOHelpers.getSelectionFromList("Do you want to restore the whole world or a singular file?", 
+        Arrays.asList(new String[]{"Whole world", "Single file"})) == "Whole world";
+
+        if (!fullWorld) {
+            if (!CLIIOHelpers.confirmWarningMessage()) return;
+            
+            try {
+                FileSystem zipFs = FileSystems.newFileSystem(backups.get(backupName).toPath(), AdvancedBackupsCLI.class.getClassLoader());
+                Path root = zipFs.getPath("");
+                Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                        entries.put(file.toString(), file);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+
+                file = CLIIOHelpers.getFileToRestore(entries, "", worldFile);
+                CLIIOHelpers.info("Restoring " + file.toString() + "...");
+                Path outputFile = new File(worldFile, file.toString()).toPath();
+                if (!outputFile.getParent().toFile().exists()) {
+                    outputFile.getParent().toFile().mkdirs();
+                }
+                Files.copy(file, outputFile, StandardCopyOption.REPLACE_EXISTING);
+                CLIIOHelpers.info("Done.");
+                
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        else {
+            if (!CLIIOHelpers.confirmWarningMessage()) return;
+
+            Path levelDatPath;
+            ArrayList<Path> levelDatPathWrapper = new ArrayList<>();
+            
+            try {
+                FileSystem zipFs = FileSystems.newFileSystem(backups.get(backupName).toPath(), AdvancedBackupsCLI.class.getClassLoader());
+                Path root = zipFs.getPath("");
+                Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                        if (file.getFileName().toString().equals("level.dat")) levelDatPathWrapper.add(file);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+
+                levelDatPath = levelDatPathWrapper.get(0);
+                CLIIOHelpers.info("Making backup of existing world...");
+                CLIIOHelpers.info("Backup saved to : " + deleteEntireWorld(new File(worldFile, levelDatPath.getParent().toString()), false));
+                byte[] buffer = new byte[1024];
+                ZipEntry entry;
+                FileInputStream fileInputStream = new FileInputStream(backups.get(backupName));
+                ZipInputStream zip = new ZipInputStream(fileInputStream);
+                while ((entry = zip.getNextEntry()) != null) {
+                    File outputFile;
+    
+                    outputFile = new File(worldFile, entry.getName());
+                    
+                    if (!outputFile.getParentFile().exists()) {
+                        outputFile.getParentFile().mkdirs();
+                    }
+
+                    
+                    CLIIOHelpers.info("Restoring " + outputFile.toString() + "...");
+    
+                    FileOutputStream outputStream = new FileOutputStream(outputFile);
+                    int length = 0;
+                    while ((length = zip.read(buffer)) > 0) {
+                        outputStream.write(buffer, 0, length);
+                    }
+                    outputStream.close();
+                }
+                
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+            
+        }
+
+        CLIIOHelpers.info("Done.");
+
+    }
+
+
+
+    private static String deleteEntireWorld(File worldDir, boolean exportMode) {
+        String ret = backupExistingWorld(worldDir, exportMode);
         try {
             Files.walkFileTree(worldDir.toPath(), new SimpleFileVisitor<Path>() {
                 @Override
@@ -786,14 +792,15 @@ public class AdvancedBackupsCLI {
                 }
             });
         } catch (IOException e) {
-            warn("Failed to delete file :");
+            CLIIOHelpers.warn("Failed to delete file :");
             e.printStackTrace();
         }
+        return ret;
     }
 
-    private static void backupExistingWorld(File worldDir) {
+    private static String backupExistingWorld(File worldDir, boolean export) {
+        File out = new File(worldDir, "../cli" + ABCore.serialiseBackupName(export ? "export" : "backup") + ".zip");
         try {
-            File out = new File(worldDir, "../cli" + ABCore.serialiseBackupName("backup") + ".zip");
             FileOutputStream outputStream = new FileOutputStream(out);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(4);
@@ -821,97 +828,15 @@ public class AdvancedBackupsCLI {
             });
             zipOutputStream.flush();
             zipOutputStream.close();
+
+            CLIIOHelpers.info("Done.");
         } catch (Exception e) {
             
         }
+
+        return out.getName();
     }
 
-
-    private static <T> T getFileToRestore(HashMap<String, T> files, String directory) {
-        ArrayList<String> toDisplay = new ArrayList<>();
-        HashMap<String, String> keyMap = new HashMap<>();
-        int index = 1;
-        for (String name : files.keySet()) {
-            String name2 = name.replace("\\", "/"); // this replacement can fix some problems with wsl, and helps keep code neat.
-            if (name2.contains(directory)) {
-                name2 = name2.replace(directory, "");
-                if (name2.startsWith(worldFile.getName())) {
-                    name2 = name2.replace(worldFile.getName() + "/", "");
-                }
-                if (name2.contains("/")) {
-                    name2 = "\u001B[33mdirectory\u001B[0m   " + name2.split("/")[0];
-                }
-                if (!toDisplay.contains(name2)) {
-                    toDisplay.add(name2);
-                    keyMap.put(name2, name);
-                }
-            }
-        }
-        toDisplay = sortStringsAlphabeticallyWithDirectoryPriority(toDisplay);
-        info("Choose a file to restore.\n");
-        for (String name : toDisplay) {
-            if (index < 10) {
-                info(index + ":  " + name);
-            }
-            else {
-                info(index + ": " + name);
-            }
-            index++;
-        }
-        if (!directory.equals("")) {
-            info(index + ": ../");
-        }
-
-
-        int userInput;
-        try {
-            String line = input.nextLine();
-            if (line == "") {
-                warn("Please enter a number!");
-                return getFileToRestore(files, directory);
-            }
-            userInput = Integer.parseInt(line);
-        } catch (InputMismatchException | NumberFormatException e) {
-            warn("That was not a number. Please enter a number.");
-            return getFileToRestore(files, directory);
-        }
-
-        if (userInput <= 0 || userInput > (directory.equals("") ? toDisplay.size() : toDisplay.size() + 1)) {
-            warn("Please enter a number in the specified range!");
-            return getFileToRestore(files, directory);
-        }
-        else if (userInput > toDisplay.size()) {
-            return null;
-        }
-        else if (!toDisplay.get(userInput - 1).contains("\u001B[33mdirectory\u001B[0m   ")) {
-            return files.get(keyMap.get(toDisplay.get(userInput -1)));
-        }
-
-        T result = getFileToRestore(files, directory + toDisplay.get(userInput -1).replace("\u001B[33mdirectory\u001B[0m   ", "") + "/");
-        if (result != null) {
-            return result;
-        }
-        else {
-            return getFileToRestore(files, directory);
-        }
-    }
-
-
-    private static ArrayList<String> sortStringsAlphabeticallyWithDirectoryPriority(ArrayList<String> in) {
-        ArrayList<String> out = new ArrayList<>();
-        Collections.sort(in);
-        for (String string : in) {
-            if (string.contains("\u001B[33mdirectory\u001B[0m")) {
-                out.add(string);
-            }
-        }
-        for (String string : in) {
-            if (!string.contains("\u001B[33mdirectory\u001B[0m")) {
-                out.add(string);
-            }
-        }
-        return out;
-    }
 
 
     private static void addBackupNamesToLists(File file, HashMap<String, ZipFile> entryOwners, HashMap<String, Object> filePaths, 
