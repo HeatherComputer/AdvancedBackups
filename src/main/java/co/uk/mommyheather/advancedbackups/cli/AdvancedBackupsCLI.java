@@ -49,12 +49,13 @@ public class AdvancedBackupsCLI {
         ABCore.errorLogger = AdvancedBackupsCLI::error;
         
         
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
 
         if (System.console() != null) {
             AnsiConsole.systemInstall(); //this gets ansi escape codes working on windows. this was a FUCKING PAIN IN MY ASS
         }
+        
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         
          
         info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
