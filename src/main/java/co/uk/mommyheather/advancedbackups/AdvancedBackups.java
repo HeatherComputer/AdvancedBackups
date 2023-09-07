@@ -117,6 +117,7 @@ SAVE COMPLETE - PREPARING FOR BACKUP!
                 level.noSave = true;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -127,12 +128,14 @@ SAVE COMPLETE - PREPARING FOR BACKUP!
                 level.noSave = false;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         server.saveEverything(true, true, true);
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
 
