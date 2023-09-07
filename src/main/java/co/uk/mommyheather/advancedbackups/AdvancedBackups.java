@@ -122,6 +122,7 @@ public class AdvancedBackups
                 level.levelSaving = true;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -132,6 +133,7 @@ public class AdvancedBackups
                 level.levelSaving = false;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
@@ -141,6 +143,7 @@ public class AdvancedBackups
             Class<?>[] classes = {Boolean.class};
             Method saveMethod = MinecraftServer.class.getMethod("saveAllWorlds", classes);
             saveMethod.invoke(server, false);
+            if (ConfigManager.silent.get()) return;
             warningLogger.accept(saveCompleteMessage);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
             // TODO Scream at user
