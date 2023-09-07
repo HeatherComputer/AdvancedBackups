@@ -124,6 +124,7 @@ public class AdvancedBackups
                 level.disableLevelSaving = true;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -133,11 +134,13 @@ public class AdvancedBackups
                 level.disableLevelSaving = false;
             }
         }
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce() {
         server.saveAllWorlds(false);
+        if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
 
