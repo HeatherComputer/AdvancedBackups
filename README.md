@@ -43,24 +43,25 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
-| config.advancedbackups.activity   | Enable or disable player activity requirements. | false | 1.0 |
-| config.advancedbackups.save | Whether to save before making a backup. | false | 0.3 |
+| config.advancedbackups.save | Whether to save before making a backup. | true | 0.3 |
+| config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
 | config.advancedbackups.size   | The maximum backup size to keep, in GB. Oldest backups are deleted if this is exceeded. | 50 | 0.3 |
 | config.advancedbackups.frequency.min   | The minimum time between backups. Command backups bypass this. | 0.5 | 0.3 |
 | config.advancedbackups.frequency.max | If this time has passed since a backup was last made, one **will** be made. | 24 | 0.3 |
 | config.advancedbackups.frequency.uptime| Whether the schedule is based on uptime. If not. it uses real-time instead. | true | 0.3 |
-| config.advancedbackups.frequency.schedule | Uptime based : a looping uptime-based schedule. Real-time based : A strict schedule, following real-world time. | 12:00 | 0.3 |
+| config.advancedbackups.frequency.schedule | Uptime based : a looping uptime-based schedule. Real-time based : A strict schedule, following real-world time. | 1:00 | 0.3 |
 | config.advancedbackups.frequency.shutdown  | Whether to make a backup on server shutdown. | false | 0.3 |
 | config.advancedbackups.frequency.startup  | Whether to make a backup on server startup. | false | 0.3 |
-| config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 5 | 0.3 |
-| config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | N/A |
+| config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 30 | 0.3 |
+| config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | 2.0 |
 | config.advancedbackups.zips.compression  | The attempted compression level for all zip files. | 4 | 0.3 |
 | config.advancedbackups.chains.length  | The maximum chain length for incremental and differential backups. | 50 | 0.3 |
 | config.advancedbackups.chains.compress  | Whether to compress incremental and differential backups into zip files. | true | 0.3 |
 | config.advancedbackups.chains.smart | For differential and incremental backups. Resets the chain length if every file is being backed up. | true | 0.3 |
-| config.advancedbackups.purge.incremental | For incremental backups only. Enable to allow purging incremental backup chains if the defined storage usage is limit exceeded. | false | 1.0 |
+| config.advancedbackups.chains.maxpercent | If the size of a partial backup exceeds this % of a full backup's size, a full backup is made instead. | 50 | 2.0
+| config.advancedbackups.purge.incremental | For incremental backups only. Enable to allow purging incremental backup chains if the defined storage usage is limit exceeded. | true | 1.0 |
 
 #### Commands:
 
