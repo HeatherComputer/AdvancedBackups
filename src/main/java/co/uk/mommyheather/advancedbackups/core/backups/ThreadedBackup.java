@@ -84,7 +84,9 @@ public class ThreadedBackup extends Thread {
         try {
 
             File zip = new File(file.toString() + "/zips/", backupName + ".zip");
-            ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
+            if (!ConfigManager.silent.get()) {
+                ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());  
+            }
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -125,7 +127,9 @@ public class ThreadedBackup extends Thread {
 
     private static void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
         try {
-            ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
+            if (!ConfigManager.silent.get()) {
+                ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
+            }
             long time = 0;
             File manifestFile = differential ? new File(location.toString() + "/differential/manifest.json") : new File(location.toString() + "/incremental/manifest.json");
             DifferentialManifest manifest;
