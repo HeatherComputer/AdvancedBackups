@@ -85,32 +85,43 @@ TODO - export option for backups.
 \- Run the jar directly from the mods folder. `java -jar AdvancedBackups-modloader-mcversion-modversion` for example, replacing the filename with the correct one for your installation.
 - As of version 2.0, the mod creates bat or sh scripts you can use instead.
 
-\- It will read your config. Then, it will ask you which backup type to restore.
+\- It will read your config. Then, it will check for backups from other mods.
+- If you have backups from other mods, you'll be asked if you wish to work with those, or ones made by Advanced Backups.
+- ![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/6b2a3b87-e25b-4c24-9d14-a022ad8471f6)
+- If you choose to use the other mod, it will skip world selection and backup type selection. Note that the export feature does *not* work with backups from other mods.
 
-\- Afterwards, it will ask you if you are on a client or server. If you run the forge/fabric server software, choose server, otherwise it's a client.
+  
+\- Afterwards, it will ask you which backup type to restore. It tells you which type is specified in config - use this if you're unsure.
 
-\- Then it will ask for your world name. It will verify this, and will not proceed if it can't find the name.
 
-\- Then it will prompt you to choose a backup to restore. The most recent are listed last. With differential and incremental upgrades, the backups will be labelled as partial or fill.
+\- Next you choose whether you're exporting a backup, restoring the entire backup, or a singular file.
+- Exporting will export the entire world state at the time of the chosen backup. Restoring the entire backup does the same, but in place of the existing world, and choosing to restore a singular file will let you choose which file.
+- The export option will ask which backup to export, and present a confirmation message. Once accepted, the program will export for you and exit.
+
+![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/e0402c55-5bf6-4662-a890-a4cda900d02b)
+
+
+\- Then it will help find a world - first asking if you play on a client or server, then by listing world names.
+- Backups not labelled as for the world you chose will be hidden. The export option can be used if your backup was made in an older version or you wish to restore into a fresh world.
+
+![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/854da5f7-c5ea-4233-b772-3952bfa37cbd)
+
+
+\- Then it will prompt you to choose a backup to restore. The most recent are listed last. With differential and incremental upgrades, the backups will be labelled as partial or full.
 
 - This is only for your information, and will not affect the restoration process.
 
 \- The below image shows this for a differential backup.
 
+![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/f580e348-4aee-40fb-9ab4-5c7c8d97ff7c)
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/ba73af5f-1bca-4ec7-9a3e-a21f6b7350ab)
-
-\- Next you choose whether you're restoring the entire backup, or a singular file.
-
-- This restores the **ENTIRE WORLD STATE** at the time of the backups. Partial backups will have the relevant previous backups also restored to make this happen.
-    
     
 Finally, you can accept the warning prompt it gives you.
 
 If you chose to restore the entire backup, the program will exit when it is complete.
-If you chose to restore a singular file, you'll be presented with a rudimentary file browser. The below example is for differential backups:
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/d5f771f5-32d4-435f-aa82-a1da52e3996c)
+
+If you chose to restore a singular file, you'll be presented with a rudimentary file browser. 
 
 Directories are marked, and `../` will traverse up a directory.
 
@@ -118,7 +129,8 @@ If your selected backup type is differential or incremental, files will be marke
 
 Once you select a file, it will be restored. The program will then exit.
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/7a2c5d4c-e8db-48c3-8353-46486b9f86b3)
+![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/ca7846b5-e326-449e-852a-9e0d670ea65c)
+
 
 
 
@@ -127,7 +139,6 @@ Once you select a file, it will be restored. The program will then exit.
 - [Profiles](#profiles)
 - [More Commands](#more-commands)
 - [Client Feedback](#client-feedback)
-- [Commandline Improvements](#commandline-improvements)
 
 ## Profiles
 
@@ -169,12 +180,3 @@ Having some client feedback would allow connected clients that have the mod view
 This might be in the form of either a progress bar, or a simple percentage.
 
 Clients with the mod should have a way to opt out of this.
-
-
-## Commandline improvements
-
-Export feature :
-- When asked whether restoring a singular file or the whole world, a third option will be present : export.
-- This will package the backup into a singular zip file (...so yeah, just copy over the backup in the case of zip backups).
-- It will leave the actual world intact.
-  
