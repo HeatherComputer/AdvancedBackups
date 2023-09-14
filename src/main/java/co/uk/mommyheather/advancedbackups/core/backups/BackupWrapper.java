@@ -7,14 +7,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class BackupWrapper {
+
+    
+    private static GsonBuilder builder = new GsonBuilder(); 
+    private static Gson gson = builder.setPrettyPrinting().create();
 
     public static ArrayList<Long> configuredPlaytime = new ArrayList<>();
 
@@ -75,6 +84,52 @@ public class BackupWrapper {
         File incremental = new File(file, "/incremental/");
         if (!incremental.exists()) {
             incremental.mkdirs();
+        }
+
+        File backupManifest = new File(file, "manifest.json");
+        if (!backupManifest.exists()) {
+            try {
+                backupManifest.createNewFile();
+                BackupManifest manifest = BackupManifest.defaults();
+                File differentialManifest = new File(file, "/differential/manifest.json");
+                if (differentialManifest.exists()) {
+                    try {
+                        DifferentialManifest differentialManifest2 = gson.fromJson(new String(Files.readAllBytes(differentialManifest.toPath())), DifferentialManifest.class);
+                        manifest.differential.setChainLength(differentialManifest2.getChain());
+                        manifest.differential.setLastBackup(differentialManifest2.getLastFull());
+
+                        differentialManifest.delete();
+    
+                    } catch (IOException e) {
+    
+                    }
+                }
+                
+                File incrementalManifest = new File(file, "/incremental/manifest.json");
+                if (differentialManifest.exists()) {
+                    try {
+                        DifferentialManifest incrementalManifest2 = gson.fromJson(new String(Files.readAllBytes(incrementalManifest.toPath())), DifferentialManifest.class);
+                        manifest.incremental.setChainLength(incrementalManifest2.getChain());
+                        manifest.incremental.setLastBackup(incrementalManifest2.getLastFull());
+
+                        incrementalManifest.delete();
+    
+                    } catch (IOException e) {
+    
+                    }
+                }
+    
+                
+                FileWriter writer = new FileWriter(backupManifest);
+                writer.write(gson.toJson(manifest));
+                writer.flush();
+                writer.close();
+
+            }
+            catch (IOException e) {
+                ABCore.errorLogger.accept("Error initialising backup manifest!!");
+                e.printStackTrace();
+            }
         }
     }
 
