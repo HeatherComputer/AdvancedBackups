@@ -29,6 +29,25 @@ public class BackupWrapper {
 
 
     public static void checkStartupBackups () {
+        //do it here to prevent excess file i/o and reduce work needed for support on a version-by-version basis
+
+        prepareBackupDestination();
+
+        File file = new File(ConfigManager.path.get());
+        File backupManifest = new File(file, "manifest.json");
+        if (backupManifest.exists()) {
+            try {
+                BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+                
+                ABCore.activity = manifest.general.activity;
+
+            }
+            catch (IOException e) {
+                ABCore.errorLogger.accept("Error reading player actiivty from backup manifest!!");
+                e.printStackTrace();
+            }
+        }
+
         if (ConfigManager.startup.get()) {
             checkAndMakeBackups(Math.max(5000, ConfigManager.delay.get() * 1000));
         }
@@ -106,7 +125,7 @@ public class BackupWrapper {
                 }
                 
                 File incrementalManifest = new File(file, "/incremental/manifest.json");
-                if (differentialManifest.exists()) {
+                if (incrementalManifest.exists()) {
                     try {
                         DifferentialManifest incrementalManifest2 = gson.fromJson(new String(Files.readAllBytes(incrementalManifest.toPath())), DifferentialManifest.class);
                         manifest.incremental.setChainLength(incrementalManifest2.getChain());
