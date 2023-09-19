@@ -3,6 +3,7 @@ package co.uk.mommyheather.advancedbackups.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.function.Consumer;
 
@@ -11,6 +12,7 @@ import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
@@ -51,23 +53,26 @@ public class CoreCommandSystem {
 
     public static void resetChainLength(Consumer<String> chat) {
         chat.accept("Resetting chain length... The next backup will be a complete backup.");
-        boolean differential = ConfigManager.type.get().equals("differential") ? true : false;
-        File manifestFile = differential ? new File(ConfigManager.path.get() + "/differential/manifest.json") : new File(ConfigManager.path.get() + "/incremental/manifest.json");
-        DifferentialManifest manifest;
         try {
-            if (manifestFile.exists()) {
-               manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), DifferentialManifest.class);
-               manifest.setChain((int) (manifest.getChain() + ConfigManager.length.get()));
-               FileWriter writer = new FileWriter(manifestFile);
-               writer.write(gson.toJson(manifest));
-               writer.flush();
-               writer.close();
-               chat.accept("Done!");
-               return;
+
+            File file = new File(ConfigManager.path.get());
+            File backupManifest = new File(file, "manifest.json");
+            if (backupManifest.exists()) {
+                    BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+                    
+                    manifest.incremental.chainLength += (int) ConfigManager.length.get();
+                    manifest.differential.chainLength += (int) ConfigManager.length.get();
+                    
+                    
+                    FileWriter writer = new FileWriter(backupManifest);
+                    writer.write(gson.toJson(manifest));
+                    writer.flush();
+                    writer.close();
+    
             }
+
             else {
-                chat.accept("No manifest file exists!");
-                return;
+                chat.accept("No manifest file exists.");
             }
         } catch (Exception e) {
             chat.accept("Error resetting chain length. - check logs for more info.");
