@@ -48,7 +48,6 @@ jobs:
 
 
     - name: Upload Forge-1.7.10
-      env:
 
       uses: itsmeow/curseforge-upload@v3
       with:
