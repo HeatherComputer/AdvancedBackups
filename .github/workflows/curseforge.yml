@@ -26,7 +26,11 @@ jobs:
 
     - name: Extract Jars
       id: extract-jars
-      run: unzip ./AdvancedBackups-ALL_JARS-*.zip
+      run: |
+        mv ./AdvancedBackups-ALL_JARS-*.zip ./AdvancedBackups-ALL_JARS-dir
+        mv ./AdvancedBackups-ALL_JARS/AdvancedBackups-ALL_JARS-*.zip .
+        unzip ./AdvancedBackups-ALL_JARS-*.zip
+        rm -r ./AdvancedBackups-ALL_JARS*
 
     - name: ls
       if: always()
