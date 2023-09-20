@@ -59,7 +59,7 @@ jobs:
   
     - name: Build Mod
       #run: ./gradlew -Pversion=${{ inputs.version }} build
-      run: ls -a
+      run: ls -la
 
 
     - name: Upload Mod
