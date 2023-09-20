@@ -29,15 +29,17 @@ jobs:
     - name: Get Version
       id: version
       run: |
-        echo start*end | sed 's/start\([^\s]*\)end/version=\1/g' >> GITHUB_OUTPUT
+        echo start*end | sed 's/start\([^\s]*\)end/VERSION=\1/g' >> "$GITHUB_OUTPUT"
       
 
     - name: Extract Jars
       id: extract-jars
+      env:
+        VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
-        mv ./AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }} ./AdvancedBackups-ALL_JARS-dir
-        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }}.zip .
-        unzip ./AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }}.zip
+        mv ./AdvancedBackups-ALL_JARS-"$VERSION".zip ./AdvancedBackups-ALL_JARS-dir
+        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-"$VERSION".zip .
+        unzip ./AdvancedBackups-ALL_JARS-"$VERSION".zip
         rm -r ./AdvancedBackups-ALL_JARS-*
 
     - name: ls
