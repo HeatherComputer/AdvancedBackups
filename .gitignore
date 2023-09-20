@@ -27,6 +27,5 @@ forge*changelog.txt
 
 
 #custom for core lib
-.git*
-dependencies
+.gitattributes
 .vscode
