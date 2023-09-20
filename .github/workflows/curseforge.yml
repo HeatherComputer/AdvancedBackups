@@ -15,7 +15,9 @@ on:
 
 jobs:
   main:
+  
     runs-on: ubuntu-latest
+    
     steps:
     - name: Download artifact
       id: download-artifact
@@ -24,10 +26,17 @@ jobs:
         workflow: build.yml
         run_number: ${{ inputs.run }}  
 
+    - name: Get Version
+      id: version
+      run: |
+        echo ./AdvancedBackups-ALL_JARS-*.zip | cut -b 28- | rev | cut -b 5- | rev >> GITHUB_OUTPUT
+      
+
     - name: Extract Jars
       id: extract-jars
       run: |
-        mv ./AdvancedBackups-ALL_JARS-*.zip ./AdvancedBackups-ALL_JARS-dir
+        echo ${{ steps.version.output }}
+        mv ./AdvancedBackups-ALL_JARS-.zip ./AdvancedBackups-ALL_JARS-dir
         mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-*.zip .
         unzip ./AdvancedBackups-ALL_JARS-*.zip
         rm -r ./AdvancedBackups-ALL_JARS*
