@@ -76,7 +76,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.12.2
+        ref: forge-1.12
 
     - name: Download corelib
       uses: actions/download-artifact@v3
@@ -97,8 +97,8 @@ jobs:
     - name: Upload Mod
       uses: actions/upload-artifact@v3
       with:
-          name: AdvancedBackups-forge-1.12.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.12.2-${{ inputs.version }}.jar
+          name: AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
+          path: build/libs/AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
         
 
   forge-1-16:
@@ -152,7 +152,7 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: 17'
+        java-version: 17
         distribution: 'temurin'
   
     - name: Build Mod
@@ -185,7 +185,7 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: 17'
+        java-version: 17
         distribution: 'temurin'
   
     - name: Build Mod
@@ -218,7 +218,7 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: 17'
+        java-version: 17
         distribution: 'temurin'
   
     - name: Build Mod
@@ -272,8 +272,15 @@ jobs:
         name: AdvancedBackups-forge-1.19-${{ inputs.version }}.jar
         path: archives/
 
-    - name: Bundle-Archives
+    - name: Bundle Archives
       run: |
         cd archives
         zip -r AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
+
+        
+    - name: Upload Archives
+      uses: actions/upload-artifact@v3
+      with:
+          name: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
+          path: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
 
