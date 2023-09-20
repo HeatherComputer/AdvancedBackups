@@ -36,7 +36,7 @@ jobs:
     - name: Extract Jars
       id: extract-jars
       run: |
-        echo ${{ steps.version.output }}
+        echo ${{ steps.version.outputs.version }}
         mv ./AdvancedBackups-ALL_JARS-.zip ./AdvancedBackups-ALL_JARS-dir
         mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-*.zip .
         unzip ./AdvancedBackups-ALL_JARS-*.zip
