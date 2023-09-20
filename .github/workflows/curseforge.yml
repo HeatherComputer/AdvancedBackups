@@ -59,3 +59,68 @@ jobs:
         changelog: "${{ vars.CHANGELOG }}"
         display_name: "Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}"
     
+
+    - name: Upload Forge-1.12
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "6756,Java 8,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.12 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Forge-1.16
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "8203,8134,Java 8,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.16 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Forge-1.18
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "9008,Java 17,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.18 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Fabric-1.18
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "9008,Java 17,Fabric"
+        relations: "fabric-api:requiredDependency"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Fabric 1.18 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Forge-1.19
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.19-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "9366,9776,Java 17,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.19 - ${{ steps.version.outputs.VERSION }}"
