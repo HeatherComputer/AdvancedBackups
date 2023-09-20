@@ -10,7 +10,7 @@ plugins {
 
 
 
-version = "2.0"
+//version = "2.0"
 group = "co.uk.mommyheather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 //archivesBaseName = "AdvancedBackups-forge-1.7.10"
 
