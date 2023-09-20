@@ -1,0 +1,32 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+gradlew.bat
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
+
+
+
+#custom for core lib
+.git*
+dependencies
+.vscode
