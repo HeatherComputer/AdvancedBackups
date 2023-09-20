@@ -37,10 +37,10 @@ jobs:
       id: extract-jars
       run: |
         echo ${{ steps.version.outputs.version }}
-        mv ./AdvancedBackups-ALL_JARS-.zip ./AdvancedBackups-ALL_JARS-dir
-        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-*.zip .
-        unzip ./AdvancedBackups-ALL_JARS-*.zip
-        rm -r ./AdvancedBackups-ALL_JARS*
+        mv ./AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }}.zip ./AdvancedBackups-ALL_JARS-dir
+        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }}.zip .
+        unzip ./AdvancedBackups-ALL_JARS-${{ steps.version.outputs.version }}.zip
+        rm -r ./AdvancedBackups-ALL_JARS-*
 
     - name: ls
       if: always()
