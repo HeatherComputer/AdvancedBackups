@@ -65,7 +65,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
           name: Advancedbackups-forge-1.7.10-${{ inputs.version }}.jar
-          path: build/libs/advancedbackups-forge-1.7.10-${{ inputs.version }}.jar
+          path: build/libs/Advancedbackups-forge-1.7.10-${{ inputs.version }}.jar
         
 
     
