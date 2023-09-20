@@ -1,9 +1,7 @@
 package co.uk.mommyheather.advancedbackups.core;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.function.Consumer;
 
@@ -13,7 +11,6 @@ import com.google.gson.GsonBuilder;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
-import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class CoreCommandSystem {
