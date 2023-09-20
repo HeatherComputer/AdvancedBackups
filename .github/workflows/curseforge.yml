@@ -19,12 +19,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+
+
     - name: Download artifact
       id: download-artifact
       uses: dawidd6/action-download-artifact@v2
       with:
         workflow: build.yml
         run_number: ${{ inputs.run }}  
+
 
     - name: Get Version
       id: version
@@ -43,7 +46,19 @@ jobs:
         unzip ./AdvancedBackups-ALL_JARS-"$VERSION".zip
         rm -r ./AdvancedBackups-ALL_JARS-*
 
-    - name: ls
-      if: always()
-      run: ls -la
+
+    - name: Upload Forge-1.7.10
+      env:
+        VERSION: ${{ steps.version.outputs.VERSION }}
+        CHANGELOG: ${{ vars.CHANGELOG }}
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.7.10-$VERSION.jar"
+        game_endpoint: "minecraft"
+        game_versions: "Minecraft 1.7.10,Java 8,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "$CHANGELOG"
+        display_name: "Forge 1.7.10 - $VERSION"
     
