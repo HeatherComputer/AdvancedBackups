@@ -124,3 +124,18 @@ jobs:
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
         display_name: "Forge 1.19 - ${{ steps.version.outputs.VERSION }}"
+
+        
+    - name: Upload Fabric-1.19
+
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-fabric-1.19-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "9366,9776,Java 17,Fabric"
+        relations: "fabric-api:requiredDependency"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Fabric 1.19 - ${{ steps.version.outputs.VERSION }}"
+    
