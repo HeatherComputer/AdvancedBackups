@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class ThreadedBackup extends Thread {
@@ -131,21 +131,25 @@ public class ThreadedBackup extends Thread {
                 ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
             }
             long time = 0;
-            File manifestFile = differential ? new File(location.toString() + "/differential/manifest.json") : new File(location.toString() + "/incremental/manifest.json");
-            DifferentialManifest manifest;
+
+
+            File manifestFile = new File(location.toString() + "/manifest.json");
+            BackupManifest manifest;
             if (manifestFile.exists()) {
-                manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), DifferentialManifest.class);
+                manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), BackupManifest.class);
             }
             else {
-                manifest = DifferentialManifest.defaultValues();
+                manifest = BackupManifest.defaults();
             }
 
-            long comp = differential ? manifest.getLastFull() : manifest.getLastPartial();
+            long comp = differential ? manifest.differential.getLastBackup() : manifest.incremental.getLastBackup();
             ArrayList<Path> toBackup = new ArrayList<>();
             ArrayList<Path> completeBackup = new ArrayList<>();
 
+            int chain = differential ? manifest.differential.chainLength : manifest.incremental.chainLength;
 
-            boolean completeTemp = manifest.getComplete().size() == 0 || manifest.getChain() >= ConfigManager.length.get() ? true : false;
+
+            boolean completeTemp = chain >= ConfigManager.length.get() ? true : false;
             
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
@@ -211,14 +215,24 @@ public class ThreadedBackup extends Thread {
 
             //Finally, update + write the manifest
             if (complete || toBackup.size() >= count) {
-                manifest.setChain(0);
-                manifest.getComplete().add(time);
-                manifest.setLastFull(time);
+                if (differential) {
+                    manifest.differential.setChainLength(0);
+                    manifest.differential.setLastBackup(new Date().getTime());
+                }
+                else {
+                    manifest.incremental.setChainLength(0);
+                    manifest.incremental.setLastBackup(new Date().getTime());
+                }
             }
             else {
-                manifest.setChain(manifest.getChain() + 1);
-                manifest.getPartial().add(new Date().getTime());
-                manifest.setLastPartial(new Date().getTime());
+                if (differential) {
+                    manifest.differential.chainLength++;
+                    manifest.differential.setLastBackup(new Date().getTime());
+                }
+                else {
+                    manifest.incremental.chainLength++;
+                    manifest.incremental.setLastBackup(new Date().getTime());
+                }
             }
 
             FileWriter writer = new FileWriter(manifestFile);
