@@ -277,6 +277,10 @@ jobs:
         cd archives
         zip -r ../AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip *
 
+    - name: Cleanup Old Archives
+      uses: geekyeggo/delete-artifact@v2
+      with:
+          name: AdvancedBackups-*
         
     - name: Upload Archives
       uses: actions/upload-artifact@v3
