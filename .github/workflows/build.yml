@@ -275,7 +275,7 @@ jobs:
     - name: Bundle Archives
       run: |
         cd archives
-        zip -r AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
+        zip -r AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip *
 
         
     - name: Upload Archives
