@@ -50,8 +50,16 @@ jobs:
       with:
         name: advancedbackups-corelib.jar
         path: advancedbackups-corelib.jar
+    
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'temurin'
 
-        
+    - name : Run Setup
+      run: ./gradlew setupDecompWorkspace
+  
     - name: Build Mod
       run: ./gradlew -Pversion=${{ inputs.version }} build
 
