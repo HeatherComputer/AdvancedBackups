@@ -289,7 +289,7 @@ jobs:
         
     - name: Upload Archives
       uses: actions/upload-artifact@v3
-      if: ${{ bundle.bundle.conclusion != 'failure' }}
+      if: ${{ steps.bundle.conclusion != 'failure' }}
       with:
           name: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
           path: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
