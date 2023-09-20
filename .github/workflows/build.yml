@@ -280,7 +280,9 @@ jobs:
     - name: Cleanup Old Archives
       uses: geekyeggo/delete-artifact@v2
       with:
-          name: AdvancedBackups-*
+          name: |
+            AdvancedBackups-*
+            advancedbackups-corelib.jar
         
     - name: Upload Archives
       uses: actions/upload-artifact@v3
