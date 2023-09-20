@@ -14,6 +14,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 [Future Plans](#future-plans)
 
+[Notices](#notices)
+
 ## Current Versions:
 - Forge 1.19
 - Forge 1.18
@@ -180,3 +182,10 @@ Having some client feedback would allow connected clients that have the mod view
 This might be in the form of either a progress bar, or a simple percentage.
 
 Clients with the mod should have a way to opt out of this.
+
+
+
+
+# Notices:
+- This software bundles an unmodified version of [jansi](https://github.com/fusesource/jansi).
+    - Jansi uses the Apache-2.0 license, and permits redistribution. Its full license can be read [here](https://github.com/fusesource/jansi/blob/cdb8d8c6daf86aaa2de31f8b047bd24acfb56d90/license.txt).
