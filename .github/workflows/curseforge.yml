@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build all mod jars
+name: Publish to Curseforge
 
 on:
   workflow_dispatch:
