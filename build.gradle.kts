@@ -135,7 +135,7 @@ publishing {
 }
 
 tasks.withType<Jar> {
-    from(zipTree("../advancedbackups-corelib.jar"))
+    from(zipTree("advancedbackups-corelib.jar"))
     into("/")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     //from(zipTree("dependencies/jna-platform-5.13.0.jar"))
