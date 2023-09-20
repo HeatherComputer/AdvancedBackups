@@ -54,11 +54,11 @@ jobs:
 
       uses: itsmeow/curseforge-upload@v3
       with:
-        file_path: "AdvancedBackups-forge-1.7.10-$VERSION.jar"
+        file_path: "AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
         game_versions: "Minecraft 1.7.10,Java 8,Forge"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "$CHANGELOG"
-        display_name: "Forge 1.7.10 - $VERSION"
+        display_name: "Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}"
     
