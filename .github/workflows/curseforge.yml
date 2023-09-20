@@ -29,7 +29,8 @@ jobs:
     - name: Get Version
       id: version
       run: |
-        echo ./AdvancedBackups-ALL_JARS-*.zip | cut -b 28- | rev | cut -b 5- | rev >> GITHUB_OUTPUT
+        #echo ./AdvancedBackups-ALL_JARS-*.zip | cut -b 28- | rev | cut -b 5- | rev >> GITHUB_OUTPUT
+        echo start*end | sed 's/start\([^\s]*\)end/version=\1/g' >> GITHUB_OUTPUT
       
 
     - name: Extract Jars
