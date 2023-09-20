@@ -271,21 +271,25 @@ jobs:
       with:
         name: AdvancedBackups-forge-1.19-${{ inputs.version }}.jar
         path: archives/
-
-    - name: Bundle Archives
-      run: |
-        cd archives
-        zip -r ../AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip *
-
+        
     - name: Cleanup Old Archives
       uses: geekyeggo/delete-artifact@v2
       with:
           name: |
             AdvancedBackups-*
             advancedbackups-corelib.jar
+
+    - name: Bundle Archives
+      id: bundle
+      if: always()
+      run: |
+        cd archives
+        zip -r ../AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip *
+
         
     - name: Upload Archives
       uses: actions/upload-artifact@v3
+      if: ${{ bundle.bundle.conclusion != 'failure' }}
       with:
           name: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
           path: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
