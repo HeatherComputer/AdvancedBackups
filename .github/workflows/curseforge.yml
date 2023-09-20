@@ -1,0 +1,33 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build all mod jars
+
+on:
+  workflow_dispatch:
+    inputs:
+      run:
+        description: 'Build action run to download artifacts from'
+        required: true
+
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        run_number: ${{ inputs.run }}  
+
+    - name: Extract Jars
+      id: extract-jars
+      run: unzip ./AdvancedBackups-ALL_JARS-*.zip
+
+    - name: ls
+      run: ls -la
+    
