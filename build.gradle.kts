@@ -106,8 +106,8 @@ dependencies {
   // Adds NotEnoughItems and its dependencies (CCL&CCC) to runClient/runServer
   runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.3.39-GTNH:dev")
   
-  implementation  (files("../advancedbackups-corelib.jar"))
-  extraLibs (files("../advancedbackups-corelib.jar"))
+  implementation  (files("advancedbackups-corelib.jar"))
+  extraLibs (files("advancedbackups-corelib.jar"))
   // Example: grab the ic2 jar from curse maven and deobfuscate
   // api(rfg.deobf("curse.maven:ic2-242638:2353971"))
   // Example: grab the ic2 jar from libs/ in the workspace and deobfuscate
