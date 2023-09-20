@@ -29,5 +29,6 @@ jobs:
       run: unzip ./AdvancedBackups-ALL_JARS-*.zip
 
     - name: ls
+      if: always()
       run: ls -la
     
