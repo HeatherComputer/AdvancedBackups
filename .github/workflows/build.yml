@@ -45,7 +45,7 @@ jobs:
       with:
         ref: forge-1.7.10
 
-    - name: Download math result for job 2
+    - name: Download corelib
       uses: actions/download-artifact@v3
       with:
         name: advancedbackups-corelib.jar
