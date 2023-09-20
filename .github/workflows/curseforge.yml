@@ -28,7 +28,7 @@ jobs:
       id: extract-jars
       run: |
         mv ./AdvancedBackups-ALL_JARS-*.zip ./AdvancedBackups-ALL_JARS-dir
-        mv ./AdvancedBackups-ALL_JARS/AdvancedBackups-ALL_JARS-*.zip .
+        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-*.zip .
         unzip ./AdvancedBackups-ALL_JARS-*.zip
         rm -r ./AdvancedBackups-ALL_JARS*
 
