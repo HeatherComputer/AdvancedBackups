@@ -1,10 +1,19 @@
 package co.uk.mommyheather.advancedbackups.core;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Consumer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class ABCore {
     
@@ -23,6 +32,8 @@ public class ABCore {
     public static Runnable enableSaving;
     public static Runnable saveOnce;
 
+    private static GsonBuilder builder = new GsonBuilder(); 
+    private static Gson gson = builder.setPrettyPrinting().create();
     
     public static void disableSaving() {
         disableSaving.run();
@@ -37,6 +48,28 @@ public class ABCore {
     }
 
     public static void setActivity() {
+        if (!activity) {
+            //i should thread this at some point
+            File file = new File(ConfigManager.path.get());
+            File backupManifest = new File(file, "manifest.json");
+            if (backupManifest.exists()) {
+                try {
+                    BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+                    
+                    manifest.general.activity = true;
+                    
+                    FileWriter writer = new FileWriter(backupManifest);
+                    writer.write(gson.toJson(manifest));
+                    writer.flush();
+                    writer.close();
+    
+                }
+                catch (IOException e) {
+                    ABCore.errorLogger.accept("Error writing player actiivty to backup manifest!!");
+                    e.printStackTrace();
+                }
+            }
+        }
         activity = true;
     }
 
