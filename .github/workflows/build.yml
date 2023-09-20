@@ -273,7 +273,7 @@ jobs:
         path: archives/
 
     - name: Bundle-Archives
-    run: |
-    cd archives
-    zip -r AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
+      run: |
+        cd archives
+        zip -r AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
 
