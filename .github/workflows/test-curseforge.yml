@@ -1,0 +1,97 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Test CF publish (not actually upload)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run:
+        description: 'Build action run to download artifacts from'
+        required: true
+
+      version:
+        type: choice
+        description: Which version to push to curseforge.
+        required: true
+        options: 
+        - All
+        - Forge 1.7.10
+        - Forge 1.12
+        - Forge 1.16
+        - Forge 1.18
+        - Fabric 1.18
+        - Forge 1.19
+        - Fabric 1.19
+
+
+jobs:
+  main:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        run_number: ${{ inputs.run }}  
+
+
+    - name: Get Version
+      id: version
+      run: |
+        X=`echo AdvancedBackups-ALL_JARS-*.zip`; X=${X##AdvancedBackups-ALL_JARS-}; X=${X%%.zip}; echo $X
+        echo VERSION=$X >> "$GITHUB_OUTPUT"
+      
+
+    - name: Extract Jars
+      id: extract-jars
+      env:
+        VERSION: ${{ steps.version.outputs.VERSION }}
+      run: |
+        mv ./AdvancedBackups-ALL_JARS-"$VERSION".zip ./AdvancedBackups-ALL_JARS-dir
+        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-"$VERSION".zip .
+        unzip ./AdvancedBackups-ALL_JARS-"$VERSION".zip
+        rm -r ./AdvancedBackups-ALL_JARS-*
+
+
+    - name: Upload Forge-1.7.10
+      if: ${{ inputs.version == "Forge 1.7.10" || inputs.version == "All" }}
+      run: |
+          echo "Pretended to upload AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
+    
+
+    - name: Upload Forge-1.12
+      run: |
+          echo "Pretended to upload AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar"
+
+    - name: Upload Forge-1.16
+      run: |
+          echo "Pretended to upload AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar"
+    
+
+    - name: Upload Forge-1.18
+      run: |
+          echo "Pretended to upload AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar"
+    
+
+    - name: Upload Fabric-1.18
+      run: |
+          echo "Pretended to upload AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar"
+    
+
+    - name: Upload Forge-1.19
+      run: |
+          echo "Pretended to upload AdvancedBackups-forge-1.19-${{ steps.version.outputs.VERSION }}.jar"
+        
+
+    - name: Upload Fabric-1.19
+      run: |
+          echo "Pretended to upload AdvancedBackups-fabric-1.19-${{ steps.version.outputs.VERSION }}.jar"
+    
