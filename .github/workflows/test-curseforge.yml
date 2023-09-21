@@ -62,7 +62,7 @@ jobs:
 
 
     - name: Upload Forge-1.7.10
-      if: ${{ inputs.version == "Forge 1.7.10" || inputs.version == "All" }}
+      if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
       run: |
           echo "Pretended to upload AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
     
