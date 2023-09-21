@@ -64,6 +64,7 @@ jobs:
     - name: Upload Forge-1.7.10
 
       uses: itsmeow/curseforge-upload@v3
+      if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
       with:
         file_path: "AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
@@ -76,6 +77,7 @@ jobs:
 
     - name: Upload Forge-1.12
 
+      if: inputs.version == 'Forge 1.12' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar"
@@ -89,6 +91,7 @@ jobs:
 
     - name: Upload Forge-1.16
 
+      if: inputs.version == 'Forge 1.16' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar"
@@ -102,6 +105,7 @@ jobs:
 
     - name: Upload Forge-1.18
 
+      if: inputs.version == 'Forge 1.18' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar"
@@ -115,6 +119,7 @@ jobs:
 
     - name: Upload Fabric-1.18
 
+      if: inputs.version == 'Fabric 1.18' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar"
@@ -129,6 +134,7 @@ jobs:
 
     - name: Upload Forge-1.19
 
+      if: inputs.version == 'Forge 1.19' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-forge-1.19-${{ steps.version.outputs.VERSION }}.jar"
@@ -142,6 +148,7 @@ jobs:
         
     - name: Upload Fabric-1.19
 
+      if: inputs.version == 'Fabric 1.19' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
         file_path: "AdvancedBackups-fabric-1.19-${{ steps.version.outputs.VERSION }}.jar"
