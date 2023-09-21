@@ -12,6 +12,20 @@ on:
         description: 'Build action run to download artifacts from'
         required: true
 
+      version:
+        type: choice
+        description: Which version to push to curseforge.
+        required: true
+        options: 
+        - All
+        - Forge 1.7.10
+        - Forge 1.12
+        - Forge 1.16
+        - Forge 1.18
+        - Fabric 1.18
+        - Forge 1.19
+        - Fabric 1.19
+
 
 jobs:
   main:
