@@ -13,35 +13,45 @@ public class AdvancedBackupsCommand {
             return runner.hasPermission(3);
         }).then(Commands.literal("check").executes((runner) -> {
             CoreCommandSystem.checkBackups((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal(response) ;
+                }, true);
             });
             return 1;
          }))
          
          .then(Commands.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal(response) ;
+                }, true);
             });
             return 1;
          }))
 
          .then(Commands.literal("force-backup").executes((runner) -> {
             CoreCommandSystem.forceBackup((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal(response) ;
+                }, true);
             });
             return 1;
          }))
 
          .then(Commands.literal("reload").executes((runner) -> {
             CoreCommandSystem.reloadConfig((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal(response) ;
+                }, true);
             });
             return 1;
          }))
 
          .then(Commands.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal(response) ;
+                }, true);
             });
             return 1;
          }))
