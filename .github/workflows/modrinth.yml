@@ -74,7 +74,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}"
     
@@ -90,7 +90,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.12 - ${{ steps.version.outputs.VERSION }}"
     
@@ -106,7 +106,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.16 - ${{ steps.version.outputs.VERSION }}"
     
@@ -122,7 +122,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.18 - ${{ steps.version.outputs.VERSION }}"
     
@@ -139,7 +139,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Fabric 1.18 - ${{ steps.version.outputs.VERSION }}"
     
@@ -155,7 +155,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.19 - ${{ steps.version.outputs.VERSION }}"
 
@@ -172,7 +172,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Fabric 1.19 - ${{ steps.version.outputs.VERSION }}"
 
@@ -187,7 +187,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Forge 1.20 - ${{ steps.version.outputs.VERSION }}"
 
@@ -204,7 +204,7 @@ jobs:
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        featured: true
+        featured: false
         version: "${{ steps.version.outputs.VERSION }}"
         name: "Fabric 1.20 - ${{ steps.version.outputs.VERSION }}"
     
