@@ -45,6 +45,10 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 \- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
 
+<details>
+<summary>config</summary>
+
+
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
@@ -67,6 +71,9 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.chains.smart | For differential and incremental backups. Resets the chain length if every file is being backed up. | true | 0.3 |
 | config.advancedbackups.chains.maxpercent | If the size of a partial backup exceeds this % of a full backup's size, a full backup is made instead. | 50 | 2.0
 | config.advancedbackups.purge.incremental | For incremental backups only. Enable to allow purging incremental backup chains if the defined storage usage is limit exceeded. | true | 1.0 |
+
+</details>
+
 
 #### Commands:
 
