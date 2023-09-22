@@ -13,35 +13,35 @@ public class AdvancedBackupsCommand {
             return runner.hasPermissionLevel(3);
         }).then(CommandManager.literal("check").executes((runner) -> {
             CoreCommandSystem.checkBackups((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
+                runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
             return 1;
          }))
          
          .then(CommandManager.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
+                runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
             return 1;
          }))
 
          .then(CommandManager.literal("force-backup").executes((runner) -> {
             CoreCommandSystem.forceBackup((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
+                runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
             return 1;
          }))
 
          .then(CommandManager.literal("reload").executes((runner) -> {
             CoreCommandSystem.reloadConfig((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
+                runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
             return 1;
          }))
          
          .then(CommandManager.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
+                runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
             return 1;
          }))
