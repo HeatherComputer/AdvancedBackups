@@ -108,7 +108,7 @@ public class BackupWrapper {
         if (!backupManifest.exists()) {
             try {
                 backupManifest.createNewFile();
-                BackupManifest manifest = BackupManifest.defaults();
+                BackupManifest manifest = new BackupManifest();
                 File differentialManifest = new File(file, "/differential/manifest.json");
                 if (differentialManifest.exists()) {
                     try {

@@ -139,7 +139,7 @@ public class ThreadedBackup extends Thread {
                 manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), BackupManifest.class);
             }
             else {
-                manifest = BackupManifest.defaults();
+                manifest = new BackupManifest();
             }
 
             long comp = differential ? manifest.differential.getLastBackup() : manifest.incremental.getLastBackup();
