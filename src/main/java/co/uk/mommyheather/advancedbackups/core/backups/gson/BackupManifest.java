@@ -5,6 +5,15 @@ public class BackupManifest {
     public static class General {
         //holds general information such as whether players have been active since the last backup
         public boolean activity;
+        public boolean introSeen;
+
+        public boolean isIntroSeen() {
+            return introSeen;
+        }
+
+        public void setIntroSeen(boolean introSeen) {
+            this.introSeen = introSeen;
+        }
 
         public boolean isActivity() {
             return activity;
@@ -90,26 +99,20 @@ public class BackupManifest {
     }
 
 
-    public static BackupManifest defaults() {
-        BackupManifest manifest = new BackupManifest();
+    public BackupManifest() {
 
-        General general = new General();
-        general.setActivity(true);
+        this.general = new General();
+        this.general.setActivity(true);
+        this.general.setIntroSeen(false);
 
-        manifest.setGeneral(general);
+        this.differential = new Differential();
+        this.differential.setChainLength(0);
+        this.differential.setLastBackup(0);
 
-        Differential differential = new Differential();
-        differential.setChainLength(0);
-        differential.setLastBackup(0);
+        this.incremental = new Incremental();
+        this.incremental.setChainLength(0);
+        this.incremental.setLastBackup(0);
 
-        manifest.setDifferential(differential);
 
-        Incremental incremental = new Incremental();
-        incremental.setChainLength(0);
-        incremental.setLastBackup(0);
-
-        manifest.setIncremental(incremental);
-
-        return manifest;
     }
 }
