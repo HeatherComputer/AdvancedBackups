@@ -56,20 +56,29 @@ public class ConfigManager {
     public static void loadOrCreateConfig() {
         // Called when the config needs to be loaded, but one may not exist.
         // Creates a new config it one doesn't exist, then loads it.
-        File file = new File("./AdvancedBackups.properties");
-        if (!file.exists()) {
-            writeConfig();
+        File dir = new File("./config");
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
-        else {
+        File file = new File("./AdvancedBackups.properties");
+        if (file.exists()) {
+            migrateConfig();
+        }
+        file = new File(dir, "AdvancedBackups.properties");
+        if (file.exists()) {
             loadConfig();
         }
+        else {
+            writeConfig();
+        }
+  
     }
 
     private static void writeConfig() {
         // Called to write to a config file.
         // Create a complete properties file in the cwd, including any existing changes
         ABCore.infoLogger.accept("Preparing to write to properties file...");
-        File file = new File("./AdvancedBackups.properties");
+        File file = new File("./config/AdvancedBackups.properties");
         try {
             file.createNewFile();
             file.setWritable(true); 
@@ -98,7 +107,7 @@ public class ConfigManager {
         //Load the config file.
         
         Properties props = new Properties();
-        File file = new File("./AdvancedBackups.properties");
+        File file = new File("./config/AdvancedBackups.properties");
         FileReader reader;
         try {
             reader = new FileReader(file);   
@@ -146,5 +155,40 @@ public class ConfigManager {
             long mins = Long.parseLong(hm[1]) * 60000;
             BackupWrapper.configuredPlaytime.add(hours + mins);
         }
+    }
+
+    
+    private static void migrateConfig() {
+        //Load the config file.
+        
+        Properties props = new Properties();
+        File file = new File("./AdvancedBackups.properties");
+        FileReader reader;
+        try {
+            reader = new FileReader(file);   
+            props.load(reader);
+            reader.close();
+            file.delete();
+        } catch (IOException e) {
+            // TODO : Scream to user
+            e.printStackTrace();
+            return;
+        }
+
+
+        for (String key : entries.keySet()) {
+            if (!props.containsKey(key)) {
+                continue;
+            }
+            ConfigValidationEnum valid = entries.get(key).validate(props.getProperty(key));
+            if (valid != ConfigValidationEnum.VALID) {
+                continue;
+
+            }
+            entries.get(key).load(props.getProperty(key));
+        }
+
+        ABCore.warningLogger.accept("Config in old location detected! Migrating.");
+        writeConfig();
     }
 }
