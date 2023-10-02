@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -255,8 +256,12 @@ public class BackupWrapper {
         return lastModifiedTime;
     }
 
+    
+    private static void makeSingleBackup(long delay) {
+        makeSingleBackup(delay, (s) -> {});
+    }
 
-    public static void makeSingleBackup(long delay) {
+    public static void makeSingleBackup(long delay, Consumer<String> output) {
 
         ABCore.disableSaving();
         if (ConfigManager.save.get()) {
@@ -264,7 +269,7 @@ public class BackupWrapper {
         }
 
         // Make new thread, run backup utility.
-        ThreadedBackup threadedBackup = new ThreadedBackup(delay);
+        ThreadedBackup threadedBackup = new ThreadedBackup(delay, output);
         threadedBackup.start();
         // Don't re-enable saving - leave that down to the backup thread.
         

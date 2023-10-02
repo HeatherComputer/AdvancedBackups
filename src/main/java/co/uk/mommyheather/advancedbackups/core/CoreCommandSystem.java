@@ -33,18 +33,18 @@ public class CoreCommandSystem {
         chat.accept(check.getCheckMessage());
         if (check.success()) {
             chat.accept("Starting backup...");
-            BackupWrapper.makeSingleBackup(0);
+            BackupWrapper.makeSingleBackup(0, chat);
         }
     }
 
     public static void forceBackup(Consumer<String> chat) {
         chat.accept("Forcing a backup...");
-        BackupWrapper.makeSingleBackup(0);
+        BackupWrapper.makeSingleBackup(0, chat);
     }
 
     public static void reloadConfig(Consumer<String> chat) {
         chat.accept("Reloading config...");
-         ConfigManager.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
     }
 

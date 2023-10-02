@@ -12,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -32,14 +33,16 @@ public class ThreadedBackup extends Thread {
     private static float completeSize;
     public static boolean running = false;
     private static String backupName;
+    private Consumer<String> output;
     
     static {
         builder.setPrettyPrinting();
         gson = builder.create();
     }
     
-    public ThreadedBackup(long delay) {
+    public ThreadedBackup(long delay, Consumer<String> output) {
         setName("AB Active Backup Thread");
+        this.output = output;
         this.delay = delay;
         count = 0;
         partialSize = 0F;
@@ -77,15 +80,17 @@ public class ThreadedBackup extends Thread {
         }
 
         BackupWrapper.finishBackup();
+        
+        output.accept("Backup complete!");
     }
 
 
-    private static void makeZipBackup(File file) {
+    private void makeZipBackup(File file) {
         try {
 
             File zip = new File(file.toString() + "/zips/", backupName + ".zip");
             if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());  
+                ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
             }
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
