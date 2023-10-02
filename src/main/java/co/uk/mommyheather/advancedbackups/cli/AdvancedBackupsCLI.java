@@ -64,7 +64,7 @@ public class AdvancedBackupsCLI {
 
         
         Properties props = new Properties();
-        File file = new File(serverDir, "AdvancedBackups.properties");
+        File file = new File(serverDir, "config/AdvancedBackups.properties");
         FileReader reader;
         try {
             reader = new FileReader(file);   
