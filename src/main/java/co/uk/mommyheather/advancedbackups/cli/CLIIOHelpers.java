@@ -93,8 +93,8 @@ public class CLIIOHelpers {
         int index = 1;
         for (String name : files.keySet()) {
             String name2 = name.replace("\\", "/"); // this replacement can fix some problems with wsl, and helps keep code neat.
-            if (name2.contains(directory)) {
-                name2 = name2.replace(directory, "");
+            if (name2.startsWith(directory)) {
+                name2 = name2.replaceFirst("^"+directory, "");
                 if (name2.startsWith(worldFile.getName())) {
                     name2 = name2.replace(worldFile.getName() + "/", "");
                 }
