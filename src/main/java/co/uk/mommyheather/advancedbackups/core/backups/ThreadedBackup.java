@@ -92,6 +92,7 @@ public class ThreadedBackup extends Thread {
             if (!ConfigManager.silent.get()) {
                 ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
             }
+            output.accept("Preparing zip backup name: " + zip.getName());
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -130,11 +131,12 @@ public class ThreadedBackup extends Thread {
     }
 
 
-    private static void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
+    private void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
         try {
             if (!ConfigManager.silent.get()) {
                 ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
             }
+            output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
             long time = 0;
 
 
