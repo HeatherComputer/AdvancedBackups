@@ -23,22 +23,9 @@ public class CoreCommandSystem {
     
 
     //These methods are all called by relevant command classes in version specific code
-    public static void checkBackups(Consumer<String> chat) {
-        BackupCheckEnum check = BackupWrapper.checkBackups();
-        chat.accept(check.getCheckMessage());
-    }
-
     public static void startBackup(Consumer<String> chat) {
-        BackupCheckEnum check = BackupWrapper.checkBackups();
-        chat.accept(check.getCheckMessage());
-        if (check.success()) {
-            chat.accept("Starting backup...");
-            BackupWrapper.makeSingleBackup(0, chat);
-        }
-    }
-
-    public static void forceBackup(Consumer<String> chat) {
-        chat.accept("Forcing a backup...");
+        chat.accept("Starting backup...");
+        BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
         BackupWrapper.makeSingleBackup(0, chat);
     }
 
@@ -46,6 +33,10 @@ public class CoreCommandSystem {
         chat.accept("Reloading config...");
         ConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
+    }
+
+    public static void snapshot(Consumer<String> chat) {
+        BackupWrapper.makeSnapshot(chat);
     }
 
     public static void resetChainLength(Consumer<String> chat) {
