@@ -34,6 +34,7 @@ public class ThreadedBackup extends Thread {
     public static boolean running = false;
     private static String backupName;
     private Consumer<String> output;
+    private boolean snapshot = false;
     
     static {
         builder.setPrettyPrinting();
@@ -56,7 +57,7 @@ public class ThreadedBackup extends Thread {
         } catch (InterruptedException e) {
             return;
         }
-        if (running) {
+        if (running && !snapshot) {
             return;
         }
         running = true;
@@ -64,9 +65,15 @@ public class ThreadedBackup extends Thread {
         File file = new File(ConfigManager.path.get());
         backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
 
+        if (snapshot) {
+            makeZipBackup(file, true);
+            if (!running) ABCore.disableSaving();
+            output.accept("Snapshot created! This will not be auto-deleted.");
+        }
+
         switch(ConfigManager.type.get()) {
             case "zip" : {
-                makeZipBackup(file);
+                makeZipBackup(file, false);
                 break;
             }
             case "differential" : {
@@ -80,19 +87,19 @@ public class ThreadedBackup extends Thread {
         }
 
         BackupWrapper.finishBackup();
-        
+        ThreadedBackup.running = false;
         output.accept("Backup complete!");
     }
 
 
-    private void makeZipBackup(File file) {
+    private void makeZipBackup(File file, boolean b) {
         try {
 
-            File zip = new File(file.toString() + "/zips/", backupName + ".zip");
+            File zip = new File(file.toString() + (snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
             if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing zip backup name: " + zip.getName());
+                ABCore.infoLogger.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName());
             }
-            output.accept("Preparing zip backup name: " + zip.getName());
+            output.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName());
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -253,6 +260,10 @@ public class ThreadedBackup extends Thread {
         }
 
 
+    }
+
+    public void snapshot() {
+        snapshot = true;
     }
 
 }
