@@ -8,11 +8,12 @@ Java 8 or newer needs to be on your PATH. If you have manually installed java, i
 Restoration scripts now exist alongside this folder. If you are using the bash script, you may need to use chmod to make it executable.
 All these two do is run the commandline tool using your system java - if you can't or don't want to use these, you can run the jar manually :
 
-    You can run it by navigating to your mods folder and running "java -jar <filename.jar>", of course replacing <filename> with the actual filename.
-    Full documentation for this is available at https://github.com/MommyHeather/AdvancedBackups#commandline
+    Navigate to your mods folder and run "java -jar <filename.jar>", of course replacing <filename> with the actual filename.
+
+Full documentation for this is available at https://github.com/MommyHeather/AdvancedBackups#commandline
 
 
-
+==THE BELOW IS FOR MANUAL RESTORATION ONLY - NOT RECOMENDED!==
 To manually restore an entire backup:
 
 For complete zip backups, full differentials or full incrementals, you can simply copy the contents of the zip / folder over into the world folder.
