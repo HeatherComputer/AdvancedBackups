@@ -1,4 +1,5 @@
-# Advanced Backups
+# Advanced Backups 
+# [![](https://cf.way2muchnoise.eu/876284.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/advanced-backups) [![](https://img.shields.io/modrinth/dt/Jrmoreqs?label=&style=for-the-badge&logo=modrinth&color=2D2D2D)](https://modrinth.com/mod/advanced-backups)
 
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
