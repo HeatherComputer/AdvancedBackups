@@ -272,12 +272,22 @@ public class BackupWrapper {
         ThreadedBackup threadedBackup = new ThreadedBackup(delay, output);
         threadedBackup.start();
         // Don't re-enable saving - leave that down to the backup thread.
-        
+    }
+
+    public static void makeSnapshot(Consumer<String> output) {
+        ABCore.disableSaving();
+        if (ConfigManager.save.get()) {
+            ABCore.saveOnce();
+        }
+
+        ThreadedBackup threadedBackup = new ThreadedBackup(0, output);
+        threadedBackup.snapshot();
+        threadedBackup.start();
+
     }
 
     public static void finishBackup() {
         File directory = new File(ConfigManager.path.get());
-        ThreadedBackup.running = false;
         ABCore.enableSaving();
 
         switch(ConfigManager.type.get()) {
