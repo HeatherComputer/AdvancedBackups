@@ -178,7 +178,7 @@ public class CLIIOHelpers {
         // Select a type of backup to restore
         CLIIOHelpers.info("Select a backup type to restore. Your server is currently set to use " + type + " backups.");
         
-        List<String> options = Arrays.asList(new String[]{"zips", "differential", "incremental"});
+        List<String> options = Arrays.asList(new String[]{"zips", "differential", "incremental", "snapshot (command-made only)"});
 
         return getSelectionFromList("Enter a number.", options);
     }
