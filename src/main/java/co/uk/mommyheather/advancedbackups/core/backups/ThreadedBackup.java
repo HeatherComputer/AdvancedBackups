@@ -69,6 +69,7 @@ public class ThreadedBackup extends Thread {
             makeZipBackup(file, true);
             if (!running) ABCore.disableSaving();
             output.accept("Snapshot created! This will not be auto-deleted.");
+            return;
         }
 
         switch(ConfigManager.type.get()) {
