@@ -33,7 +33,7 @@ public class AdvancedBackupsCommand extends CommandBase
 
     public String getCommandUsage(ICommandSender icommandsender)
     {
-        return "/advancedbackups (check|start|force-backup|reload|reset-chain)";
+        return "/advancedbackups (start|reload-config|reset-chain|snapshot)";
     }
 
 
@@ -43,24 +43,19 @@ public class AdvancedBackupsCommand extends CommandBase
         {
             throw new WrongUsageException(getCommandUsage(sender));
         }
-        else if ("check".equals(args[0]))
-        {
-            Check.execute(sender);
-        }
         else if ("start".equals(args[0]))
         {
             Start.execute(sender);
         }
-        else if ("force-backup".equals(args[0]))
-        {
-            Force.execute(sender);
-        }
-        else if ("reload".equals(args[0]))
+        else if ("reload-config".equals(args[0]))
         {
             Reload.execute(sender);
         }
         else if ("reset-chain".equals(args[0])) {
             ResetChain.execute(sender);
+        }
+        else if ("snapshot".equals(args[0])) {
+            Snapshot.execute(sender);
         }
         else
         {
@@ -68,20 +63,6 @@ public class AdvancedBackupsCommand extends CommandBase
         }
     }
 
-    public static class Check {
-        static public void execute(ICommandSender sender) {
-            CoreCommandSystem.checkBackups((response) -> {
-                sender.addChatMessage(new ChatComponentText(response));
-            });
-        }
-    }
-    public static class Force {
-        public static void execute(ICommandSender sender) {
-            CoreCommandSystem.forceBackup((response) -> {
-                sender.addChatMessage(new ChatComponentText(response));
-            });
-        }
-    }
     public static class Reload {
         public static void execute(ICommandSender sender) {
             CoreCommandSystem.reloadConfig((response) -> {
@@ -104,6 +85,15 @@ public class AdvancedBackupsCommand extends CommandBase
                 sender.addChatMessage(new ChatComponentText(response));
             });
         }
+    }
+
+    public static class Snapshot {
+        public static void execute(ICommandSender sender) {
+            CoreCommandSystem.snapshot((response) -> {
+                sender.addChatMessage(new ChatComponentText(response));
+            });
+        }
+
     }
 
 
