@@ -36,6 +36,7 @@ public class CoreCommandSystem {
     }
 
     public static void snapshot(Consumer<String> chat) {
+        BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
         BackupWrapper.makeSnapshot(chat);
     }
 
