@@ -77,10 +77,13 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 #### Commands:
 
-\- All entries in the table below must be prefixed with `/advancedbackups`.
+\- All entries in the table below must be prefixed with `/backup` in 2.2+ or `/advancedbackups` in older pre-2.2.
 
-- Example : `/advancedbackups force-backup`
+- Example : `/backup force-backup`
 
+
+<details>
+<summary>pre-2.2</summary>
 
 | Command | Description | Supported From |
 | ----------- | ----------- | -------------- |
@@ -89,7 +92,20 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | reload | Reloads the config.| 1.0 |
 | force-backup | Forces a backup without running any checks.| 1.0 |
 | reset-chain | Resets any current chain length.| 1.0 |
+</details>
 
+
+<details open>
+<summary>2.2+</summary>
+
+| Command | Description | Supported From |
+| ----------- | ----------- | -------------- |
+| start | Makes a backup using the configured backup type.| 2.2 |
+| reload-config | Reloads the config.| 2.2 |
+| snapshot | Creates a "snapshot" backup that cannot be auto-deleted.| 2.2 |
+| reset-chain | Resets any current chain length.| 1.0 |
+
+</details>
 
 ### Commandline:
 
