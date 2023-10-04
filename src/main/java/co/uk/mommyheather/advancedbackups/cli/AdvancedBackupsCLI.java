@@ -124,6 +124,7 @@ public class AdvancedBackupsCLI {
         }
 
         type = CLIIOHelpers.getBackupType(type);
+        if (type.equals("snapshot (command-made only)")) type = "snapshots";
 
         
         if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
@@ -132,6 +133,9 @@ public class AdvancedBackupsCLI {
         else {
             backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
         }
+
+        
+        if (type.equals("snapshots")) type = "zips";
            
         if (!backupDir.exists()) {
             CLIIOHelpers.error("Could not find backup directory!");
@@ -167,15 +171,6 @@ public class AdvancedBackupsCLI {
         else {
             worldFile = CLIIOHelpers.getWorldFile(serverDir);
             worldPath = worldFile.getName().replace(" ", "_");
-        }
-
-
-        if (!worldFile.exists()) {
-            CLIIOHelpers.error("Unable to find world folder!");
-            CLIIOHelpers.error(worldFile.getAbsolutePath());
-            CLIIOHelpers.error("Check if the location exists and the name is correct and try again.");
-            return;
-
         }
 
 
