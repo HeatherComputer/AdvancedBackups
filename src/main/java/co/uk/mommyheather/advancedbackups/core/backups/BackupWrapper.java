@@ -103,6 +103,10 @@ public class BackupWrapper {
         if (!incremental.exists()) {
             incremental.mkdirs();
         }
+        File snapshots = new File(file, "/snapshots/");
+        if (!snapshots.exists()) {
+            snapshots.mkdirs();
+        }
 
         File backupManifest = new File(file, "manifest.json");
         if (!backupManifest.exists()) {
