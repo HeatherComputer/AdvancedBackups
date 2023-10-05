@@ -9,7 +9,7 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class AdvancedBackupsCommand {
     public static void register(CommandDispatcher<CommandSource> stack) {
-        stack.register(Commands.literal("advancedbackups").requires((runner) -> {
+        stack.register(Commands.literal("backup").requires((runner) -> {
             return runner.hasPermission(3);
         }).then(Commands.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
