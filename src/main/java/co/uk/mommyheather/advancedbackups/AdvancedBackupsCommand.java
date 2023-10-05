@@ -48,11 +48,11 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getName()
         {
-            return "reload";
+            return "reload-config";
         }
         @Override
         public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.reload.usage";
+            return "commands.advancedbackups.reload-config.usage";
         }
     }    
     
