@@ -10,6 +10,18 @@ archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+
+
+task prepareVSCodeRun(type: Copy) {
+    from jar
+    into "run/mods"
+    rename (".*", "advancedbackups-vscode.jar")
+    //output of the jar task is copied into run/mods, with the name "advancedbackups-vscode.jar", overwriting any existing one
+}
+
+prepareVSCodeRun.mustRunAfter jar
+
+
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   Snapshot are built nightly.
