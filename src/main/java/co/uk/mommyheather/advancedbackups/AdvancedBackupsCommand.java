@@ -21,7 +21,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public String getName()
     {
-        return "advancedbackups";
+        return "backup";
     }
 
 
@@ -34,7 +34,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public String getUsage(ICommandSender icommandsender)
     {
-        return "/advancedbackups (check|start|reload-config|snapshot)";
+        return "/backup (check|start|reload-config|snapshot)";
     }
 
     public static class Reload extends CommandTreeBase {
@@ -52,7 +52,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         }
         @Override
         public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.reload-config.usage";
+            return "commands.backup.reload-config.usage";
         }
     }    
     
@@ -71,7 +71,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         }
         @Override
         public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.start.usage";
+            return "commands.backup.start.usage";
         }
     }
     
@@ -90,7 +90,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         }
         @Override
         public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.resetchain.usage";
+            return "commands.backup.resetchain.usage";
         }
     }
     
@@ -109,7 +109,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         }
         @Override
         public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.snapshot.usage";
+            return "commands.backup.snapshot.usage";
         }
     }
 }
