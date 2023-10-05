@@ -11,28 +11,14 @@ public class AdvancedBackupsCommand {
     public static void register(CommandDispatcher<ServerCommandSource> stack) {
         stack.register(CommandManager.literal("advancedbackups").requires((runner) -> {
             return runner.hasPermissionLevel(3);
-        }).then(CommandManager.literal("check").executes((runner) -> {
-            CoreCommandSystem.checkBackups((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
-            });
-            return 1;
-         }))
-         
-         .then(CommandManager.literal("start").executes((runner) -> {
+        }).then(CommandManager.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
                 runner.getSource().sendFeedback(Text.of(response), true);
             });
             return 1;
          }))
 
-         .then(CommandManager.literal("force-backup").executes((runner) -> {
-            CoreCommandSystem.forceBackup((response) -> {
-                runner.getSource().sendFeedback(Text.of(response), true);
-            });
-            return 1;
-         }))
-
-         .then(CommandManager.literal("reload").executes((runner) -> {
+         .then(CommandManager.literal("reload-config").executes((runner) -> {
             CoreCommandSystem.reloadConfig((response) -> {
                 runner.getSource().sendFeedback(Text.of(response), true);
             });
@@ -41,6 +27,13 @@ public class AdvancedBackupsCommand {
          
          .then(CommandManager.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
+                runner.getSource().sendFeedback(Text.of(response), true);
+            });
+            return 1;
+         }))
+         
+         .then(CommandManager.literal("snapshot").executes((runner) -> {
+            CoreCommandSystem.snapshot((response) -> {
                 runner.getSource().sendFeedback(Text.of(response), true);
             });
             return 1;
