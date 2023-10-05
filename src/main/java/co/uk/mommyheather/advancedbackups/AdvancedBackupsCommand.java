@@ -11,28 +11,14 @@ public class AdvancedBackupsCommand {
     public static void register(CommandDispatcher<CommandSource> stack) {
         stack.register(Commands.literal("advancedbackups").requires((runner) -> {
             return runner.hasPermission(3);
-        }).then(Commands.literal("check").executes((runner) -> {
-            CoreCommandSystem.checkBackups((response) -> {
-                runner.getSource().sendSuccess(new StringTextComponent(response), true);
-            });
-            return 1;
-         }))
-         
-         .then(Commands.literal("start").executes((runner) -> {
+        }).then(Commands.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
                 runner.getSource().sendSuccess(new StringTextComponent(response), true);
             });
             return 1;
          }))
 
-         .then(Commands.literal("force-backup").executes((runner) -> {
-            CoreCommandSystem.forceBackup((response) -> {
-                runner.getSource().sendSuccess(new StringTextComponent(response), true);
-            });
-            return 1;
-         }))
-
-         .then(Commands.literal("reload").executes((runner) -> {
+         .then(Commands.literal("reload-config").executes((runner) -> {
             CoreCommandSystem.reloadConfig((response) -> {
                 runner.getSource().sendSuccess(new StringTextComponent(response), true);
             });
@@ -41,6 +27,13 @@ public class AdvancedBackupsCommand {
 
          .then(Commands.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
+                runner.getSource().sendSuccess(new StringTextComponent(response), true);
+            });
+            return 1;
+         }))
+
+         .then(Commands.literal("snapshot").executes((runner) -> {
+            CoreCommandSystem.snapshot((response) -> {
                 runner.getSource().sendSuccess(new StringTextComponent(response), true);
             });
             return 1;
