@@ -440,31 +440,37 @@ public class AdvancedBackupsCLI {
     }
 
     private static void restorePartialZip(int index, File worldFile) {
-        Path file;
-        HashMap<String, Path> entries = new HashMap<>();
 
+        HashMap<String, Object> filePaths = new HashMap<>();
+        HashMap<String, String> dates = new HashMap<>();
+        HashMap<String, ZipFile> entryOwners = new HashMap<>();
         try {
-            FileSystem zipFs = FileSystems.newFileSystem(new File(fileNames.get(index)).toPath(), AdvancedBackupsCLI.class.getClassLoader());
-            Path root = zipFs.getPath("");
-            Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-                    entries.put(file.toString(), file);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
+            File backup = new File(fileNames.get(index));
+    
+            addBackupNamesToLists(backup, entryOwners, filePaths, dates, "\u001B[32m");
 
-            file = CLIIOHelpers.getFileToRestore(entries, "", worldFile);
-            CLIIOHelpers.info("Restoring " + file.toString() + "...");
-            Path outputFile = new File(worldFile, file.toString()).toPath();
-            Files.copy(file, outputFile, StandardCopyOption.REPLACE_EXISTING);
-            CLIIOHelpers.info("Done.");
-            
+            ZipEntry select = ((ZipEntry) CLIIOHelpers.getFileToRestore(filePaths, "", worldFile));
+
+            File outputFile = new File(worldFile, select.toString());
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+
+            CLIIOHelpers.info("Restoring " + select.toString() + "...");
+
+            byte[] buffer = new byte[1028];
+            InputStream inputSteam = entryOwners.get(select.toString()).getInputStream(select);
+            int length;
+            while ((length = inputSteam.read(buffer, 0, buffer.length)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            outputStream.flush();
+            outputStream.close();
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return;
+
         }
+
+
+
          
     }
 
