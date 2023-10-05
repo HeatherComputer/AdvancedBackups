@@ -1,6 +1,6 @@
 LOADING A BACKUP
 
-- Run the script found in the /backups folder to start the restoration tool.
+- Run the script found in the backups folder to start the restoration tool.
 - Follow the prompts
 
 
