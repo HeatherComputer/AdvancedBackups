@@ -2,7 +2,6 @@ package co.uk.mommyheather.advancedbackups;
 
 import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -13,11 +12,10 @@ public class AdvancedBackupsCommand extends CommandTreeBase
 {
     public AdvancedBackupsCommand()
     {
-        addSubcommand(new Check());
         addSubcommand(new Start());
-        addSubcommand(new Force());
         addSubcommand(new Reload());
         addSubcommand(new ResetChain());
+        addSubcommand(new Snapshot());
     }
 
     @Override
@@ -36,45 +34,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public String getUsage(ICommandSender icommandsender)
     {
-        return "/advancedbackups (check|start|force-backup|reload)";
-    }
-
-    public static class Check extends CommandTreeBase {
-        public Check(){}
-        @Override
-        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            CoreCommandSystem.checkBackups((response) -> {
-                sender.sendMessage(new TextComponentString(response));
-            });
-        }    
-        @Override
-        public String getName()
-        {
-            return "check";
-        }
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.check.usage";
-        }
-    }
-
-    public static class Force extends CommandTreeBase {
-        public Force(){}
-        @Override
-        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            CoreCommandSystem.forceBackup((response) -> {
-                sender.sendMessage(new TextComponentString(response));
-            });
-        }    
-        @Override
-        public String getName()
-        {
-            return "force-backup";
-        }
-        @Override
-        public String getUsage(ICommandSender sender) {
-            return "commands.advancedbackups.force.usage";
-        }
+        return "/advancedbackups (check|start|reload-config|snapshot)";
     }
 
     public static class Reload extends CommandTreeBase {
@@ -131,6 +91,25 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.advancedbackups.resetchain.usage";
+        }
+    }
+    
+    public static class Snapshot extends CommandTreeBase {
+        public Snapshot(){}
+        @Override
+        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+            CoreCommandSystem.snapshot((response) -> {
+                sender.sendMessage(new TextComponentString(response));
+            });
+        }    
+        @Override
+        public String getName()
+        {
+            return "snapshot";
+        }
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.advancedbackups.snapshot.usage";
         }
     }
 }
