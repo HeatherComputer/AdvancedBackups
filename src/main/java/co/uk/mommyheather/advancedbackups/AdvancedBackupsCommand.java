@@ -9,24 +9,10 @@ import net.minecraft.network.chat.Component;
 
 public class AdvancedBackupsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> stack) {
-        stack.register(Commands.literal("advancedbackups").requires((runner) -> {
+        stack.register(Commands.literal("backup").requires((runner) -> {
             return runner.hasPermission(3);
-        }).then(Commands.literal("check").executes((runner) -> {
-            CoreCommandSystem.checkBackups((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
-            });
-            return 1;
-         }))
-         
-         .then(Commands.literal("start").executes((runner) -> {
+        }).then(Commands.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
-            });
-            return 1;
-         }))
-
-         .then(Commands.literal("force-backup").executes((runner) -> {
-            CoreCommandSystem.forceBackup((response) -> {
                 runner.getSource().sendSuccess(Component.literal(response), true);
             });
             return 1;
@@ -41,6 +27,13 @@ public class AdvancedBackupsCommand {
 
          .then(Commands.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
+                runner.getSource().sendSuccess(Component.literal(response), true);
+            });
+            return 1;
+         }))
+
+         .then(Commands.literal("snapshot").executes((runner) -> {
+            CoreCommandSystem.snapshot((response) -> {
                 runner.getSource().sendSuccess(Component.literal(response), true);
             });
             return 1;
