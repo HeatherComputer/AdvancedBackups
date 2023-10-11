@@ -267,10 +267,6 @@ public class BackupWrapper {
 
     public static void makeSingleBackup(long delay, Consumer<String> output) {
 
-        ABCore.disableSaving();
-        if (ConfigManager.save.get()) {
-            ABCore.saveOnce();
-        }
 
         // Make new thread, run backup utility.
         ThreadedBackup threadedBackup = new ThreadedBackup(delay, output);
