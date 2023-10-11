@@ -195,7 +195,7 @@ Shortly after release, I wish to add more commands.
 
 - Config editing on the fly
 - One-off backup types
-    - Currently, the `start` and `force-backup` commands only allow you to make a backup of the type specified in config. This will change.
+    - Currently, the `start` command only allows you to make a backup of the type specified in config. This will change.
 
 
 ## Client feedback
