@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -54,6 +53,11 @@ public class ThreadedBackup extends Thread {
     public void run() {
         try {
             sleep(delay);
+                
+            ABCore.disableSaving();
+            if (ConfigManager.save.get()) {
+                ABCore.saveOnce();
+            }
         } catch (InterruptedException e) {
 
         }
