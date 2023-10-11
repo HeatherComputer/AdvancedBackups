@@ -55,12 +55,28 @@ public class ThreadedBackup extends Thread {
         try {
             sleep(delay);
         } catch (InterruptedException e) {
-            return;
+
         }
+
+        running = true;
+        try {
+            makeBackup();
+        } catch (Exception e) {
+            ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
+            e.printStackTrace();
+        }
+
+        
+        running = false;
+        ABCore.enableSaving();
+        output.accept("Backup complete!");
+        BackupWrapper.finishBackup();
+    }
+
+    public void makeBackup() {
         if (running && !snapshot) {
             return;
         }
-        running = true;
 
         File file = new File(ConfigManager.path.get());
         backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
@@ -87,9 +103,6 @@ public class ThreadedBackup extends Thread {
             }
         }
 
-        BackupWrapper.finishBackup();
-        ThreadedBackup.running = false;
-        output.accept("Backup complete!");
     }
 
 
