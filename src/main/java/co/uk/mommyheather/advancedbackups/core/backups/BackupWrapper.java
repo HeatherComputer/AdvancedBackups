@@ -292,7 +292,6 @@ public class BackupWrapper {
 
     public static void finishBackup() {
         File directory = new File(ConfigManager.path.get());
-        ABCore.enableSaving();
 
         switch(ConfigManager.type.get()) {
             case "zip" : {
