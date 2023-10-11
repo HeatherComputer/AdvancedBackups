@@ -62,7 +62,6 @@ public class ThreadedBackup extends Thread {
             e.printStackTrace();
         }
 
-        running = true;
         try {
             makeBackup();
         } catch (Exception e) {
@@ -81,6 +80,8 @@ public class ThreadedBackup extends Thread {
         if (running && !snapshot) {
             return;
         }
+        
+        running = true;
 
         File file = new File(ConfigManager.path.get());
         backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
