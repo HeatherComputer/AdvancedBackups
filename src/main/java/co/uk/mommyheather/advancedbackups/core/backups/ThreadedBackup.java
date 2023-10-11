@@ -58,8 +58,8 @@ public class ThreadedBackup extends Thread {
             if (ConfigManager.save.get()) {
                 ABCore.saveOnce();
             }
-        } catch (InterruptedException e) {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         running = true;
