@@ -134,7 +134,7 @@ SAVE COMPLETE - PREPARING FOR BACKUP!
 
     public static void saveOnce() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        server.saveEverything(true, true, true);
+        server.saveEverything(true, false, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
