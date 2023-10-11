@@ -114,7 +114,7 @@ public class AdvancedBackups
 
     public static void saveOnce() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        server.saveAllChunks(true, true, true);
+        server.saveAllChunks(true, false, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
