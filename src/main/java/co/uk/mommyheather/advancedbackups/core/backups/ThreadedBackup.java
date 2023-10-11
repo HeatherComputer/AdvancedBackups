@@ -76,9 +76,9 @@ public class ThreadedBackup extends Thread {
         BackupWrapper.finishBackup();
     }
 
-    public void makeBackup() {
+    public void makeBackup() throws Exception {
         if (running && !snapshot) {
-            return;
+            throw new Exception("Backup already running!");
         }
         
         running = true;
