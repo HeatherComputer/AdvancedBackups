@@ -18,7 +18,7 @@ public class AdvancedBackupsCommand {
             return 1;
          }))
 
-         .then(CommandManager.literal("reload").executes((runner) -> {
+         .then(CommandManager.literal("reload-config").executes((runner) -> {
             CoreCommandSystem.reloadConfig((response) -> {
                 runner.getSource().sendFeedback(() -> Text.of(response), true);
             });
