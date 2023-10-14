@@ -51,7 +51,7 @@ public class BackupWrapper {
             checkAndMakeBackups(Math.max(5000, ConfigManager.delay.get() * 1000));
         }
 
-        new BackupTimingThread().start();
+        //new BackupTimingThread().start();
     }
 
     public static void checkShutdownBackups() {
@@ -261,15 +261,31 @@ public class BackupWrapper {
     }
 
     
-    private static void makeSingleBackup(long delay) {
+    public static void makeSingleBackup(long delay) {
         makeSingleBackup(delay, (s) -> {});
     }
 
     public static void makeSingleBackup(long delay, Consumer<String> output) {
 
+        try {  
+            ABCore.disableSaving();
+            if (ConfigManager.save.get()) {
+                ABCore.saveOnce();
+            }
+        } catch (Exception e) {
+            ABCore.errorLogger.accept("Error saving or disabling saving!");
+            e.printStackTrace();
+        }
 
+        if (ThreadedBackup.running) {
+            ABCore.errorLogger.accept("Backup already running!");
+            new Exception().printStackTrace();
+            return;
+        }
         // Make new thread, run backup utility.
+        ThreadedBackup.running = true;
         ThreadedBackup threadedBackup = new ThreadedBackup(delay, output);
+
         threadedBackup.start();
         // Don't re-enable saving - leave that down to the backup thread.
     }
@@ -279,7 +295,14 @@ public class BackupWrapper {
         if (ConfigManager.save.get()) {
             ABCore.saveOnce();
         }
+        
+        if (ThreadedBackup.running) {
+            ABCore.errorLogger.accept("Backup already running!");
+            new Exception().printStackTrace();
+            return;
+        }
 
+        ThreadedBackup.running = true;
         ThreadedBackup threadedBackup = new ThreadedBackup(0, output);
         threadedBackup.snapshot();
         threadedBackup.start();

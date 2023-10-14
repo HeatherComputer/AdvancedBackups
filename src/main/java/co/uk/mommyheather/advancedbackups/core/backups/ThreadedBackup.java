@@ -30,7 +30,8 @@ public class ThreadedBackup extends Thread {
     private static int count;
     private static float partialSize;
     private static float completeSize;
-    public static boolean running = false;
+    public static volatile boolean running = false;
+    public static volatile boolean wasRunning = false;
     private static String backupName;
     private Consumer<String> output;
     private boolean snapshot = false;
@@ -53,11 +54,6 @@ public class ThreadedBackup extends Thread {
     public void run() {
         try {
             sleep(delay);
-                
-            ABCore.disableSaving();
-            if (ConfigManager.save.get()) {
-                ABCore.saveOnce();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,19 +65,13 @@ public class ThreadedBackup extends Thread {
             e.printStackTrace();
         }
 
-        
-        running = false;
-        ABCore.enableSaving();
-        output.accept("Backup complete!");
         BackupWrapper.finishBackup();
+        output.accept("Backup complete!");
+        wasRunning = true;
+        running = false;
     }
 
     public void makeBackup() throws Exception {
-        if (running && !snapshot) {
-            throw new Exception("Backup already running!");
-        }
-        
-        running = true;
 
         File file = new File(ConfigManager.path.get());
         backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
