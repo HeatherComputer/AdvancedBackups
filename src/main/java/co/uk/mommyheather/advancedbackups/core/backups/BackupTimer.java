@@ -12,7 +12,7 @@ public class BackupTimer  {
     private static int index = 0;
     private static long prev = 0;
 
-    private static long nextBackup = 0;
+    private static long nextBackup = System.currentTimeMillis() + calculateNextBackupTime();
 
     public static void check() {
         if (ThreadedBackup.running) return;
