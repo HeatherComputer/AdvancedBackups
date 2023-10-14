@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
@@ -26,6 +27,10 @@ public class CoreCommandSystem {
     public static void startBackup(Consumer<String> chat) {
         chat.accept("Starting backup...");
         BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
+        if (ThreadedBackup.running) {
+            chat.accept("Cannot start a backup whilst a backup is already running!");
+            return;
+        }
         BackupWrapper.makeSingleBackup(0, chat);
     }
 
@@ -37,6 +42,10 @@ public class CoreCommandSystem {
 
     public static void snapshot(Consumer<String> chat) {
         BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
+        if (ThreadedBackup.running) {
+            chat.accept("Cannot start a snapshot whilst a backup is already running!");
+            return;
+        }
         BackupWrapper.makeSnapshot(chat);
     }
 
