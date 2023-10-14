@@ -13,6 +13,10 @@ plugins {
 }
 apply plugin: 'java'
 
+if(file('customTasks.gradle').exists()){
+    apply from: 'customTasks.gradle'  //customTasks.gradle won't exist in git
+}
+
 version = ''
 group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "advancedbackups-corelib"
