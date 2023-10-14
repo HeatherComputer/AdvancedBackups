@@ -29,3 +29,4 @@ forge*changelog.txt
 #custom for core lib
 .gitattributes
 .vscode
+customTasks.gradle
