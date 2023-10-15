@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups;
 
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import net.minecraft.server.MinecraftServer;
@@ -9,6 +10,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.FolderName;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -81,6 +83,12 @@ public class AdvancedBackups
     @SubscribeEvent
     public void registerCommands(RegisterCommandsEvent event){
         AdvancedBackupsCommand.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public void onPostTick(TickEvent.ServerTickEvent event) {
+        if (!event.phase.equals(TickEvent.Phase.END)) return;
+        BackupTimer.check();
     }
 
 
