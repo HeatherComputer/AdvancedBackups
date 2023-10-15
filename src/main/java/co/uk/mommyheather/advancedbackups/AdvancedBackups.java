@@ -14,12 +14,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.logging.log4j.Logger;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -109,6 +111,12 @@ public class AdvancedBackups
     @SubscribeEvent
     public void onPlayerConnect(PlayerEvent.PlayerLoggedInEvent event) {
         ABCore.activity = true;
+    }
+
+    @SubscribeEvent
+    public void onTickEnd(TickEvent.ServerTickEvent event) {
+        if (!event.phase.equals(TickEvent.Phase.END)) return;
+        BackupTimer.check();
     }
 
     
