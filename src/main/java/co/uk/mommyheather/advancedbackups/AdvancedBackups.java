@@ -1,14 +1,19 @@
 package co.uk.mommyheather.advancedbackups;
 
+import net.minecraft.command.server.CommandSaveAll;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.IProgressUpdate;
+import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldServer;
 
 import org.apache.logging.log4j.Logger;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -18,6 +23,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -25,7 +31,6 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
-
 
 @Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION, acceptableRemoteVersions = "*")
 public class AdvancedBackups
@@ -56,6 +61,7 @@ public class AdvancedBackups
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        FMLCommonHandler.instance().bus().register(this);
     }
 
     @EventHandler
@@ -107,6 +113,12 @@ public class AdvancedBackups
     public void onPlayerConnected(PlayerEvent.PlayerLoggedInEvent event) {
         ABCore.activity = true;
     }
+
+    @SubscribeEvent
+    public void onTickEnd(TickEvent.ServerTickEvent event) {
+        if (!event.phase.equals(TickEvent.Phase.END)) return;
+        BackupTimer.check();
+    }
     
     
     public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
@@ -140,12 +152,31 @@ public class AdvancedBackups
     public static void saveOnce() {
         try {
             MinecraftServer server = AdvancedBackups.server;
-            Class<?>[] classes = {Boolean.class};
-            Method saveMethod = MinecraftServer.class.getMethod("saveAllWorlds", classes);
-            saveMethod.invoke(server, false);
+            if (server.getConfigurationManager() != null)
+            {
+                server.getConfigurationManager().saveAllPlayerData();
+            }
+            
+            int i;
+            WorldServer worldserver;
+            boolean flag;
+            
+            for (i = 0; i < server.worldServers.length; ++i)
+            {
+                if (server.worldServers[i] != null)
+                {
+                    worldserver = server.worldServers[i];
+                    flag = worldserver.levelSaving;
+                    worldserver.levelSaving = false;
+                    worldserver.saveAllChunks(true, (IProgressUpdate)null);
+                    worldserver.levelSaving = flag;
+                }
+            }
+            
+
             if (ConfigManager.silent.get()) return;
             warningLogger.accept(saveCompleteMessage);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (MinecraftException e) {
             // TODO Scream at user
             errorLogger.accept("FAILED TO SAVE WORLD!");
             e.printStackTrace();
