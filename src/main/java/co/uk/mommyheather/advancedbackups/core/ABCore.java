@@ -32,6 +32,8 @@ public class ABCore {
     public static Runnable enableSaving;
     public static Runnable saveOnce;
     
+    public static String backupPath;
+
     public static void disableSaving() {
         disableSaving.run();
     }
@@ -49,7 +51,7 @@ public class ABCore {
             GsonBuilder builder = new GsonBuilder(); 
             Gson gson = builder.setPrettyPrinting().create();
             //i should thread this at some point
-            File file = new File(ConfigManager.path.get());
+            File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
             if (backupManifest.exists()) {
                 try {

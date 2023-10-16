@@ -32,7 +32,7 @@ public class BackupWrapper {
 
         prepareBackupDestination();
 
-        File file = new File(ConfigManager.path.get());
+        File file = new File(ABCore.backupPath);
         File backupManifest = new File(file, "manifest.json");
         if (backupManifest.exists()) {
             try {
@@ -83,7 +83,7 @@ public class BackupWrapper {
     }    
 
     private static void prepareBackupDestination() {
-        File file = new File(ConfigManager.path.get());
+        File file = new File(ABCore.backupPath);
 
         if (!file.exists()) {
             file.mkdirs();
@@ -156,7 +156,7 @@ public class BackupWrapper {
     }
 
     private static void prepareReadMe(File path) {
-        File readme = new File(path, "README-BEFORE-RESTORING.txt");
+        File readme = new File(path.getParent(), "README-BEFORE-RESTORING.txt");
         if (!readme.exists()) {
             try {
                 InputStream is = BackupWrapper.class.getClassLoader().getResourceAsStream("advancedbackups-readme.txt");
@@ -186,9 +186,9 @@ public class BackupWrapper {
             File script;
             Boolean flag = System.getProperty("os.name").toLowerCase().contains("windows");
     
-            if (flag) script = new File(path, "restore-script.bat");
+            if (flag) script = new File(path.getParent(), "restore-script.bat");
     
-            else script = new File(path, "restore-script.sh");
+            else script = new File(path.getParent(), "restore-script.sh");
     
             if (script.exists()) script.delete();
     
@@ -231,7 +231,7 @@ public class BackupWrapper {
 
     public static long mostRecentBackupTime() {
 
-        File directory = new File(ConfigManager.path.get());
+        File directory = new File(ABCore.backupPath);
 
         switch(ConfigManager.type.get()) {
             case "zip" : {
@@ -310,7 +310,7 @@ public class BackupWrapper {
     }
 
     public static void finishBackup() {
-        File directory = new File(ConfigManager.path.get());
+        File directory = new File(ABCore.backupPath);
 
         switch(ConfigManager.type.get()) {
             case "zip" : {
