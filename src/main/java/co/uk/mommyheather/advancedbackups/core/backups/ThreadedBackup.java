@@ -73,8 +73,8 @@ public class ThreadedBackup extends Thread {
 
     public void makeBackup() throws Exception {
 
-        File file = new File(ConfigManager.path.get());
-        backupName = ABCore.serialiseBackupName(ABCore.worldDir.getParent().toFile().getName().replaceAll(" ", "_"));
+        File file = new File(ABCore.backupPath);
+        backupName = ABCore.serialiseBackupName("backup");
 
         if (snapshot) {
             makeZipBackup(file, true);
@@ -250,7 +250,7 @@ public class ThreadedBackup extends Thread {
             else {
                 if (differential) {
                     manifest.differential.chainLength++;
-                    manifest.differential.setLastBackup(new Date().getTime());
+                    //manifest.differential.setLastBackup(new Date().getTime());
                 }
                 else {
                     manifest.incremental.chainLength++;
