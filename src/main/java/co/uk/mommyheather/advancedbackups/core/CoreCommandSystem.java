@@ -53,7 +53,7 @@ public class CoreCommandSystem {
         chat.accept("Resetting chain length... The next backup will be a complete backup.");
         try {
 
-            File file = new File(ConfigManager.path.get());
+            File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
             if (backupManifest.exists()) {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);

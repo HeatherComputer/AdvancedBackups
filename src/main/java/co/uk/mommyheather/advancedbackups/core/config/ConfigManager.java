@@ -65,12 +65,10 @@ public class ConfigManager {
             migrateConfig();
         }
         file = new File(dir, "AdvancedBackups.properties");
-        if (file.exists()) {
-            loadConfig();
-        }
-        else {
+        if (!file.exists()) {
             writeConfig();
         }
+        loadConfig();
   
     }
 
@@ -155,6 +153,8 @@ public class ConfigManager {
             long mins = Long.parseLong(hm[1]) * 60000;
             BackupWrapper.configuredPlaytime.add(hours + mins);
         }
+
+        ABCore.backupPath = path.get() + "/" + (ABCore.worldDir.getParent().toFile().getName());
     }
 
     

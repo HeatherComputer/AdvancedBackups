@@ -90,14 +90,14 @@ public class AdvancedBackupsCLI {
 
         CLIIOHelpers.info("Config loaded!");
 
-        File backupDir;
+        File backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), ""));
 
-        
-        if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
-            backupDir = new File(backupLocation, File.separator + type + File.separator);
-        }
-        else {
-            backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
+        if (!backupDir.exists()) {
+            CLIIOHelpers.error("Could not find backup directory!");
+            CLIIOHelpers.error(backupDir.getAbsolutePath());
+            CLIIOHelpers.error("Have you made any backups before?");
+            //Fatal, cannot continue
+            return;
         }
 
         
@@ -124,24 +124,17 @@ public class AdvancedBackupsCLI {
         type = CLIIOHelpers.getBackupType(type);
         if (type.equals("snapshot (command-made only)")) type = "snapshots";
 
-        
+        /*/
         if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
             backupDir = new File(backupLocation, File.separator + type + File.separator);
         }
         else {
             backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
         }
-
+*/
         
         if (type.equals("snapshots")) type = "zips";
            
-        if (!backupDir.exists()) {
-            CLIIOHelpers.error("Could not find backup directory!");
-            CLIIOHelpers.error(backupDir.getAbsolutePath());
-            CLIIOHelpers.error("Have you made any backups before?");
-            //Fatal, cannot continue
-            return;
-        }
 
         
 
@@ -171,6 +164,7 @@ public class AdvancedBackupsCLI {
             worldPath = worldFile.getName().replace(" ", "_");
         }
 
+        backupDir = new File(backupDir, worldFile.getName() + "/" + type);
 
         int backupDateIndex;
         try {
@@ -285,11 +279,12 @@ public class AdvancedBackupsCLI {
 
             }
             else {
-                if (!file.getName().contains(worldPath)) continue;
+                //if (!file.getName().contains(worldPath)) continue;
                 fileNames.add(file.getAbsolutePath());
                 String out = file.getName();
                 out = out.replaceAll(".zip", "");
-                out = out.replaceAll(worldPath + "_", ": ");
+                //out = out.replaceAll(worldPath + "_", ": ");
+                out = out.replaceAll("backup_", ": ");
                 out = out.replaceAll("-partial", "\u001B[33m partial\u001B[0m");
                 out = out.replaceAll("-full", "\u001B[32m full\u001B[0m");
                 CLIIOHelpers.info(fileNames.size() + out);
@@ -854,7 +849,8 @@ public class AdvancedBackupsCLI {
                 dates.put(entry.toString().replace("\\", "/"), "\u001b[31m"
                  + backupName
                 .substring(backupName.toString().lastIndexOf("/") + 1) 
-                .replace(worldPath + "_", "")
+                //.replace(worldPath + "_", "")
+                .replace("backup_", "")
                 .replace("-full.zip", "")
                 .replace("-partial.zip", "")
                 + "\u001B[0m");
@@ -871,7 +867,8 @@ public class AdvancedBackupsCLI {
                     dates.put(file.toPath().relativize(path).toString().replace("\\", "/"), "\u001b[31m"
                      + backupName
                     .substring(backupName.toString().lastIndexOf("/") + 1) 
-                    .replace(worldPath + "_", "")
+                    //.replace(worldPath + "_", "")
+                    .replace("backup_", "")
                     .replace("-full", "")
                     .replace("-partial", "")
                     + "\u001B[0m");
