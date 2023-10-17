@@ -138,7 +138,7 @@ public class AdvancedBackups
 
     public static void enableSaving() {
         for (WorldServer level : server.worlds) {
-            if (level != null && !level.disableLevelSaving) {
+            if (level != null && level.disableLevelSaving) {
                 level.disableLevelSaving = false;
             }
         }
