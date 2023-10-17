@@ -118,7 +118,7 @@ public class AdvancedBackups implements ModInitializer {
     public static void enableSaving() {
         MinecraftServer server = AdvancedBackups.server;
         for (ServerWorld level : server.getWorlds()) {
-            if (level != null && !level.savingDisabled) {
+            if (level != null && level.savingDisabled) {
                 level.savingDisabled = false;
             }
         }
