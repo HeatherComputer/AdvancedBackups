@@ -132,7 +132,7 @@ SAVE COMPLETE - PREPARING FOR BACKUP!
     public static void enableSaving() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         for (ServerLevel level : server.getAllLevels()) {
-            if (level != null && !level.noSave) {
+            if (level != null && level.noSave) {
                 level.noSave = false;
             }
         }
