@@ -126,7 +126,9 @@ public class AdvancedBackups
     public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
 
 
-
+    //fun fact : this boolean is named wrong in MCP mappings!
+    //reference : net.minecraft.command.server.CommandSaveOff and CommandSaveOn
+    //notice how off sets the boolean to true, and on sets it to false!
     public static void disableSaving() {
         MinecraftServer server = AdvancedBackups.server;
         for (WorldServer level : server.worldServers) {
@@ -141,7 +143,7 @@ public class AdvancedBackups
     public static void enableSaving() {
         MinecraftServer server = AdvancedBackups.server;
         for (WorldServer level : server.worldServers) {
-            if (level != null && !level.levelSaving) {
+            if (level != null && level.levelSaving) {
                 level.levelSaving = false;
             }
         }
