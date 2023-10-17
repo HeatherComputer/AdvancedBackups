@@ -58,6 +58,7 @@ public class AdvancedBackupsCLI {
         
          
         CLIIOHelpers.info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
+        CLIIOHelpers.info("Note : this cannot restore backups made prior to the 3.0 release.");
         CLIIOHelpers.info("Searching for properties...", false);
 
         
