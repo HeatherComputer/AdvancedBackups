@@ -35,11 +35,11 @@ public class ABCore {
     public static String backupPath;
 
     public static void disableSaving() {
-        //disableSaving.run();
+        disableSaving.run();
     }
 
     public static void enableSaving() {
-        //enableSaving.run();
+        enableSaving.run();
     }
 
     public static void saveOnce() {
