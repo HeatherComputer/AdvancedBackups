@@ -4,23 +4,30 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class ThreadedBackup extends Thread {
@@ -165,7 +172,14 @@ public class ThreadedBackup extends Thread {
                 manifest = BackupManifest.defaults();
             }
 
-            long comp = differential ? manifest.differential.getLastBackup() : manifest.incremental.getLastBackup();
+            if (manifest.differential.hashList == null) manifest.differential.hashList = new HashList();
+            if (manifest.incremental.hashList == null) manifest.incremental.hashList = new HashList();
+
+            //mappings here - file path and md5 hash
+            Map<String, String> comp = differential ? manifest.differential.getHashList().getHashes() : manifest.incremental.getHashList().getHashes();
+            Map<String, String> newHashes = new HashMap<String, String>();
+
+            //long comp = differential ? manifest.differential.getLastBackup() : manifest.incremental.getLastBackup();
             ArrayList<Path> toBackup = new ArrayList<>();
             ArrayList<Path> completeBackup = new ArrayList<>();
 
@@ -184,10 +198,13 @@ public class ThreadedBackup extends Thread {
                     }
                     count++;
                     completeSize += attributes.size();
+                    String hash = getFileHash(targetFile);
+                    String compHash = comp.getOrDefault(targetFile.toString(), "");
                     completeBackup.add(targetFile);
-                    if (completeTemp || attributes.lastModifiedTime().toMillis() >= comp) {
+                    if (completeTemp || !compHash.equals(hash)) {
                         toBackup.add(targetFile);
                         partialSize += attributes.size();
+                        newHashes.put(targetFile.toString(), hash);
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -200,6 +217,10 @@ public class ThreadedBackup extends Thread {
                 complete = true;
                 toBackup.clear();
                 toBackup.addAll(completeBackup);
+            }
+
+            if (complete || !differential) {
+                comp.putAll(newHashes);
             }
             
             backupName += complete? "-full":"-partial";
@@ -274,5 +295,22 @@ public class ThreadedBackup extends Thread {
     public void snapshot() {
         snapshot = true;
     }
+
+
+
+    private String getFileHash(Path path) {
+        try {
+            byte[] data = Files.readAllBytes(path);
+            byte[] hash = MessageDigest.getInstance("MD5").digest(data);
+            String checksum = new BigInteger(1, hash).toString(16);
+            return checksum;
+        } catch (IOException | NoSuchAlgorithmException e) {
+            ABCore.errorLogger.accept("ERROR CALCULATING HASH FOR FILE! " + path.getFileName());
+            ABCore.errorLogger.accept("It will be backed up anyway.");
+            e.printStackTrace();
+            return Integer.toString(new Random().nextInt());
+        }
+    }
+
 
 }
