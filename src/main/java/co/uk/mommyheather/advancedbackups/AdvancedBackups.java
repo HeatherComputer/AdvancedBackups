@@ -151,7 +151,7 @@ public class AdvancedBackups
         warningLogger.accept(savesEnabledMessage);
     }
 
-    public static void saveOnce() {
+    public static void saveOnce(boolean unused) { //flush doesn't seem to be an option in 1.7.10
         try {
             MinecraftServer server = AdvancedBackups.server;
             if (server.getConfigurationManager() != null)
