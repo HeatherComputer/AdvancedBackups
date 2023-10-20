@@ -198,7 +198,7 @@ public class ThreadedBackup extends Thread {
                     }
                     count++;
                     completeSize += attributes.size();
-                    String hash = getFileHash(targetFile);
+                    String hash = getFileHash(file.toAbsolutePath());
                     String compHash = comp.getOrDefault(targetFile.toString(), "");
                     completeBackup.add(targetFile);
                     if (completeTemp || !compHash.equals(hash)) {
