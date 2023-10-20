@@ -146,7 +146,7 @@ public class AdvancedBackups
         warningLogger.accept(savesEnabledMessage);
     }
 
-    public static void saveOnce() {
+    public static void saveOnce(boolean unused) { //no flush bool in 1.12 either
         server.saveAllWorlds(false);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
