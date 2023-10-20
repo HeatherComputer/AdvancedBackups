@@ -30,7 +30,7 @@ public class ABCore {
 
     public static Runnable disableSaving;
     public static Runnable enableSaving;
-    public static Runnable saveOnce;
+    public static Consumer<Boolean> saveOnce;
     
     public static String backupPath;
 
@@ -43,7 +43,7 @@ public class ABCore {
     }
 
     public static void saveOnce() {
-        saveOnce.run();
+        saveOnce.accept(ConfigManager.flush.get());;
     }
 
     public static void setActivity() {

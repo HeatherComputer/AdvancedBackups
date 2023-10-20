@@ -6,6 +6,10 @@ config.advancedbackups.enabled
 #Options : true, false    #Default : true
 config.advancedbackups.save
 
+#Whether to flush when making the aforementioned save. Can cause a lag spike, and is usually not required.
+#Options : true, false    #Default : false
+config.advancedbackups.flush
+
 #Whether to require player activity between backups.
 #Options : true, false    #Default : true
 config.advancedbackups.activity
