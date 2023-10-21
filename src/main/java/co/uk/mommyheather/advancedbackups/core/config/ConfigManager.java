@@ -30,11 +30,12 @@ public class ConfigManager {
 
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true);
     public static final BooleanValue save = new BooleanValue("config.advancedbackups.save", true);
+    public static final BooleanValue flush  = new BooleanValue("config.advancedbackups.flush", false);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"});
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups");
     public static final LongValue size = new LongValue("config.advancedbackups.size", 50L, 5L, 9999L);
-    public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.5F, 0.5F, 500F);
+    public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.5F, 0.25F, 500F);
     public static final FloatValue maxFrequency = new FloatValue("config.advancedbackups.frequency.max", 24F, 0.5F, 500F);
     public static final BooleanValue uptime = new BooleanValue("config.advancedbackups.frequency.uptime", true);
     public static final StringArrayValue timesArray = new StringArrayValue("config.advancedbackups.frequency.schedule", new String[] {"1:00"});
@@ -56,20 +57,27 @@ public class ConfigManager {
     public static void loadOrCreateConfig() {
         // Called when the config needs to be loaded, but one may not exist.
         // Creates a new config it one doesn't exist, then loads it.
+        File dir = new File("./config");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
         File file = new File("./AdvancedBackups.properties");
+        if (file.exists()) {
+            migrateConfig();
+        }
+        file = new File(dir, "AdvancedBackups.properties");
         if (!file.exists()) {
             writeConfig();
         }
-        else {
-            loadConfig();
-        }
+        loadConfig();
+  
     }
 
     private static void writeConfig() {
         // Called to write to a config file.
         // Create a complete properties file in the cwd, including any existing changes
         ABCore.infoLogger.accept("Preparing to write to properties file...");
-        File file = new File("./AdvancedBackups.properties");
+        File file = new File("./config/AdvancedBackups.properties");
         try {
             file.createNewFile();
             file.setWritable(true); 
@@ -98,7 +106,7 @@ public class ConfigManager {
         //Load the config file.
         
         Properties props = new Properties();
-        File file = new File("./AdvancedBackups.properties");
+        File file = new File("./config/AdvancedBackups.properties");
         FileReader reader;
         try {
             reader = new FileReader(file);   
@@ -146,5 +154,42 @@ public class ConfigManager {
             long mins = Long.parseLong(hm[1]) * 60000;
             BackupWrapper.configuredPlaytime.add(hours + mins);
         }
+
+        ABCore.backupPath = path.get() + "/" + (ABCore.worldDir.getParent().toFile().getName());
+    }
+
+    
+    private static void migrateConfig() {
+        //Load the config file.
+        
+        Properties props = new Properties();
+        File file = new File("./AdvancedBackups.properties");
+        FileReader reader;
+        try {
+            reader = new FileReader(file);   
+            props.load(reader);
+            reader.close();
+            file.delete();
+        } catch (IOException e) {
+            // TODO : Scream to user
+            e.printStackTrace();
+            return;
+        }
+
+
+        for (String key : entries.keySet()) {
+            if (!props.containsKey(key)) {
+                continue;
+            }
+            ConfigValidationEnum valid = entries.get(key).validate(props.getProperty(key));
+            if (valid != ConfigValidationEnum.VALID) {
+                continue;
+
+            }
+            entries.get(key).load(props.getProperty(key));
+        }
+
+        ABCore.warningLogger.accept("Config in old location detected! Migrating.");
+        writeConfig();
     }
 }

@@ -182,7 +182,7 @@ jobs:
       uses: RubixDev/modrinth-upload@v1
       with:
         file_path: "AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.20,1.20.1"
+        game_versions: "1.20,1.20.1,1.20.2"
         loaders: "forge,neoforge"
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"

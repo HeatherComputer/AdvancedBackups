@@ -13,6 +13,10 @@ plugins {
 }
 apply plugin: 'java'
 
+if(file('customTasks.gradle').exists()){
+    apply from: 'customTasks.gradle'  //customTasks.gradle won't exist in git
+}
+
 version = ''
 group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "advancedbackups-corelib"
@@ -42,7 +46,6 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     //extraLibs 'com.sun.jna.platform:5.13.0'
     implementation 'com.google.code.gson:gson:2.10.1'
-    extraLibs 'com.google.code.gson:gson:2.10.1'
     implementation files('dependencies/jansi-2.4.0.jar')
     extraLibs files('dependencies/jansi-2.4.0.jar')
  

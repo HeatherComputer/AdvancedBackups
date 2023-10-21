@@ -1,0 +1,16 @@
+def copyDestinations = ['../1.7.10-forge', '../1.12-forge', '../1.16-forge', '../1.18-forge', '../1.19-forge', '../1.20-forge'
+    , '../1.18-fabric', '../1.19-fabric', '../1.20-fabric']
+
+
+task copyToOtherVersions
+
+
+copyDestinations.eachWithIndex { outputDir, index ->
+    task "copyTo-${outputDir.substring(3)}" (type: Copy, dependsOn: 'jar') {
+        doNotTrackState("Must run!")
+        from jar
+        into outputDir
+    }
+    copyToOtherVersions.dependsOn tasks["copyTo-${outputDir.substring(3)}"]
+    copyToOtherVersions.mustRunAfter tasks["copyTo-${outputDir.substring(3)}"]
+}

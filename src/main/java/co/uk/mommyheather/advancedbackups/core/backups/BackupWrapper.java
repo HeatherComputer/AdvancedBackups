@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,7 +32,7 @@ public class BackupWrapper {
 
         prepareBackupDestination();
 
-        File file = new File(ConfigManager.path.get());
+        File file = new File(ABCore.backupPath);
         File backupManifest = new File(file, "manifest.json");
         if (backupManifest.exists()) {
             try {
@@ -50,7 +51,7 @@ public class BackupWrapper {
             checkAndMakeBackups(Math.max(5000, ConfigManager.delay.get() * 1000));
         }
 
-        new BackupTimingThread().start();
+        //new BackupTimingThread().start();
     }
 
     public static void checkShutdownBackups() {
@@ -82,7 +83,7 @@ public class BackupWrapper {
     }    
 
     private static void prepareBackupDestination() {
-        File file = new File(ConfigManager.path.get());
+        File file = new File(ABCore.backupPath);
 
         if (!file.exists()) {
             file.mkdirs();
@@ -101,6 +102,10 @@ public class BackupWrapper {
         File incremental = new File(file, "/incremental/");
         if (!incremental.exists()) {
             incremental.mkdirs();
+        }
+        File snapshots = new File(file, "/snapshots/");
+        if (!snapshots.exists()) {
+            snapshots.mkdirs();
         }
 
         File backupManifest = new File(file, "manifest.json");
@@ -151,7 +156,7 @@ public class BackupWrapper {
     }
 
     private static void prepareReadMe(File path) {
-        File readme = new File(path, "README-BEFORE-RESTORING.txt");
+        File readme = new File(path.getParent(), "README-BEFORE-RESTORING.txt");
         if (!readme.exists()) {
             try {
                 InputStream is = BackupWrapper.class.getClassLoader().getResourceAsStream("advancedbackups-readme.txt");
@@ -181,9 +186,9 @@ public class BackupWrapper {
             File script;
             Boolean flag = System.getProperty("os.name").toLowerCase().contains("windows");
     
-            if (flag) script = new File(path, "restore-script.bat");
+            if (flag) script = new File(path.getParent(), "restore-script.bat");
     
-            else script = new File(path, "restore-script.sh");
+            else script = new File(path.getParent(), "restore-script.sh");
     
             if (script.exists()) script.delete();
     
@@ -226,7 +231,7 @@ public class BackupWrapper {
 
     public static long mostRecentBackupTime() {
 
-        File directory = new File(ConfigManager.path.get());
+        File directory = new File(ABCore.backupPath);
 
         switch(ConfigManager.type.get()) {
             case "zip" : {
@@ -255,25 +260,57 @@ public class BackupWrapper {
         return lastModifiedTime;
     }
 
-
+    
     public static void makeSingleBackup(long delay) {
+        makeSingleBackup(delay, (s) -> {});
+    }
 
+    public static void makeSingleBackup(long delay, Consumer<String> output) {
+
+        try {  
+            ABCore.disableSaving();
+            if (ConfigManager.save.get()) {
+                ABCore.saveOnce();
+            }
+        } catch (Exception e) {
+            ABCore.errorLogger.accept("Error saving or disabling saving!");
+            e.printStackTrace();
+        }
+
+        if (ThreadedBackup.running) {
+            ABCore.errorLogger.accept("Backup already running!");
+            new Exception().printStackTrace();
+            return;
+        }
+        // Make new thread, run backup utility.
+        ThreadedBackup.running = true;
+        ThreadedBackup threadedBackup = new ThreadedBackup(delay, output);
+
+        threadedBackup.start();
+        // Don't re-enable saving - leave that down to the backup thread.
+    }
+
+    public static void makeSnapshot(Consumer<String> output) {
         ABCore.disableSaving();
         if (ConfigManager.save.get()) {
             ABCore.saveOnce();
         }
-
-        // Make new thread, run backup utility.
-        ThreadedBackup threadedBackup = new ThreadedBackup(delay);
-        threadedBackup.start();
-        // Don't re-enable saving - leave that down to the backup thread.
         
+        if (ThreadedBackup.running) {
+            ABCore.errorLogger.accept("Backup already running!");
+            new Exception().printStackTrace();
+            return;
+        }
+
+        ThreadedBackup.running = true;
+        ThreadedBackup threadedBackup = new ThreadedBackup(0, output);
+        threadedBackup.snapshot();
+        threadedBackup.start();
+
     }
 
     public static void finishBackup() {
-        File directory = new File(ConfigManager.path.get());
-        ThreadedBackup.running = false;
-        ABCore.enableSaving();
+        File directory = new File(ABCore.backupPath);
 
         switch(ConfigManager.type.get()) {
             case "zip" : {

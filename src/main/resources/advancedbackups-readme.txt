@@ -1,21 +1,28 @@
-There is a commandline restoration tool - using this is STRONGLY recommended! Basic instructions for this or manual restoration are below.
+LOADING A BACKUP
 
-Java 8 or newer needs to be on your PATH. If you have manually installed java, it will most likely be on your PATH.
-    - If you have java installed but not on PATH, the bat and bash scripts won't work but you can still run the jar manually.
-
-Restoration scripts now exist alongside this folder. If you are using the bash script, you may need to use chmod to make it executable.
-All these two do is run the commandline tool using your system java - if you can't or don't want to use these, you can run the jar manually :
-
-    You can run it by navigating to your mods folder and running "java -jar <filename.jar>", of course replacing <filename> with the actual filename.
-    Full documentation for this is available at https://github.com/MommyHeather/AdvancedBackups#commandline
+- Run the script found in the backups folder to start the restoration tool.
+- Follow the prompts
 
 
 
-To manually restore an entire backup:
+TROUBLESHOOTING
+
+- You need Java 8 or newer on your PATH to run the restore script. If it's failing, this is a good first thing to check.
+- When using the bash script, you may need to use chmod to make it executable
 
 
-First, make sure the world is NOT loaded. Make a manual backup of it, then empty the world's folder.
-Then, find the backup you want to restore. 
+
+DOCUMENTATION
+
+All documentation is available at https://github.com/MommyHeather/AdvancedBackups#usage
+
+
+
+MANUAL BACKUP RESTORATION - FULL BACKUP
+
+- Stop the world
+- Make a manual backup of it
+- Empty the world's folder
 
 For complete zip backups, full differentials or full incrementals, you can simply copy the contents of the zip / folder over into the world folder.
 
@@ -26,10 +33,12 @@ You will then need to restore every single partial backup after that full backup
 Once you have restored your chosen backup, you are done.
 
 
-To manually restore a single file:
 
+MANUAL BACKUP RESTORATION - SINGLE FILE
 
-First, make sure the world is NOT loaded. Make a manual backup of the latest copy of the file, then delete the original.
+- Stop the world
+- Make a manual backup of the file you want to restore (if present)
+- Delete the file you want to restore (if present)
 
 For complete zip backups, full differentials or full incrementals, look inside the backup for your chosen file and copy it into place in the world's folder.
 

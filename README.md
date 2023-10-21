@@ -1,5 +1,5 @@
-# Advanced Backups
-
+# Advanced Backups 
+[![](https://img.shields.io/curseforge/dt/876284?label=downloads&style=for-the-badge&logo=curseforge&color=2D2D2D)](https://www.curseforge.com/minecraft/mc-mods/advanced-backups) [![](https://img.shields.io/modrinth/dt/Jrmoreqs?label=downloads&style=for-the-badge&logo=modrinth&color=2D2D2D)](https://modrinth.com/mod/advanced-backups)
 
 A powerful backup mod for Minecraft, supporting Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
@@ -18,7 +18,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 ## Current Versions:
 - Fabric 1.20.x
-- Forge 1.20/1.20.1
+- Forge 1.20.x
+- Neoforge 1.20/1.20.1
 - Fabric 1.19.x
 - Forge 1.19.x
 - Forge 1.18.x
@@ -45,10 +46,15 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 \- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
 
+<details>
+<summary>config</summary>
+
+
 | Config      | Description | Default Value | Supported From |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
 | config.advancedbackups.save | Whether to save before making a backup. | true | 0.3 |
+| config.advancedbackups.flush | Whether to flush when making this save. Usually never needed, and can create a lag spike if enabled. (Unused prior to minecraft 1.16) | false | 3.1 |
 | config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
@@ -68,12 +74,18 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.chains.maxpercent | If the size of a partial backup exceeds this % of a full backup's size, a full backup is made instead. | 50 | 2.0
 | config.advancedbackups.purge.incremental | For incremental backups only. Enable to allow purging incremental backup chains if the defined storage usage is limit exceeded. | true | 1.0 |
 
+</details>
+
+
 #### Commands:
 
-\- All entries in the table below must be prefixed with `/advancedbackups`.
+\- All entries in the table below must be prefixed with `/backup` in 2.2+ or `/advancedbackups` in older pre-2.2.
 
-- Example : `/advancedbackups force-backup`
+- Example : `/backup force-backup`
 
+
+<details>
+<summary>pre-2.2</summary>
 
 | Command | Description | Supported From |
 | ----------- | ----------- | -------------- |
@@ -82,7 +94,20 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | reload | Reloads the config.| 1.0 |
 | force-backup | Forces a backup without running any checks.| 1.0 |
 | reset-chain | Resets any current chain length.| 1.0 |
+</details>
 
+
+<details open>
+<summary>2.2+</summary>
+
+| Command | Description | Supported From |
+| ----------- | ----------- | -------------- |
+| start | Makes a backup using the configured backup type.| 2.2 |
+| reload-config | Reloads the config.| 2.2 |
+| snapshot | Creates a "snapshot" backup that cannot be auto-deleted.| 2.2 |
+| reset-chain | Resets any current chain length.| 1.0 |
+
+</details>
 
 ### Commandline:
 
@@ -172,7 +197,7 @@ Shortly after release, I wish to add more commands.
 
 - Config editing on the fly
 - One-off backup types
-    - Currently, the `start` and `force-backup` commands only allow you to make a backup of the type specified in config. This will change.
+    - Currently, the `start` command only allows you to make a backup of the type specified in config. This will change.
 
 
 ## Client feedback

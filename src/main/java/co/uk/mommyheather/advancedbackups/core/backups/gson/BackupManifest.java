@@ -22,6 +22,16 @@ public class BackupManifest {
 
         public long lastBackup;
 
+        public HashList hashList;
+
+        public HashList getHashList() {
+            return hashList;
+        }
+
+        public void setHashList(HashList hashList) {
+            this.hashList = hashList;
+        }
+
         public int getChainLength() {
             return chainLength;
         }
@@ -43,6 +53,16 @@ public class BackupManifest {
     public static class Incremental {
         //holds information specific to incremental backups - mainly, the last backup and the chain length
         public int chainLength;
+
+        public HashList hashList;
+
+        public HashList getHashList() {
+            return hashList;
+        }
+
+        public void setHashList(HashList hashList) {
+            this.hashList = hashList;
+        }
 
         public int getChainLength() {
             return chainLength;
@@ -101,12 +121,14 @@ public class BackupManifest {
         Differential differential = new Differential();
         differential.setChainLength(0);
         differential.setLastBackup(0);
+        differential.setHashList(new HashList());
 
         manifest.setDifferential(differential);
 
         Incremental incremental = new Incremental();
         incremental.setChainLength(0);
         incremental.setLastBackup(0);
+        incremental.setHashList(new HashList());
 
         manifest.setIncremental(incremental);
 
