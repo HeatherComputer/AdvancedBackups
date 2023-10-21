@@ -7,6 +7,7 @@ config.advancedbackups.enabled
 config.advancedbackups.save
 
 #Whether to flush when making the aforementioned save. Can cause a lag spike, and is usually not required.
+#Unused prior to minecraft 1.16.
 #Options : true, false    #Default : false
 config.advancedbackups.flush
 
