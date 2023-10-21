@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
@@ -23,36 +24,36 @@ public class CoreCommandSystem {
     
 
     //These methods are all called by relevant command classes in version specific code
-    public static void checkBackups(Consumer<String> chat) {
-        BackupCheckEnum check = BackupWrapper.checkBackups();
-        chat.accept(check.getCheckMessage());
-    }
-
     public static void startBackup(Consumer<String> chat) {
-        BackupCheckEnum check = BackupWrapper.checkBackups();
-        chat.accept(check.getCheckMessage());
-        if (check.success()) {
-            chat.accept("Starting backup...");
-            BackupWrapper.makeSingleBackup(0);
+        chat.accept("Starting backup...");
+        BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
+        if (ThreadedBackup.running) {
+            chat.accept("Cannot start a backup whilst a backup is already running!");
+            return;
         }
-    }
-
-    public static void forceBackup(Consumer<String> chat) {
-        chat.accept("Forcing a backup...");
-        BackupWrapper.makeSingleBackup(0);
+        BackupWrapper.makeSingleBackup(0, chat);
     }
 
     public static void reloadConfig(Consumer<String> chat) {
         chat.accept("Reloading config...");
-         ConfigManager.loadOrCreateConfig();
+        ConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
+    }
+
+    public static void snapshot(Consumer<String> chat) {
+        BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
+        if (ThreadedBackup.running) {
+            chat.accept("Cannot start a snapshot whilst a backup is already running!");
+            return;
+        }
+        BackupWrapper.makeSnapshot(chat);
     }
 
     public static void resetChainLength(Consumer<String> chat) {
         chat.accept("Resetting chain length... The next backup will be a complete backup.");
         try {
 
-            File file = new File(ConfigManager.path.get());
+            File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
             if (backupManifest.exists()) {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);

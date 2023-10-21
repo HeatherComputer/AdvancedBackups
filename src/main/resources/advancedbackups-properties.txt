@@ -6,6 +6,11 @@ config.advancedbackups.enabled
 #Options : true, false    #Default : true
 config.advancedbackups.save
 
+#Whether to flush when making the aforementioned save. Can cause a lag spike, and is usually not required.
+#Unused prior to minecraft 1.16.
+#Options : true, false    #Default : false
+config.advancedbackups.flush
+
 #Whether to require player activity between backups.
 #Options : true, false    #Default : true
 config.advancedbackups.activity
@@ -23,7 +28,7 @@ config.advancedbackups.path
 config.advancedbackups.size
 
 #Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.
-#Range : 0.5 - 500    #Default : 0.5
+#Range : 0.25 - 500    #Default : 0.5
 config.advancedbackups.frequency.min
 
 #Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.

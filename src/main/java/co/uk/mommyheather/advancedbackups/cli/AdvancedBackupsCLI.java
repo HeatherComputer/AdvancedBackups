@@ -18,12 +18,10 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Properties;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -60,11 +58,12 @@ public class AdvancedBackupsCLI {
         
          
         CLIIOHelpers.info("Advanced Backups - Version " + AdvancedBackupsCLI.class.getPackage().getImplementationVersion());
+        CLIIOHelpers.info("Note : this cannot restore backups made prior to the 3.0 release.");
         CLIIOHelpers.info("Searching for properties...", false);
 
         
         Properties props = new Properties();
-        File file = new File(serverDir, "AdvancedBackups.properties");
+        File file = new File(serverDir, "config/AdvancedBackups.properties");
         FileReader reader;
         try {
             reader = new FileReader(file);   
@@ -92,14 +91,14 @@ public class AdvancedBackupsCLI {
 
         CLIIOHelpers.info("Config loaded!");
 
-        File backupDir;
+        File backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), ""));
 
-        
-        if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
-            backupDir = new File(backupLocation, File.separator + type + File.separator);
-        }
-        else {
-            backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
+        if (!backupDir.exists()) {
+            CLIIOHelpers.error("Could not find backup directory!");
+            CLIIOHelpers.error(backupDir.getAbsolutePath());
+            CLIIOHelpers.error("Have you made any backups before?");
+            //Fatal, cannot continue
+            return;
         }
 
         
@@ -124,22 +123,19 @@ public class AdvancedBackupsCLI {
         }
 
         type = CLIIOHelpers.getBackupType(type);
+        if (type.equals("snapshot (command-made only)")) type = "snapshots";
 
-        
+        /*/
         if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
             backupDir = new File(backupLocation, File.separator + type + File.separator);
         }
         else {
             backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), "") + File.separator + type + File.separator);
         }
+*/
+        
+        if (type.equals("snapshots")) type = "zips";
            
-        if (!backupDir.exists()) {
-            CLIIOHelpers.error("Could not find backup directory!");
-            CLIIOHelpers.error(backupDir.getAbsolutePath());
-            CLIIOHelpers.error("Have you made any backups before?");
-            //Fatal, cannot continue
-            return;
-        }
 
         
 
@@ -169,15 +165,7 @@ public class AdvancedBackupsCLI {
             worldPath = worldFile.getName().replace(" ", "_");
         }
 
-
-        if (!worldFile.exists()) {
-            CLIIOHelpers.error("Unable to find world folder!");
-            CLIIOHelpers.error(worldFile.getAbsolutePath());
-            CLIIOHelpers.error("Check if the location exists and the name is correct and try again.");
-            return;
-
-        }
-
+        backupDir = new File(backupDir, worldFile.getName() + "/" + type);
 
         int backupDateIndex;
         try {
@@ -292,11 +280,12 @@ public class AdvancedBackupsCLI {
 
             }
             else {
-                if (!file.getName().contains(worldPath)) continue;
+                //if (!file.getName().contains(worldPath)) continue;
                 fileNames.add(file.getAbsolutePath());
                 String out = file.getName();
                 out = out.replaceAll(".zip", "");
-                out = out.replaceAll(worldPath + "_", ": ");
+                //out = out.replaceAll(worldPath + "_", ": ");
+                out = out.replaceAll("backup_", ": ");
                 out = out.replaceAll("-partial", "\u001B[33m partial\u001B[0m");
                 out = out.replaceAll("-full", "\u001B[32m full\u001B[0m");
                 CLIIOHelpers.info(fileNames.size() + out);
@@ -445,31 +434,37 @@ public class AdvancedBackupsCLI {
     }
 
     private static void restorePartialZip(int index, File worldFile) {
-        Path file;
-        HashMap<String, Path> entries = new HashMap<>();
 
+        HashMap<String, Object> filePaths = new HashMap<>();
+        HashMap<String, String> dates = new HashMap<>();
+        HashMap<String, ZipFile> entryOwners = new HashMap<>();
         try {
-            FileSystem zipFs = FileSystems.newFileSystem(new File(fileNames.get(index)).toPath(), AdvancedBackupsCLI.class.getClassLoader());
-            Path root = zipFs.getPath("");
-            Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-                    entries.put(file.toString(), file);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
+            File backup = new File(fileNames.get(index));
+    
+            addBackupNamesToLists(backup, entryOwners, filePaths, dates, "\u001B[32m");
 
-            file = CLIIOHelpers.getFileToRestore(entries, "", worldFile);
-            CLIIOHelpers.info("Restoring " + file.toString() + "...");
-            Path outputFile = new File(worldFile, file.toString()).toPath();
-            Files.copy(file, outputFile, StandardCopyOption.REPLACE_EXISTING);
-            CLIIOHelpers.info("Done.");
-            
+            ZipEntry select = ((ZipEntry) CLIIOHelpers.getFileToRestore(filePaths, "", worldFile));
+
+            File outputFile = new File(worldFile, select.toString());
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+
+            CLIIOHelpers.info("Restoring " + select.toString() + "...");
+
+            byte[] buffer = new byte[1028];
+            InputStream inputSteam = entryOwners.get(select.toString()).getInputStream(select);
+            int length;
+            while ((length = inputSteam.read(buffer, 0, buffer.length)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            outputStream.flush();
+            outputStream.close();
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return;
+
         }
+
+
+
          
     }
 
@@ -855,7 +850,8 @@ public class AdvancedBackupsCLI {
                 dates.put(entry.toString().replace("\\", "/"), "\u001b[31m"
                  + backupName
                 .substring(backupName.toString().lastIndexOf("/") + 1) 
-                .replace(worldPath + "_", "")
+                //.replace(worldPath + "_", "")
+                .replace("backup_", "")
                 .replace("-full.zip", "")
                 .replace("-partial.zip", "")
                 + "\u001B[0m");
@@ -872,7 +868,8 @@ public class AdvancedBackupsCLI {
                     dates.put(file.toPath().relativize(path).toString().replace("\\", "/"), "\u001b[31m"
                      + backupName
                     .substring(backupName.toString().lastIndexOf("/") + 1) 
-                    .replace(worldPath + "_", "")
+                    //.replace(worldPath + "_", "")
+                    .replace("backup_", "")
                     .replace("-full", "")
                     .replace("-partial", "")
                     + "\u001B[0m");

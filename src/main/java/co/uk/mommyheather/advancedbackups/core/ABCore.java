@@ -30,11 +30,10 @@ public class ABCore {
 
     public static Runnable disableSaving;
     public static Runnable enableSaving;
-    public static Runnable saveOnce;
-
-    private static GsonBuilder builder = new GsonBuilder(); 
-    private static Gson gson = builder.setPrettyPrinting().create();
+    public static Consumer<Boolean> saveOnce;
     
+    public static String backupPath;
+
     public static void disableSaving() {
         disableSaving.run();
     }
@@ -44,13 +43,15 @@ public class ABCore {
     }
 
     public static void saveOnce() {
-        saveOnce.run();
+        saveOnce.accept(ConfigManager.flush.get());;
     }
 
     public static void setActivity() {
         if (!activity) {
+            GsonBuilder builder = new GsonBuilder(); 
+            Gson gson = builder.setPrettyPrinting().create();
             //i should thread this at some point
-            File file = new File(ConfigManager.path.get());
+            File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
             if (backupManifest.exists()) {
                 try {
@@ -77,7 +78,7 @@ public class ABCore {
 
     public static String serialiseBackupName(String in) {
         Date date = new Date();
-        String pattern = "yyyy-MM-dd_hh-mm-ss";
+        String pattern = "yyyy-MM-dd_HH-mm-ss";
         
         return in + "_" + new SimpleDateFormat(pattern).format(date);
     }
