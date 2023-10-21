@@ -27,7 +27,7 @@ config.advancedbackups.path
 config.advancedbackups.size
 
 #Minimum time between backups, in hours. This can prevent a shutdown backup from triggering immediately after a scheduled backup or similar situations.
-#Range : 0.5 - 500    #Default : 0.5
+#Range : 0.25 - 500    #Default : 0.5
 config.advancedbackups.frequency.min
 
 #Triggers a backup if none has already happened within this time. Can be combined with an uptime-based schedule.
