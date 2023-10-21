@@ -16,7 +16,6 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.DifferentialManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.core.util.BackupCheckEnum;
 
 public class BackupWrapper {
 
@@ -108,7 +107,7 @@ public class BackupWrapper {
         if (!backupManifest.exists()) {
             try {
                 backupManifest.createNewFile();
-                BackupManifest manifest = new BackupManifest();
+                BackupManifest manifest = BackupManifest.defaults();
                 File differentialManifest = new File(file, "/differential/manifest.json");
                 if (differentialManifest.exists()) {
                     try {
