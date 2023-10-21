@@ -54,7 +54,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
 | config.advancedbackups.save | Whether to save before making a backup. | true | 0.3 |
-| config.advancedbackups.flush | Whether to flush when making this save. Usually never needed, and can create a lag spike if enabled. | false | 3.1 |
+| config.advancedbackups.flush | Whether to flush when making this save. Usually never needed, and can create a lag spike if enabled. (Unused prior to minecraft 1.16) | false | 3.1 |
 | config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
