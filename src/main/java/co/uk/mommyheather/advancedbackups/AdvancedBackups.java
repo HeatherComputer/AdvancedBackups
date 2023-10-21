@@ -126,9 +126,9 @@ public class AdvancedBackups implements ModInitializer {
         warningLogger.accept(savesEnabledMessage);
     }
 
-    public static void saveOnce() {
+    public static void saveOnce(boolean flush) {
         MinecraftServer server = AdvancedBackups.server;
-        server.saveAll(true, false, true);
+        server.saveAll(true, flush, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
