@@ -8,10 +8,10 @@ import java.util.function.Consumer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.core.util.BackupCheckEnum;
 
 public class CoreCommandSystem {
     private static GsonBuilder builder = new GsonBuilder(); 

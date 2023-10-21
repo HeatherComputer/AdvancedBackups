@@ -1,4 +1,4 @@
-package co.uk.mommyheather.advancedbackups.core.util;
+package co.uk.mommyheather.advancedbackups.core.backups;
 
 public enum BackupCheckEnum {
     SUCCESS,
