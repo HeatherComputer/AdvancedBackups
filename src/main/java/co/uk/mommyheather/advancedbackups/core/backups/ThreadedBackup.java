@@ -29,6 +29,7 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
 
 public class ThreadedBackup extends Thread {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -65,11 +66,15 @@ public class ThreadedBackup extends Thread {
             e.printStackTrace();
         }
 
+        ABCore.clientContactor.backupStarting();
+
         try {
             makeBackup();
+            ABCore.clientContactor.backupComplete();
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             e.printStackTrace();
+            ABCore.clientContactor.backupFailed();
         }
 
         BackupWrapper.finishBackup();
@@ -120,29 +125,47 @@ public class ThreadedBackup extends Thread {
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
+            ArrayList<Path> paths = new ArrayList<>();
+
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
-                    try {
-                        targetFile = ABCore.worldDir.relativize(file);
-                        if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
-                            return FileVisitResult.CONTINUE;
-                        }
-                        zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
-                        byte[] bytes = Files.readAllBytes(file);
-                        zipOutputStream.write(bytes, 0, bytes.length);
-                        zipOutputStream.closeEntry();
-
-                    } catch (IOException e) {
-                        // TODO : Scream at user
-                        e.printStackTrace();
-                        ABCore.errorLogger.accept(file.toString());
-                    }
-                    
+                    targetFile = ABCore.worldDir.relativize(file);
+                    if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
-                }
+                    }
+                    paths.add(file);
+
+                
+                    return FileVisitResult.CONTINUE;
+                    }
             });
+
+            Path targetFile;
+
+            int max = paths.size();
+            int index = 0;
+
+            ABCore.clientContactor.backupProgress(index, max);
+
+            for (Path path : paths) {
+                try {
+                    targetFile = ABCore.worldDir.relativize(path);
+                    zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
+                    byte[] bytes = Files.readAllBytes(path);
+                    zipOutputStream.write(bytes, 0, bytes.length);
+                    zipOutputStream.closeEntry();
+                    ABCore.clientContactor.backupProgress(index, max);
+                }
+                catch (IOException e) {
+                    // TODO : Scream at user
+                    e.printStackTrace();
+                    ABCore.errorLogger.accept(file.toString());
+                }
+                
+            }
+
             zipOutputStream.flush();
             zipOutputStream.close();
 
