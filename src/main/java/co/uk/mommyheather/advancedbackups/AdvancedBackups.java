@@ -139,9 +139,9 @@ public class AdvancedBackups
         warningLogger.accept(savesEnabledMessage);
     }
 
-    public static void saveOnce() {
+    public static void saveOnce(boolean flush) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        server.saveEverything(true, false, true);
+        server.saveEverything(true, flush, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
