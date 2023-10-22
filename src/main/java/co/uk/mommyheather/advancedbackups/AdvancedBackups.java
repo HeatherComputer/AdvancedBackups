@@ -9,10 +9,13 @@ import net.minecraft.world.WorldServer;
 
 import org.apache.logging.log4j.Logger;
 
+import co.uk.mommyheather.advancedbackups.client.ABClientContactor;
+import co.uk.mommyheather.advancedbackups.client.ABClientRenderer;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -61,7 +64,9 @@ public class AdvancedBackups
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new ABClientRenderer());
         FMLCommonHandler.instance().bus().register(this);
+		NetworkHandler.init();
     }
 
     @EventHandler
@@ -88,6 +93,8 @@ public class AdvancedBackups
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
+
+        ABCore.clientContactor = new ABClientContactor();
 
         event.registerServerCommand(new AdvancedBackupsCommand());
 
