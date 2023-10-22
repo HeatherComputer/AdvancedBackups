@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,8 +40,18 @@ public class BackupToast implements Toast {
         toastGui.blit(matrix, 0, 0, 0, 0, this.width(), this.height());
         toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(stack, 8, 8);
 
+        
+        float percent = finished ? 100 : (float) progress / (float) max;
+        
+        Gui.fill(matrix, 3, 28, 156, 29, -1);
+        float f = Math.min(156, (
+            156 * percent
+        ));
+
+
         if (!exists) {   
             toastGui.getMinecraft().font.draw(matrix, ChatFormatting.GREEN + I18n.get("advancedbackups.backup_finished"), 25, 11, -11534256);
+            Gui.fill(matrix, 3, 28, 156, 29, -10948014);
             return Visibility.HIDE;
         }
 
@@ -51,7 +62,6 @@ public class BackupToast implements Toast {
             title = ChatFormatting.GREEN + I18n.get("advancedbackups.backup_starting");
         }
         else if (started) {
-            float percent = (float) progress / (float) max;
             title = ChatFormatting.GREEN + I18n.get("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
@@ -82,6 +92,8 @@ public class BackupToast implements Toast {
             exists = false;
             return Visibility.HIDE;
         }
+        
+        Gui.fill(matrix, 3, 28, Math.max(3, (int) f), 29, -10948014);
         
         return Visibility.SHOW;
         
