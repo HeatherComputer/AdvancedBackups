@@ -257,11 +257,17 @@ public class ThreadedBackup extends Thread {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
+                int max = toBackup.size();
+                int index = 0;
+    
+                ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
                     byte[] bytes = Files.readAllBytes(new File(ABCore.worldDir.toString(), path.toString()).toPath());
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
+                    index++;
+                    ABCore.clientContactor.backupProgress(index, max);
                 }
                 zipOutputStream.flush();
                 zipOutputStream.close();
@@ -271,12 +277,18 @@ public class ThreadedBackup extends Thread {
             else {
                 File dest = differential ? new File(location.toString() + "/differential/", backupName + "/") :new File(location.toString() + "/incremental/", backupName + "/");
                 dest.mkdirs();
+                int max = toBackup.size();
+                int index = 0;
+                
+                ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     File out = new File(dest, path.toString());
                     if (!out.getParentFile().exists()) {
                         out.getParentFile().mkdirs();
                     }
                     Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
+                    index++;
+                    ABCore.clientContactor.backupProgress(index, max);
                 }
                 time = dest.lastModified();
             }
