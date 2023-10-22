@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
@@ -35,9 +36,18 @@ public class BackupToast implements Toast {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         manager.drawTexture(matrix, 0, 0, 0, 0, this.getWidth(), this.getHeight());
         manager.getClient().getItemRenderer().renderGuiItemIcon(stack, 8, 8);
+        
+        float percent = finished ? 100 : (float) progress / (float) max;
+        
+        DrawableHelper.fill(matrix, 3, 28, 156, 29, -1);
+
+        float f = Math.min(156, (
+            156 * percent
+        ));
 
         if (!exists) {   
             manager.getClient().textRenderer.draw(matrix, Formatting.GREEN + I18n.translate("advancedbackups.backup_finished"), 25, 11, -11534256);
+            DrawableHelper.fill(matrix, 3, 28, 156, 29, -10948014);
             return Visibility.HIDE;
         }
 
@@ -48,7 +58,6 @@ public class BackupToast implements Toast {
             title = Formatting.GREEN + I18n.translate("advancedbackups.backup_starting");
         }
         else if (started) {
-            float percent = (float) progress / (float) max;
             title = Formatting.GREEN + I18n.translate("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
@@ -79,6 +88,8 @@ public class BackupToast implements Toast {
             exists = false;
             return Visibility.HIDE;
         }
+
+        DrawableHelper.fill(matrix, 3, 28, Math.max(3, (int) f), 29, -10948014);
         
         return Visibility.SHOW;
     }
