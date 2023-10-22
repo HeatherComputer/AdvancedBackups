@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.renderer.RenderHelper;
@@ -37,8 +38,16 @@ public class BackupToast implements IToast {
         toastGui.blit(matrix, 0, 0, 0, 0, this.width(), this.height());
         toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(stack, 8, 8);
 
+        float percent = finished ? 100 : (float) progress / (float) max;
+        
+        AbstractGui.fill(matrix, 3, 28, 156, 29, -1);
+        float f = Math.min(156, (
+            156 * percent
+        ));
+
         if (!exists) {   
             toastGui.getMinecraft().font.draw(matrix, TextFormatting.GREEN + I18n.get("advancedbackups.backup_finished"), 25, 11, -11534256);
+            AbstractGui.fill(matrix, 3, 28, 156, 29, -10948014);
             return Visibility.HIDE;
         }
 
@@ -49,7 +58,6 @@ public class BackupToast implements IToast {
             title = TextFormatting.GREEN + I18n.get("advancedbackups.backup_starting");
         }
         else if (started) {
-            float percent = (float) progress / (float) max;
             title = TextFormatting.GREEN + I18n.get("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
@@ -80,6 +88,8 @@ public class BackupToast implements IToast {
             exists = false;
             return Visibility.HIDE;
         }
+
+        AbstractGui.fill(matrix, 3, 28, Math.max(3, (int) f), 29, -10948014);
         
         return Visibility.SHOW;
         
