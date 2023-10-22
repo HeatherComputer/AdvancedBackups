@@ -1,10 +1,12 @@
 package co.uk.mommyheather.advancedbackups;
 
 
+import co.uk.mommyheather.advancedbackups.client.ClientContactor;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.FolderName;
@@ -39,6 +41,7 @@ public class AdvancedBackups
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        NetworkHandler.register();
     }
 
     @SubscribeEvent
@@ -57,6 +60,7 @@ public class AdvancedBackups
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
 
+        ABCore.clientContactor = new ClientContactor();
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
 
         
