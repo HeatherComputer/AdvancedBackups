@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,6 +10,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 public class BackupToast implements IToast{
     
@@ -37,19 +39,27 @@ public class BackupToast implements IToast{
         RenderHelper.enableGUIStandardItemLighting();
         toastGui.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stack, 8, 8);
 
+        float percent = finished ? 100 : (float) progress / (float) max;
+        
+        Gui.drawRect(3, 28, 156, 29, -1);
+        float f = Math.min(156, (
+            156 * percent
+        ));
+
         if (!exists) {   
             toastGui.getMinecraft().fontRenderer.drawString(ChatFormatting.GREEN + I18n.format("advancedbackups.backup_finished"), 25, 12, -11534256);
+            Gui.drawRect(3, 28, 156, 29, -10948014);
             return Visibility.HIDE;
         }
 
         String title = "You shouldn't see this!";
+
 
         
         if (starting) {
             title = ChatFormatting.GREEN + I18n.format("advancedbackups.backup_starting");
         }
         else if (started) {
-            float percent = (float) progress / (float) max;
             title = ChatFormatting.GREEN + I18n.format("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
@@ -80,6 +90,10 @@ public class BackupToast implements IToast{
             exists = false;
             return Visibility.HIDE;
         }
+
+
+        Gui.drawRect(3, 28, (int) f, 29, -10948014);
+
         
         return Visibility.SHOW;
         
