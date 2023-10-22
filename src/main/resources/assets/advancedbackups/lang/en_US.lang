@@ -1,0 +1,4 @@
+advancedbackups.backup_starting=Backup starting!
+advancedbackups.progress=Backup in progress : %s%%
+advancedbackups.backup_failed=Backup failed : check log for more info.
+advancedbackups.backup_finished=Backup complete!
