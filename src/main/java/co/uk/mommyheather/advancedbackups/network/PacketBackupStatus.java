@@ -60,18 +60,23 @@ public class PacketBackupStatus implements IMessage{
         @Override
         public IMessage onMessage(PacketBackupStatus message, MessageContext ctx) {
 
-            BackupToast.starting = message.starting;
-            BackupToast.started = message.started;
-            BackupToast.failed = message.failed;
-            BackupToast.finished = message.finished;
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                
+                BackupToast.starting = message.starting;
+                BackupToast.started = message.started;
+                BackupToast.failed = message.failed;
+                BackupToast.finished = message.finished;
+    
+                BackupToast.progress = message.progress;
+                BackupToast.max = message.max;
+    
+                if (!BackupToast.exists) {
+                    BackupToast.exists = true;
+                    Minecraft.getMinecraft().getToastGui().add(new BackupToast());
+                }
 
-            BackupToast.progress = message.progress;
-            BackupToast.max = message.max;
+            });
 
-            if (!BackupToast.exists) {
-                BackupToast.exists = true;
-                Minecraft.getMinecraft().getToastGui().add(new BackupToast());
-            }
             
             return null;
 
