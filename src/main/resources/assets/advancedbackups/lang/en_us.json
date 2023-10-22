@@ -1,0 +1,6 @@
+{
+    "advancedbackups.backup_starting" : "Backup starting!",
+    "advancedbackups.progress": "Backup ongoing: %1$s%%",
+    "advancedbackups.backup_failed": "Backup failed!\nCheck log for more info.",
+    "advancedbackups.backup_finished": "Backup complete!"
+}
