@@ -2,10 +2,8 @@ package co.uk.mommyheather.advancedbackups.network;
 
 import java.util.function.Supplier;
 
-import co.uk.mommyheather.advancedbackups.client.BackupToast;
-import net.minecraft.client.Minecraft;
+import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketBackupStatus {
@@ -52,22 +50,7 @@ public class PacketBackupStatus {
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                BackupToast.starting = starting;
-                BackupToast.started = started;
-                BackupToast.failed = failed;
-                BackupToast.finished = finished;
-
-                BackupToast.progress = progress;
-                BackupToast.max = max;
-
-                if (!BackupToast.exists) {
-                    BackupToast.exists = true;
-                    Minecraft.getInstance().getToasts().addToast(new BackupToast());
-                }
-            }
-        });
+        ClientWrapper.handle(ctx, this);
         ctx.get().setPacketHandled(true);
         return true;
 
