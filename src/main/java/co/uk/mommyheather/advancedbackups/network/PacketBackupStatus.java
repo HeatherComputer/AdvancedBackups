@@ -1,8 +1,7 @@
 package co.uk.mommyheather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.client.BackupToast;
+import co.uk.mommyheather.advancedbackups.client.ClientBridge;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -60,22 +59,7 @@ public class PacketBackupStatus implements IMessage{
         @Override
         public IMessage onMessage(PacketBackupStatus message, MessageContext ctx) {
 
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                
-                BackupToast.starting = message.starting;
-                BackupToast.started = message.started;
-                BackupToast.failed = message.failed;
-                BackupToast.finished = message.finished;
-    
-                BackupToast.progress = message.progress;
-                BackupToast.max = message.max;
-    
-                if (!BackupToast.exists) {
-                    BackupToast.exists = true;
-                    Minecraft.getMinecraft().getToastGui().add(new BackupToast());
-                }
-
-            });
+            ClientBridge.handle(message);
 
             
             return null;
