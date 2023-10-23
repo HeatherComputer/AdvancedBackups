@@ -1,6 +1,6 @@
 package co.uk.mommyheather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.client.BackupToast;
+import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -61,21 +61,8 @@ public class PacketBackupStatus {
         PacketBackupStatus message = new PacketBackupStatus();
         message.read(buf);
 
-        client.execute(() -> {
-            BackupToast.starting = message.starting;
-            BackupToast.started = message.started;
-            BackupToast.failed = message.failed;
-            BackupToast.finished = message.finished;
-    
-            BackupToast.progress = message.progress;
-            BackupToast.max = message.max;
-    
-            if (!BackupToast.exists) {
-                BackupToast.exists = true;
-                client.getToastManager().add(new BackupToast());
-            }
+        ClientWrapper.handle(client, message);
 
-        });
 
 
     }
