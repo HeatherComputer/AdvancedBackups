@@ -39,8 +39,6 @@ public class AdvancedBackups implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        NetworkHandler.init();
-
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             AdvancedBackups.server = server;
             ABCore.worldName = server.getSaveProperties().getLevelName();

@@ -16,6 +16,9 @@
 	"entrypoints": {
 		"main": [
 			"co.uk.mommyheather.advancedbackups.AdvancedBackups"
+		],
+		"client": [
+			"co.uk.mommyheather.advancedbackups.client.ClientWrapper"
 		]
 	},
 	"depends": {
