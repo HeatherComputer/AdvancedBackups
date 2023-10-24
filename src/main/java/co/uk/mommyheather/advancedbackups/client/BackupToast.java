@@ -35,8 +35,8 @@ public class BackupToast implements Toast {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        toastGui.blit(matrix, 0, 0, 0, 0, this.width(), this.height());
-        toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(stack, 8, 8);
+        ToastComponent.blit(matrix, 0, 0, 0, 0, this.width(), this.height());
+        toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(matrix, stack, 8, 8);
 
         
         float percent = finished ? 100 : (float) progress / (float) max;
