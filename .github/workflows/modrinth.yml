@@ -23,7 +23,7 @@ on:
         - Forge 1.16
         - Forge 1.18
         - Fabric 1.18
-        - Forge 1.19
+        - Forge 1.19.2
         - Fabric 1.19
         - Forge 1.20
         - Fabric 1.20
@@ -144,20 +144,36 @@ jobs:
         name: "Fabric 1.18 - ${{ steps.version.outputs.VERSION }}"
     
 
-    - name: Upload Forge-1.19
+    - name: Upload Forge-1.19.2
 
-      if: inputs.version == 'Forge 1.19' || inputs.version == 'All'
+      if: inputs.version == 'Forge 1.19.2' || inputs.version == 'All'
       uses: RubixDev/modrinth-upload@v1
       with:
-        file_path: "AdvancedBackups-forge-1.19-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.19,1.19.1,1.19.2,1.19.3,1.19.4"
+        file_path: "AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar"
+        game_versions: "1.19,1.19.1,1.19.2"
         loaders: "forge"
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
         featured: false
         version: "${{ steps.version.outputs.VERSION }}"
-        name: "Forge 1.19 - ${{ steps.version.outputs.VERSION }}"
+        name: "Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Forge-1.19.3
+
+      if: inputs.version == 'Forge 1.19.3' || inputs.version == 'All'
+      uses: RubixDev/modrinth-upload@v1
+      with:
+        file_path: "AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar"
+        game_versions: "1.19.3,1.19.4"
+        loaders: "forge"
+        project_id: "Jrmoreqs"
+        token: "${{ secrets.MODRINTH_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        featured: false
+        version: "${{ steps.version.outputs.VERSION }}"
+        name: "Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}"
 
         
     - name: Upload Fabric-1.19
