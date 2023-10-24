@@ -31,11 +31,10 @@ public class BackupToast implements Toast {
 
     @Override
     public Visibility draw(MatrixStack matrix, ToastManager manager, long startTime) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        manager.drawTexture(matrix, 0, 0, 0, 0, this.getWidth(), this.getHeight());
-        manager.getClient().getItemRenderer().renderGuiItemIcon(stack, 8, 8);
+        DrawableHelper.drawTexture(matrix, 0, 0, 0, 0, this.getWidth(), this.getHeight());
+        manager.getClient().getItemRenderer().renderInGui(matrix, stack, 8, 8);
         
         float percent = finished ? 100 : (float) progress / (float) max;
         
