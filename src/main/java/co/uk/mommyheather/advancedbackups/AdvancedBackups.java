@@ -16,10 +16,12 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import co.uk.mommyheather.advancedbackups.client.ClientContactor;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 
 public class AdvancedBackups implements ModInitializer {
     // This logger is used to write text to the console and the log file.
@@ -36,6 +38,7 @@ public class AdvancedBackups implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             AdvancedBackups.server = server;
             ABCore.worldName = server.getSaveProperties().getLevelName();
@@ -49,7 +52,7 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.warningLogger = warningLogger;
             ABCore.errorLogger = errorLogger;
 
-            
+            ABCore.clientContactor = new ClientContactor();
             ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().toString());
             
             
