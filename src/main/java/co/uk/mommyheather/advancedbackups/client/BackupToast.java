@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
 public class BackupToast implements Toast {
         
@@ -28,10 +29,11 @@ public class BackupToast implements Toast {
     private static boolean timeSet = false;
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
+    private static final Identifier TEXTURE = new Identifier("toast/advancement"); 
 
     @Override
     public Visibility draw(DrawContext context, ToastManager manager, long startTime) {
-        context.drawTexture(TEXTURE, 0, 0, 0, 0, this.getWidth(), this.getHeight());
+        context.drawGuiTexture(TEXTURE, 0, 0, this.getWidth(), this.getHeight());
 
         context.drawItemWithoutEntity(stack, 8, 8);;
         
