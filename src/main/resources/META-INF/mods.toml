@@ -57,6 +57,7 @@ Config file and github contain documentation.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19,1.20)"
+# 1.19.3 is a break - as such, we can't support it with this branch, and we'll need a new one... fuck me
+    versionRange="[1.19,1.19.3)"
     ordering="NONE"
     side="BOTH"
