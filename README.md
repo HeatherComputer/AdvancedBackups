@@ -167,7 +167,7 @@ Once you select a file, it will be restored. The program will then exit.
 - Note : these are in no particular order.
 - [Profiles](#profiles)
 - [More Commands](#more-commands)
-- [Client Feedback](#client-feedback)
+- [Client Feedback Improvements](#client-feedback-improvements)
 
 ## Profiles
 
@@ -200,16 +200,10 @@ Shortly after release, I wish to add more commands.
     - Currently, the `start` command only allows you to make a backup of the type specified in config. This will change.
 
 
-## Client feedback
+## Client feedback improvements
 
-Having some client feedback would allow connected clients that have the mod view backup progress.
-- This should be toggleable in config.
-- A config option to only show progress to ops should exist.
-
-This might be in the form of either a progress bar, or a simple percentage.
-
-Clients with the mod should have a way to opt out of this.
-
+- As of version 3.2, all players with operator permissions will get progress updates.
+- A clientside toggle and maybe a serverside option for sending this info to *all* players would be beneficial.
 
 
 
