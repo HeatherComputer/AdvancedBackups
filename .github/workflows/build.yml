@@ -498,7 +498,7 @@ jobs:
     - name: Download Forge-1-19-2
       uses: actions/download-artifact@v3
       with:
-        name: AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
+        name: AdvancedBackups-forge-1.19-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-19-3
@@ -510,7 +510,7 @@ jobs:
     - name: Download Fabric-1-19-2
       uses: actions/download-artifact@v3
       with:
-        name: AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
+        name: AdvancedBackups-fabric-1.19-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-19-3
