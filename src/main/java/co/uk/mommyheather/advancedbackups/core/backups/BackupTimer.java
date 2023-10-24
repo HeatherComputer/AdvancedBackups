@@ -27,7 +27,7 @@ public class BackupTimer  {
         //make the backup
 
         if (BackupWrapper.checkBackups().equals(BackupCheckEnum.SUCCESS)) {
-            BackupWrapper.makeSingleBackup(0);
+            BackupWrapper.makeSingleBackup(0, false);
         }
 
     }
