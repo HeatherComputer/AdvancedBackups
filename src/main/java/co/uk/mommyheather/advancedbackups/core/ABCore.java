@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
 
 public class ABCore {
     
@@ -31,6 +32,8 @@ public class ABCore {
     public static Runnable disableSaving;
     public static Runnable enableSaving;
     public static Consumer<Boolean> saveOnce;
+
+    public static IClientContactor clientContactor;
     
     public static String backupPath;
 

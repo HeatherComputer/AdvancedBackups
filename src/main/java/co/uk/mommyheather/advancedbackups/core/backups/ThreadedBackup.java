@@ -29,6 +29,7 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
 
 public class ThreadedBackup extends Thread {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -42,6 +43,7 @@ public class ThreadedBackup extends Thread {
     private static String backupName;
     private Consumer<String> output;
     private boolean snapshot = false;
+    private boolean shutdown = false;
     
     static {
         builder.setPrettyPrinting();
@@ -64,12 +66,15 @@ public class ThreadedBackup extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (!shutdown) ABCore.clientContactor.backupStarting();
 
         try {
             makeBackup();
+            if (!shutdown) ABCore.clientContactor.backupComplete();
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             e.printStackTrace();
+            if (!shutdown) ABCore.clientContactor.backupFailed();
         }
 
         BackupWrapper.finishBackup();
@@ -120,29 +125,48 @@ public class ThreadedBackup extends Thread {
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
+            ArrayList<Path> paths = new ArrayList<>();
+
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
-                    try {
-                        targetFile = ABCore.worldDir.relativize(file);
-                        if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
-                            return FileVisitResult.CONTINUE;
-                        }
-                        zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
-                        byte[] bytes = Files.readAllBytes(file);
-                        zipOutputStream.write(bytes, 0, bytes.length);
-                        zipOutputStream.closeEntry();
-
-                    } catch (IOException e) {
-                        // TODO : Scream at user
-                        e.printStackTrace();
-                        ABCore.errorLogger.accept(file.toString());
-                    }
-                    
+                    targetFile = ABCore.worldDir.relativize(file);
+                    if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
-                }
+                    }
+                    paths.add(file);
+
+                
+                    return FileVisitResult.CONTINUE;
+                    }
             });
+
+            Path targetFile;
+
+            int max = paths.size();
+            int index = 0;
+
+            if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+
+            for (Path path : paths) {
+                try {
+                    targetFile = ABCore.worldDir.relativize(path);
+                    zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
+                    byte[] bytes = Files.readAllBytes(path);
+                    zipOutputStream.write(bytes, 0, bytes.length);
+                    zipOutputStream.closeEntry();
+                    index++;
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                }
+                catch (IOException e) {
+                    // TODO : Scream at user
+                    e.printStackTrace();
+                    ABCore.errorLogger.accept(file.toString());
+                }
+                
+            }
+
             zipOutputStream.flush();
             zipOutputStream.close();
 
@@ -233,11 +257,17 @@ public class ThreadedBackup extends Thread {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
+                int max = toBackup.size();
+                int index = 0;
+    
+                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
                     byte[] bytes = Files.readAllBytes(new File(ABCore.worldDir.toString(), path.toString()).toPath());
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
+                    index++;
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 zipOutputStream.flush();
                 zipOutputStream.close();
@@ -247,12 +277,18 @@ public class ThreadedBackup extends Thread {
             else {
                 File dest = differential ? new File(location.toString() + "/differential/", backupName + "/") :new File(location.toString() + "/incremental/", backupName + "/");
                 dest.mkdirs();
+                int max = toBackup.size();
+                int index = 0;
+                
+                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     File out = new File(dest, path.toString());
                     if (!out.getParentFile().exists()) {
                         out.getParentFile().mkdirs();
                     }
                     Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
+                    index++;
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 time = dest.lastModified();
             }
@@ -294,6 +330,10 @@ public class ThreadedBackup extends Thread {
 
     public void snapshot() {
         snapshot = true;
+    }
+
+    public void shutdown() {
+        shutdown = true;
     }
 
 

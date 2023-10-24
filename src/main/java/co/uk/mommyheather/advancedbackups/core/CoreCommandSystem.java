@@ -31,7 +31,7 @@ public class CoreCommandSystem {
             chat.accept("Cannot start a backup whilst a backup is already running!");
             return;
         }
-        BackupWrapper.makeSingleBackup(0, chat);
+        BackupWrapper.makeSingleBackup(0, chat, false);
     }
 
     public static void reloadConfig(Consumer<String> chat) {
