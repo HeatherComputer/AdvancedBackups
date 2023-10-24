@@ -229,7 +229,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
           name: AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.19-${{ inputs.version }}.jar
+          path: build/libs/AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
                
 
   forge-1-19-3:
@@ -293,7 +293,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
           name: AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.19-${{ inputs.version }}.jar
+          path: build/libs/AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
         
         
   fabric-1-19-3:
