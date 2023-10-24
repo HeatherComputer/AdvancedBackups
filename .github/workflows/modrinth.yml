@@ -27,6 +27,7 @@ on:
         - Fabric 1.19.2
         - Fabric 1.19.3
         - Forge 1.20
+        - Forge 1.20.2
         - Fabric 1.20
         - Fabric 1.20.2
 
@@ -217,14 +218,29 @@ jobs:
       uses: RubixDev/modrinth-upload@v1
       with:
         file_path: "AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.20,1.20.1,1.20.2"
+        game_versions: "1.20,1.20.1"
         loaders: "forge,neoforge"
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
         featured: false
         version: "${{ steps.version.outputs.VERSION }}"
-        name: "Forge 1.20 - ${{ steps.version.outputs.VERSION }}"
+        name: "(neo)Forge 1.20 - ${{ steps.version.outputs.VERSION }}"
+
+    - name: Upload Forge-1.20.2
+
+      if: inputs.version == 'Forge 1.20.2' || inputs.version == 'All'
+      uses: RubixDev/modrinth-upload@v1
+      with:
+        file_path: "AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
+        game_versions: "1.20.2"
+        loaders: "neoforge"
+        project_id: "Jrmoreqs"
+        token: "${{ secrets.MODRINTH_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        featured: false
+        version: "${{ steps.version.outputs.VERSION }}"
+        name: "Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}"
 
 
     - name: Upload Fabric-1.20
