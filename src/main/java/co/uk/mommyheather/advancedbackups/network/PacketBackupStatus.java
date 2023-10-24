@@ -6,8 +6,9 @@ import co.uk.mommyheather.advancedbackups.client.BackupToast;
 import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkContext;
 
 public class PacketBackupStatus {
     
@@ -52,20 +53,13 @@ public class PacketBackupStatus {
         buf.writeInt(max);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        BackupToast.starting = starting;
-        BackupToast.started = started;
-        BackupToast.failed = failed;
-        BackupToast.finished = finished;
-
-        BackupToast.progress = progress;
-        BackupToast.max = max;
-        ctx.get().enqueueWork(() -> {
-            if (ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                ClientWrapper.handle(this);
+    public static boolean handle(PacketBackupStatus message, CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> {
+            if (ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
+                ClientWrapper.handle(message);
             }
         });
-        ctx.get().setPacketHandled(true);
+        ctx.setPacketHandled(true);
         return true;
 
     }

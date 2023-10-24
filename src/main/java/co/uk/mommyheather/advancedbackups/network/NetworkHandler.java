@@ -2,9 +2,10 @@ package co.uk.mommyheather.advancedbackups.network;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.SimpleChannel;
 
 public class NetworkHandler {
     
@@ -14,12 +15,7 @@ public class NetworkHandler {
         return id++;
     }
 
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation("advancedbackups", "main"),
-        () -> PROTOCOL_VERSION,
-        (version) -> true,
-        (version) -> true
-    );
+    public static final SimpleChannel INSTANCE = ChannelBuilder.named(new ResourceLocation("advancedbackups", "main")).clientAcceptedVersions((status, version) -> true).simpleChannel();
 
 
     public static void register() {
@@ -31,7 +27,7 @@ public class NetworkHandler {
     }
 
     public static void sendToClient(ServerPlayer player, Object packet) {
-        INSTANCE.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+        INSTANCE.send(packet, player.connection.getConnection());
     }
 
 }
