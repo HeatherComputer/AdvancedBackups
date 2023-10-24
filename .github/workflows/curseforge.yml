@@ -28,6 +28,7 @@ on:
         - Fabric 1.19.2
         - Fabric 1.19.3
         - Forge 1.20
+        - Forge 1.20.2
         - Fabric 1.20
         - Fabric 1.20.2
 
@@ -201,11 +202,24 @@ jobs:
       with:
         file_path: "AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
-        game_versions: "9971,9990,10236,Java 17,Forge,NeoForge"
+        game_versions: "9971,9990,Java 17,Forge,NeoForge"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
         display_name: "Forge 1.20 - ${{ steps.version.outputs.VERSION }}"
+
+    - name: Upload Forge-1.20.2
+
+      if: inputs.version == 'Forge 1.20.2' || inputs.version == 'All'
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "10236,Java 17,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}"
 
 
     - name: Upload Fabric-1.20
