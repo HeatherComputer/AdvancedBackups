@@ -54,30 +54,4 @@ public class PacketBackupStatus {
 
     }
 
-
-
-    public static void handle(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-
-        PacketBackupStatus message = new PacketBackupStatus();
-        message.read(buf);
-
-        client.execute(() -> {
-            BackupToast.starting = message.starting;
-            BackupToast.started = message.started;
-            BackupToast.failed = message.failed;
-            BackupToast.finished = message.finished;
-    
-            BackupToast.progress = message.progress;
-            BackupToast.max = message.max;
-    
-            if (!BackupToast.exists) {
-                BackupToast.exists = true;
-                client.getToastManager().add(new BackupToast());
-            }
-
-        });
-
-
-    }
-    
-    }
+}

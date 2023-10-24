@@ -37,7 +37,6 @@ public class ClientContactor implements IClientContactor {
 
     @Override
     public void backupProgress(int progress, int max) {
-        System.out.println("HI");
         MinecraftServer server = AdvancedBackups.server;
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, progress, max);
