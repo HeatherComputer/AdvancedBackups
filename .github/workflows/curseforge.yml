@@ -23,7 +23,8 @@ on:
         - Forge 1.16
         - Forge 1.18
         - Fabric 1.18
-        - Forge 1.19
+        - Forge 1.19.2
+        - Forge 1.19.3
         - Fabric 1.19
         - Forge 1.20
         - Fabric 1.20
@@ -134,18 +135,32 @@ jobs:
         display_name: "Fabric 1.18 - ${{ steps.version.outputs.VERSION }}"
     
 
-    - name: Upload Forge-1.19
+    - name: Upload Forge-1.19.2
 
-      if: inputs.version == 'Forge 1.19' || inputs.version == 'All'
+      if: inputs.version == 'Forge 1.19.2' || inputs.version == 'All'
       uses: itsmeow/curseforge-upload@v3
       with:
-        file_path: "AdvancedBackups-forge-1.19-${{ steps.version.outputs.VERSION }}.jar"
+        file_path: "AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
-        game_versions: "9366,9776,Java 17,Forge"
+        game_versions: "9186,9259,9366,Java 17,Forge"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
-        display_name: "Forge 1.19 - ${{ steps.version.outputs.VERSION }}"
+        display_name: "Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}"
+    
+
+    - name: Upload Forge-1.19.3
+
+      if: inputs.version == 'Forge 1.19.3' || inputs.version == 'All'
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "9550,9776,Java 17,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}"
 
         
     - name: Upload Fabric-1.19
