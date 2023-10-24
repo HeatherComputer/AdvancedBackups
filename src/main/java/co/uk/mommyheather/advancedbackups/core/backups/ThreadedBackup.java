@@ -43,6 +43,7 @@ public class ThreadedBackup extends Thread {
     private static String backupName;
     private Consumer<String> output;
     private boolean snapshot = false;
+    private boolean shutdown = false;
     
     static {
         builder.setPrettyPrinting();
@@ -65,16 +66,15 @@ public class ThreadedBackup extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        ABCore.clientContactor.backupStarting();
+        if (!shutdown) ABCore.clientContactor.backupStarting();
 
         try {
             makeBackup();
-            ABCore.clientContactor.backupComplete();
+            if (!shutdown) ABCore.clientContactor.backupComplete();
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             e.printStackTrace();
-            ABCore.clientContactor.backupFailed();
+            if (!shutdown) ABCore.clientContactor.backupFailed();
         }
 
         BackupWrapper.finishBackup();
@@ -147,7 +147,7 @@ public class ThreadedBackup extends Thread {
             int max = paths.size();
             int index = 0;
 
-            ABCore.clientContactor.backupProgress(index, max);
+            if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
 
             for (Path path : paths) {
                 try {
@@ -157,7 +157,7 @@ public class ThreadedBackup extends Thread {
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                     index++;
-                    ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 catch (IOException e) {
                     // TODO : Scream at user
@@ -260,14 +260,14 @@ public class ThreadedBackup extends Thread {
                 int max = toBackup.size();
                 int index = 0;
     
-                ABCore.clientContactor.backupProgress(index, max);
+                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
                     byte[] bytes = Files.readAllBytes(new File(ABCore.worldDir.toString(), path.toString()).toPath());
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                     index++;
-                    ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 zipOutputStream.flush();
                 zipOutputStream.close();
@@ -280,7 +280,7 @@ public class ThreadedBackup extends Thread {
                 int max = toBackup.size();
                 int index = 0;
                 
-                ABCore.clientContactor.backupProgress(index, max);
+                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     File out = new File(dest, path.toString());
                     if (!out.getParentFile().exists()) {
@@ -288,7 +288,7 @@ public class ThreadedBackup extends Thread {
                     }
                     Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
                     index++;
-                    ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 time = dest.lastModified();
             }
@@ -330,6 +330,10 @@ public class ThreadedBackup extends Thread {
 
     public void snapshot() {
         snapshot = true;
+    }
+
+    public void shutdown() {
+        shutdown = true;
     }
 
 
