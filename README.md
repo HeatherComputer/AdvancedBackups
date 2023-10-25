@@ -81,7 +81,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 \- All entries in the table below must be prefixed with `/backup` in 2.2+ or `/advancedbackups` in older pre-2.2.
 
-- Example : `/backup force-backup`
+- Example : `/backup start`
 
 
 <details>
