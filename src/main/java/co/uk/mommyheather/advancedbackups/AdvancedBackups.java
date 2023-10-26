@@ -3,6 +3,7 @@ package co.uk.mommyheather.advancedbackups;
 import net.minecraft.command.server.CommandSaveAll;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldServer;
@@ -118,7 +119,7 @@ public class AdvancedBackups
 
     @SubscribeEvent
     public void onPlayerConnected(PlayerEvent.PlayerLoggedInEvent event) {
-        ABCore.activity = true;
+        ABCore.setActivity(true);
     }
 
     @SubscribeEvent
@@ -190,6 +191,12 @@ public class AdvancedBackups
             errorLogger.accept("FAILED TO SAVE WORLD!");
             e.printStackTrace();
         }
+    }
+
+
+    public static void resetActivity() {
+        ServerConfigurationManager configurationManager = server.getConfigurationManager();
+        ABCore.setActivity(!configurationManager.playerEntityList.isEmpty());
     }
 
 }
