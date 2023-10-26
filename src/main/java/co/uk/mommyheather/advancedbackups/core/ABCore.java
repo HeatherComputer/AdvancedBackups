@@ -33,6 +33,8 @@ public class ABCore {
     public static Runnable enableSaving;
     public static Consumer<Boolean> saveOnce;
 
+    public static Runnable resetActivity;
+
     public static IClientContactor clientContactor;
     
     public static String backupPath;
@@ -45,12 +47,17 @@ public class ABCore {
         enableSaving.run();
     }
 
+    public static void resetActivity() {
+        resetActivity.run();
+    }
+
     public static void saveOnce() {
         saveOnce.accept(ConfigManager.flush.get());;
     }
 
-    public static void setActivity() {
-        if (!activity) {
+    public static void setActivity(boolean in) {
+        if (in != activity) {
+            activity = in;
             GsonBuilder builder = new GsonBuilder(); 
             Gson gson = builder.setPrettyPrinting().create();
             //i should thread this at some point
@@ -60,7 +67,7 @@ public class ABCore {
                 try {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
                     
-                    manifest.general.activity = true;
+                    manifest.general.activity = activity;
                     
                     FileWriter writer = new FileWriter(backupManifest);
                     writer.write(gson.toJson(manifest));
@@ -74,7 +81,6 @@ public class ABCore {
                 }
             }
         }
-        activity = true;
     }
 
     
