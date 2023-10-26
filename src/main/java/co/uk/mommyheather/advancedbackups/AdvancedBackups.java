@@ -1,7 +1,21 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.io.File;
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.apache.logging.log4j.Logger;
+
+import co.uk.mommyheather.advancedbackups.client.ClientContactor;
+import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -14,19 +28,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import org.apache.logging.log4j.Logger;
-
-import co.uk.mommyheather.advancedbackups.client.ClientContactor;
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
-import net.minecraftforge.common.MinecraftForge;
-
-import java.io.File;
-import java.util.function.Consumer;
 
 
 @Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION, acceptableRemoteVersions = "*")
@@ -87,6 +88,8 @@ public class AdvancedBackups
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
 
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
+
         ABCore.clientContactor = new ClientContactor();
         
         ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
@@ -112,7 +115,7 @@ public class AdvancedBackups
 
     @SubscribeEvent
     public void onPlayerConnect(PlayerEvent.PlayerLoggedInEvent event) {
-        ABCore.activity = true;
+        ABCore.setActivity(true);
     }
 
     @SubscribeEvent
@@ -152,6 +155,11 @@ public class AdvancedBackups
         server.saveAllWorlds(false);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
+    }
+
+    public static void resetActivity() {
+        List<EntityPlayerMP> players = server.getPlayerList().getPlayers();
+        ABCore.setActivity(!players.isEmpty());
     }
 
 }
