@@ -1,12 +1,19 @@
 package co.uk.mommyheather.advancedbackups;
 
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.FolderName;
@@ -21,10 +28,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
-
-import java.util.function.Consumer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod("advancedbackups")
 public class AdvancedBackups
@@ -59,6 +62,8 @@ public class AdvancedBackups
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
+
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
 
         ABCore.clientContactor = new ClientContactor();
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
@@ -129,6 +134,12 @@ public class AdvancedBackups
         server.saveAllChunks(true, flush, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
+    }
+
+    public static void resetActivity() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
+        ABCore.setActivity(!players.isEmpty());
     }
 
 }
