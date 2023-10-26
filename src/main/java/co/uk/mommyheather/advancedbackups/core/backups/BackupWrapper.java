@@ -311,6 +311,9 @@ public class BackupWrapper {
     }
 
     public static void finishBackup() {
+
+        ABCore.resetActivity();
+
         File directory = new File(ABCore.backupPath);
 
         switch(ConfigManager.type.get()) {
