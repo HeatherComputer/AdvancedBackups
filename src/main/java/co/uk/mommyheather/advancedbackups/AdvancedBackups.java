@@ -1,5 +1,10 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+
 import com.mojang.logging.LogUtils;
 
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
@@ -10,22 +15,19 @@ import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
-
-import java.util.function.Consumer;
-
-import org.slf4j.Logger;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 @Mod("advancedbackups")
 public class AdvancedBackups
@@ -60,6 +62,8 @@ public class AdvancedBackups
         ABCore.warningLogger = warningLogger;
         ABCore.errorLogger = errorLogger;
 
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
+
         ABCore.clientContactor = new ClientContactor();
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
 
@@ -82,7 +86,7 @@ public class AdvancedBackups
     
     @SubscribeEvent
     public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
-        ABCore.setActivity();
+        ABCore.setActivity(true);
     }
 
     @SubscribeEvent
@@ -148,6 +152,13 @@ public class AdvancedBackups
         server.saveEverything(true, flush, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
+    }
+
+
+    public static void resetActivity() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        List<ServerPlayer> players = server.getPlayerList().getPlayers();
+        ABCore.setActivity(!players.isEmpty());
     }
 
 }
