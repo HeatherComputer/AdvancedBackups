@@ -1,16 +1,7 @@
 package co.uk.mommyheather.advancedbackups;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.WorldSavePath;
-
 import java.io.File;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -21,7 +12,16 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.WorldSavePath;
 
 public class AdvancedBackups implements ModInitializer {
     // This logger is used to write text to the console and the log file.
@@ -52,6 +52,8 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.warningLogger = warningLogger;
             ABCore.errorLogger = errorLogger;
 
+            ABCore.resetActivity = AdvancedBackups::resetActivity;
+
             ABCore.clientContactor = new ClientContactor();
             ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().toString());
             
@@ -68,7 +70,7 @@ public class AdvancedBackups implements ModInitializer {
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            ABCore.setActivity();
+            ABCore.setActivity(true);
         });
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
@@ -134,5 +136,10 @@ public class AdvancedBackups implements ModInitializer {
         server.saveAll(true, flush, true);
         if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
+    }
+
+    public static void resetActivity() {
+        List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+        ABCore.setActivity(!players.isEmpty());
     }
 }
