@@ -57,7 +57,7 @@ public class AdvancedBackups implements ModInitializer {
 
             ABCore.clientContactor = new ClientContactor();
             
-            ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().toString());
+            ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().getPaths().get(0).toAbsolutePath().toString());
             
             
             ConfigManager.loadOrCreateConfig();
