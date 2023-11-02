@@ -8,6 +8,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 [Features](#features)
 
+[What does each backup type mean?](#backup-types)
+
 [Ingame Usage](#ingame)
 
 [Command Line Usage](#commandline)
@@ -37,6 +39,14 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 - Save anywhere on disk, including network locations.
 - Customisable compression level.
 - Commandline restoration tool built into the jar.
+
+## Backup Types:
+- Zip backups are fairly self explanatory - zip up the whole world and there's your backup.
+- Differential backups have a concept of "full" and "partial" backups :
+    - "full" backups are the same as a zip. 
+    - "partial" backups contain only the files that have changed since the last "full" backup. This can greatly reduce space usage.
+    
+- Incremental backups are similar to differential, but they backup files that have changed since the last *partial* instead - which further reduces space usage, but can create an instability as a loss of a partial can damage all backups up until the next full backup. They also take the longest to restore.
 
 
 ## Usage:
