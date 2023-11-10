@@ -203,29 +203,34 @@ public class BackupWrapper {
             String dir = ABCore.modJar.getParent();
             String file = ABCore.modJar.getName();
             File script;
-            Boolean flag = System.getProperty("os.name").toLowerCase().contains("windows");
-    
-            if (flag) script = new File(path.getParent(), "restore-script.bat");
-    
-            else script = new File(path.getParent(), "restore-script.sh");
-    
+            FileWriter writer;
+
+            
+            script = new File(path.getParent(), "restore-script.bat");
+
             if (script.exists()) script.delete();
     
             script.createNewFile();
+            writer = new FileWriter(script);
+
+            writer.append("@echo off \n");
+            writer.append(dir.charAt(0) + ":\n"); // command prompt defaults to c:, if this is wrong then we need to change drive.
+            writer.append("cd \"" + dir + "\"\n");
+            writer.append("java -jar \"" + file + "\"\n");
+
+            writer.flush();
+            writer.close(); 
+
+            script = new File(path.getParent(), "restore-script.sh");
+
+            if (script.exists()) script.delete();
     
-            FileWriter writer = new FileWriter(script);
-    
-            if (flag) {
-                writer.append("@echo off \n");
-                writer.append(dir.charAt(0) + ":\n"); // command prompt defaults to c:, if this is wrong then we need to change drive.
-                writer.append("cd \"" + dir + "\"\n");
-                writer.append("java -jar \"" + file + "\"\n");
-            }
-            else {
-                writer.append("cd \"" + dir + "\"\n");
-                writer.append("java -jar \"" + file + "\"\n");
-            }
-            
+            script.createNewFile();
+            writer = new FileWriter(script);
+
+            writer.append("cd \"" + dir + "\"\n");
+            writer.append("java -jar \"" + file + "\"\n");
+
             writer.flush();
             writer.close(); 
 
