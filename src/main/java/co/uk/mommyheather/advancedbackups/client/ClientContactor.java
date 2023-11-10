@@ -7,7 +7,7 @@ import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class ClientContactor implements IClientContactor {
     
