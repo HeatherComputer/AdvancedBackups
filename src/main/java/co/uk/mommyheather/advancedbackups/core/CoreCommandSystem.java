@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
@@ -56,6 +57,7 @@ public class CoreCommandSystem {
             File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
             if (backupManifest.exists()) {
+                try {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
                     
                     manifest.incremental.chainLength += (int) ConfigManager.length.get();
@@ -66,6 +68,22 @@ public class CoreCommandSystem {
                     writer.write(gson.toJson(manifest));
                     writer.flush();
                     writer.close();
+
+                } catch (JsonParseException e) {
+                    chat.accept("Malformed backup manifest! Will be completely replaced, with no side effects...");
+                    chat.accept("Check logs for more info.");
+                    e.printStackTrace();
+                    
+                    BackupManifest manifest = BackupManifest.defaults();
+                    
+                    //don't actually need to set them here
+
+                    FileWriter writer = new FileWriter(backupManifest);
+                    writer.write(gson.toJson(manifest));
+                    writer.flush();
+                    writer.close();
+
+                }
     
             }
 

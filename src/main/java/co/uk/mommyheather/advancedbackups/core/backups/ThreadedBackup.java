@@ -24,6 +24,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
@@ -190,7 +191,17 @@ public class ThreadedBackup extends Thread {
             File manifestFile = new File(location.toString() + "/manifest.json");
             BackupManifest manifest;
             if (manifestFile.exists()) {
-                manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), BackupManifest.class);
+                try {
+                    manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), BackupManifest.class);
+
+                } catch (JsonParseException e) {
+
+                    ABCore.errorLogger.accept("Malformed backup manifest! It will have to be reset...");
+                    output.accept("Malformed backup manifest! It will have to be reset...");
+                    e.printStackTrace();
+
+                    manifest = BackupManifest.defaults();
+                }
             }
             else {
                 manifest = BackupManifest.defaults();
