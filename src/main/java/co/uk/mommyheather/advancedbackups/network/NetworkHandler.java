@@ -2,9 +2,9 @@ package co.uk.mommyheather.advancedbackups.network;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.NetworkRegistry;
+import net.neoforged.neoforge.network.PlayNetworkDirection;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
 
 public class NetworkHandler {
     
@@ -31,7 +31,7 @@ public class NetworkHandler {
     }
 
     public static void sendToClient(ServerPlayer player, Object packet) {
-        INSTANCE.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+        INSTANCE.sendTo(packet, player.connection.connection, PlayNetworkDirection.PLAY_TO_CLIENT);
     }
 
 }

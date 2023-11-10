@@ -1,15 +1,11 @@
 package co.uk.mommyheather.advancedbackups.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -29,11 +25,12 @@ public class BackupToast implements Toast {
     private static boolean timeSet = false;
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
+    private static final ResourceLocation TEXTURE = new ResourceLocation("toast/advancement");
 
 
     @Override
     public Visibility render(GuiGraphics graphics, ToastComponent toastGui, long delta) {
-        graphics.blit(TEXTURE, 0, 0, 0, 0, this.width(), this.height());
+        graphics.blitSprite(TEXTURE, 0, 0, this.width(), this.height());
         graphics.renderFakeItem(stack, 8, 8);
 
         

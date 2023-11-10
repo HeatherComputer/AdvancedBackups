@@ -1,13 +1,11 @@
 package co.uk.mommyheather.advancedbackups.network;
 
-import java.util.function.Supplier;
 
 import co.uk.mommyheather.advancedbackups.client.BackupToast;
 import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class PacketBackupStatus {
     
@@ -52,20 +50,20 @@ public class PacketBackupStatus {
         buf.writeInt(max);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        BackupToast.starting = starting;
-        BackupToast.started = started;
-        BackupToast.failed = failed;
-        BackupToast.finished = finished;
+    public static boolean handle(PacketBackupStatus packet, NetworkEvent.Context ctx) {
+        BackupToast.starting = packet.starting;
+        BackupToast.started = packet.started;
+        BackupToast.failed = packet.failed;
+        BackupToast.finished = packet.finished;
 
-        BackupToast.progress = progress;
-        BackupToast.max = max;
-        ctx.get().enqueueWork(() -> {
-            if (ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                ClientWrapper.handle(this);
+        BackupToast.progress = packet.progress;
+        BackupToast.max = packet.max;
+        ctx.enqueueWork(() -> {
+            if (ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
+                ClientWrapper.handle(packet);
             }
         });
-        ctx.get().setPacketHandled(true);
+        ctx.setPacketHandled(true);
         return true;
 
     }
