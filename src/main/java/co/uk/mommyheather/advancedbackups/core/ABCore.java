@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
@@ -63,9 +64,35 @@ public class ABCore {
             //i should thread this at some point
             File file = new File(ABCore.backupPath);
             File backupManifest = new File(file, "manifest.json");
-            if (backupManifest.exists()) {
-                try {
-                    BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+            try {
+                if (backupManifest.exists()) {
+                    try {
+                        BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+                        
+                        manifest.general.activity = activity;
+                        
+                        FileWriter writer = new FileWriter(backupManifest);
+                        writer.write(gson.toJson(manifest));
+                        writer.flush();
+                        writer.close();
+                    }
+                    
+                    catch (JsonParseException e) {
+                        ABCore.errorLogger.accept("Malformed backup manifest! Overwriting, meaning next backup has to be a full backup...");
+                        e.printStackTrace();
+                        
+                        BackupManifest manifest = BackupManifest.defaults();
+                        
+                        manifest.general.activity = activity;
+                        
+                        FileWriter writer = new FileWriter(backupManifest);
+                        writer.write(gson.toJson(manifest));
+                        writer.flush();
+                        writer.close();
+                    }
+                }
+                else {
+                    BackupManifest manifest = BackupManifest.defaults();
                     
                     manifest.general.activity = activity;
                     
@@ -73,12 +100,11 @@ public class ABCore {
                     writer.write(gson.toJson(manifest));
                     writer.flush();
                     writer.close();
-    
                 }
-                catch (IOException e) {
-                    ABCore.errorLogger.accept("Error writing player actiivty to backup manifest!!");
-                    e.printStackTrace();
-                }
+            }
+            catch (IOException e) {
+                ABCore.errorLogger.accept("Error writing player activty to backup manifest!!");
+                e.printStackTrace();
             }
         }
     }

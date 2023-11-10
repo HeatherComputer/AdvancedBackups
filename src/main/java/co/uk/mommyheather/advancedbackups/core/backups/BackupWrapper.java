@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
@@ -36,10 +37,25 @@ public class BackupWrapper {
         File backupManifest = new File(file, "manifest.json");
         if (backupManifest.exists()) {
             try {
-                BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
-                
-                ABCore.activity = manifest.general.activity;
+                try {
+                    BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
+                    
+                    ABCore.activity = manifest.general.activity;
 
+                } catch (JsonParseException e) {
+                    ABCore.errorLogger.accept("Malformed backup manifest! Will be completely replaced, and will assume player activity has changed...");
+
+                    BackupManifest manifest = BackupManifest.defaults();
+                    
+                    manifest.general.activity = true;
+                    ABCore.activity = true;
+
+                    FileWriter writer = new FileWriter(backupManifest);
+                    writer.write(gson.toJson(manifest));
+                    writer.flush();
+                    writer.close();
+
+                }
             }
             catch (IOException e) {
                 ABCore.errorLogger.accept("Error reading player actiivty from backup manifest!!");
@@ -113,6 +129,9 @@ public class BackupWrapper {
             try {
                 backupManifest.createNewFile();
                 BackupManifest manifest = BackupManifest.defaults();
+
+                //NOW DISABLED - CODE FOR MIGRATING FROM 1.X TO 2.X, BUT IS USELESS IN 3.X
+                /*
                 File differentialManifest = new File(file, "/differential/manifest.json");
                 if (differentialManifest.exists()) {
                     try {
@@ -139,7 +158,7 @@ public class BackupWrapper {
                     } catch (IOException e) {
     
                     }
-                }
+                }*/
     
                 
                 FileWriter writer = new FileWriter(backupManifest);
