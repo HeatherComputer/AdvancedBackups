@@ -21,7 +21,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 ## Current Versions:
 - Fabric/Quilt 1.20.x
 - Forge 1.20.x
-- Neoforge 1.20/1.20.1
+- Neoforge 1.20.x
 - Fabric/Quilt 1.19.x
 - Forge 1.19.x
 - Forge 1.18.x
