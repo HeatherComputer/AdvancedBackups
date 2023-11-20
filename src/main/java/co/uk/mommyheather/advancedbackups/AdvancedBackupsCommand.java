@@ -6,11 +6,12 @@ import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class AdvancedBackupsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> stack) {
         stack.register(Commands.literal("backup").requires((runner) -> {
-            return runner.hasPermission(3);
+            return !ServerLifecycleHooks.getCurrentServer().isDedicatedServer() || runner.hasPermission(3);
         }).then(Commands.literal("start").executes((runner) -> {
             CoreCommandSystem.startBackup((response) -> {
                 runner.getSource().sendSuccess(new TextComponent(response), true);
