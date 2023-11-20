@@ -36,6 +36,13 @@ public class AdvancedBackupsCommand extends CommandBase
         return "/backup (start|reload-config|reset-chain|snapshot)";
     }
 
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender)
+    {
+        return !AdvancedBackups.server.isDedicatedServer() || super.canCommandSenderUseCommand(sender);
+    }
+
+
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
