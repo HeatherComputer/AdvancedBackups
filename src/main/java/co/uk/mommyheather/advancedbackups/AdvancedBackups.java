@@ -96,6 +96,7 @@ public class AdvancedBackups
         ABCore.errorLogger = errorLogger;
 
         ABCore.clientContactor = new ABClientContactor();
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
 
         event.registerServerCommand(new AdvancedBackupsCommand());
 

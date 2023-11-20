@@ -23,7 +23,8 @@ public class ABClientContactor implements IClientContactor {
         configurationManager.playerEntityList.forEach((player) -> {
             if (player instanceof EntityPlayerMP) {
                 EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                if (playerMP.canCommandSenderUseCommand(3, "advancedbackups")) { //if they can run the command, they should receive info on active backups
+                //if they can run the command, or are in singleplayer, they should receive info on active backups.
+                if (playerMP.canCommandSenderUseCommand(3, "advancedbackups") || !AdvancedBackups.server.isDedicatedServer()) {
                     NetworkHandler.HANDLER.sendTo(packet, playerMP);
                 }
             }
