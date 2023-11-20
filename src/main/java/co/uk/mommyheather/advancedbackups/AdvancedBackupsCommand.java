@@ -17,26 +17,32 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         addSubcommand(new ResetChain());
         addSubcommand(new Snapshot());
     }
-
+    
     @Override
     public String getName()
     {
         return "backup";
     }
-
-
+    
+    
     @Override
     public int getRequiredPermissionLevel()
     {
         return 3;
     }
-
+    
     @Override
     public String getUsage(ICommandSender icommandsender)
     {
         return "/backup (check|start|reload-config|snapshot)";
     }
-
+    
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
+    }
+    
     public static class Reload extends CommandTreeBase {
         public Reload(){}
         @Override
@@ -53,6 +59,12 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.backup.reload-config.usage";
+        }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
         }
     }    
     
@@ -73,6 +85,12 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         public String getUsage(ICommandSender sender) {
             return "commands.backup.start.usage";
         }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
+        }
     }
     
     public static class ResetChain extends CommandTreeBase {
@@ -92,6 +110,12 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         public String getUsage(ICommandSender sender) {
             return "commands.backup.resetchain.usage";
         }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
+        }
     }
     
     public static class Snapshot extends CommandTreeBase {
@@ -110,6 +134,12 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.backup.snapshot.usage";
+        }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
         }
     }
 }
