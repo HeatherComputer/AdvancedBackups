@@ -30,13 +30,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 
-@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION, acceptableRemoteVersions = "*")
+@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, acceptableRemoteVersions = "*")
 @EventBusSubscriber
 public class AdvancedBackups
 {
     public static final String MODID = "advancedbackups";
     public static final String NAME = "Advanced Backups";
-    public static final String VERSION = "0.3";
 
     private static Logger LOGGER;
     public static Consumer<String> infoLogger;
