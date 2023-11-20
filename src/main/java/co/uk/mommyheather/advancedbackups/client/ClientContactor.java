@@ -18,7 +18,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, true, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -30,7 +30,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, true, false, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -42,7 +42,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, progress, max);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -54,7 +54,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(true, false, false, false, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
