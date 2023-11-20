@@ -15,7 +15,7 @@ public class ClientContactor implements IClientContactor {
         List<EntityPlayerMP> players = AdvancedBackups.server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, true, 0, 0);
         for (EntityPlayerMP player : players) {
-            if (player.canUseCommand(3, "backup")) {
+            if (!AdvancedBackups.server.isDedicatedServer() || player.canUseCommand(3, "backup")) {
                 NetworkHandler.HANDLER.sendTo(packet, player);
             }
         }
@@ -26,7 +26,7 @@ public class ClientContactor implements IClientContactor {
         List<EntityPlayerMP> players = AdvancedBackups.server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, true, false, 0, 0);
         for (EntityPlayerMP player : players) {
-            if (player.canUseCommand(3, "backup")) {
+            if (!AdvancedBackups.server.isDedicatedServer() || player.canUseCommand(3, "backup")) {
                 NetworkHandler.HANDLER.sendTo(packet, player);
             }
         }
@@ -37,7 +37,7 @@ public class ClientContactor implements IClientContactor {
         List<EntityPlayerMP> players = AdvancedBackups.server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, progress, max);
         for (EntityPlayerMP player : players) {
-            if (player.canUseCommand(3, "backup")) {
+            if (!AdvancedBackups.server.isDedicatedServer() || player.canUseCommand(3, "backup")) {
                 NetworkHandler.HANDLER.sendTo(packet, player);
             }
         }
@@ -48,7 +48,7 @@ public class ClientContactor implements IClientContactor {
         List<EntityPlayerMP> players = AdvancedBackups.server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(true, false, false, false, 0, 0);
         for (EntityPlayerMP player : players) {
-            if (player.canUseCommand(3, "backup")) {
+            if (!AdvancedBackups.server.isDedicatedServer() || player.canUseCommand(3, "backup")) {
                 NetworkHandler.HANDLER.sendTo(packet, player);
             }
         }
