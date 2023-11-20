@@ -36,12 +36,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, version = AdvancedBackups.VERSION, acceptableRemoteVersions = "*")
+@Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, acceptableRemoteVersions = "*")
 public class AdvancedBackups
 {
     public static final String MODID = "advancedbackups";
     public static final String NAME = "Advanced Backups";
-    public static final String VERSION = "2.0";
 
     private static Logger LOGGER;
     public static Consumer<String> infoLogger;
