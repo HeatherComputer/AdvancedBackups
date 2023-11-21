@@ -17,7 +17,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, true, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissionLevel(3)) {
+            if (!AdvancedBackups.server.isDedicated() || player.hasPermissionLevel(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -29,7 +29,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, true, false, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissionLevel(3)) {
+            if (!AdvancedBackups.server.isDedicated() || player.hasPermissionLevel(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -41,7 +41,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, progress, max);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissionLevel(3)) {
+            if (!AdvancedBackups.server.isDedicated() || player.hasPermissionLevel(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -53,7 +53,7 @@ public class ClientContactor implements IClientContactor {
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         PacketBackupStatus packet = new PacketBackupStatus(true, false, false, false, 0, 0);
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissionLevel(3)) {
+            if (!AdvancedBackups.server.isDedicated() || player.hasPermissionLevel(3)) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
