@@ -34,7 +34,6 @@ public class ConfigManager {
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"});
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups");
-    public static final LongValue size = new LongValue("config.advancedbackups.size", 50L, 5L, 9999L);
     public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.5F, 0.25F, 500F);
     public static final FloatValue maxFrequency = new FloatValue("config.advancedbackups.frequency.max", 24F, 0.5F, 500F);
     public static final BooleanValue uptime = new BooleanValue("config.advancedbackups.frequency.uptime", true);
@@ -48,7 +47,11 @@ public class ConfigManager {
     public static final BooleanValue compressChains = new BooleanValue("config.advancedbackups.chains.compress", true);
     public static final BooleanValue smartChains = new BooleanValue("config.advancedbackups.chains.smart", true);
     public static final FloatValue chainsPercent = new FloatValue("config.advancedbackups.chains.maxpercent", 50F, 1F, 100F);
+    public static final FloatValue size = new FloatValue("config.advancedbackups.purge.size", 50F, 0F, Float.MAX_VALUE);
+    public static final LongValue daysToKeep = new LongValue("config.advancedbackups.purge.days", 0L, 0L, Long.MAX_VALUE);
+    public static final LongValue backupsToKeep = new LongValue("config.advancedbackups.purge.count", 0L, 0L, Long.MAX_VALUE);
     public static final BooleanValue purgeIncrementals = new BooleanValue("config.advancedbackups.purge.incrementals", true);
+    public static final LongValue incrementalChains = new LongValue("config.advancedbackups.purge.incrementalchains", 1, 1, Long.MAX_VALUE);
 
 
 
