@@ -139,6 +139,14 @@ public class ConfigManager {
             entries.get(key).load(props.getProperty(key));
         }
 
+        if (props.containsKey("config.advancedbackups.size")) {
+            ABCore.warningLogger.accept("Migrating old config value :");
+            ABCore.warningLogger.accept("config.advancedbackups.size -> config.advancedbackups.purge.size");
+
+            size.load(props.getProperty("config.advancedbackups.size"));
+
+        }
+
         if (!missingProps.isEmpty()) {
             ABCore.warningLogger.accept("The following properties were missing from the loaded file :");
             for (String string : missingProps) {
