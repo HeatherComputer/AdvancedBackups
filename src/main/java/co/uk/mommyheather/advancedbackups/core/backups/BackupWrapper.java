@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -353,6 +356,8 @@ public class BackupWrapper {
         }
 
         checkSize(directory);
+        checkCount(directory);
+        checkDates(directory);
 
     }
 
@@ -399,12 +404,36 @@ public class BackupWrapper {
         return count;
     }
 
+
+    public static int calculateBackupCount(File directory) {
+        File[] files = directory.listFiles();
+        if (files == null || files.length == 0) return 0;
+        return files.length;
+    }
+
     private static void checkCount(File directory) {
         if (ConfigManager.backupsToKeep.get() == 0) return;
+        long date = 0;
+        while (true) {
+            if (calculateBackupCount(directory) <= ConfigManager.backupsToKeep.get()) return;
+            File file = getFirstBackupAfterDate(directory, date);
+            date = file.lastModified();
+            file.delete();
+        }
+    
     }
 
     private static void checkDates(File directory) {
         if (ConfigManager.daysToKeep.get() == 0) return;
+        
+        long date = 0;
+        long comp = mostRecentBackupTime() / 86400000;
+        while (true) {
+            File file = getFirstBackupAfterDate(directory, date);
+            date = file.lastModified();
+            if ((date / 86400000) + ConfigManager.daysToKeep.get() >= comp) return;
+            file.delete();
+        }
     }
 
 
@@ -471,6 +500,5 @@ public class BackupWrapper {
             }
 
         }
-
     }
 }
