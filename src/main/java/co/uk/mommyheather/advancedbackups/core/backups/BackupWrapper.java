@@ -339,71 +339,21 @@ public class BackupWrapper {
         ABCore.resetActivity();
 
         File directory = new File(ABCore.backupPath);
-
         switch(ConfigManager.type.get()) {
             case "zip" : {
                 directory = new File(directory, "/zips/");
-                long date = Long.MIN_VALUE;
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    file.delete();
-                }
             }
             case "differential" : {
                 directory = new File(directory, "/differential/");
-                long date = Long.MIN_VALUE;
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    if (file.getName().contains("full")) {
-                        File nextFile = getFirstBackupAfterDate(directory, date);
-                        if (nextFile.getName().contains("partial")) {
-                            nextFile.delete();
-                        }
-                        else {
-                            file.delete();
-                        }
-                    }
-                    else {
-                        file.delete();
-                    }
-
-                }
             }
             case "incremental" : {
                 directory = new File(directory, "/incremental/");
-                if (!ConfigManager.purgeIncrementals.get()) return;
-                long date = Long.MIN_VALUE;
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    if (calculateChainCount(directory) < 2) return;
-                    ABCore.errorLogger.accept("Purging incremental backup chain - too much space taken up!");
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    if (file.getName().contains("full")) {
-                        file.delete();
-                        while (true) {
-                            file = getFirstBackupAfterDate(directory, date);
-                            date = file.lastModified();
-                            if (file.getName().contains("full")) {
-                                file.delete();
-                            }
-                            else {
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        file.delete();
-                    }
-
-                }
             }
 
         }
+
+        checkSize(directory);
+
     }
 
 
@@ -447,5 +397,80 @@ public class BackupWrapper {
             } 
         }
         return count;
+    }
+
+    private static void checkCount(File directory) {
+        if (ConfigManager.backupsToKeep.get() == 0) return;
+    }
+
+    private static void checkDates(File directory) {
+        if (ConfigManager.daysToKeep.get() == 0) return;
+    }
+
+
+    private static void checkSize(File directory) {
+        if (ConfigManager.size.get() <= 0F) return;
+        if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+        long date = 0;
+
+        switch(ConfigManager.type.get()) {
+            case "zip" : {
+                while (true) {
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    file.delete();
+                }
+            }
+            case "differential" : {
+                while (true) {
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    if (file.getName().contains("full")) {
+                        File nextFile = getFirstBackupAfterDate(directory, date);
+                        if (nextFile.getName().contains("partial")) {
+                            nextFile.delete();
+                        }
+                        else {
+                            file.delete();
+                        }
+                    }
+                    else {
+                        file.delete();
+                    }
+
+                }
+            }
+            case "incremental" : {
+                if (!ConfigManager.purgeIncrementals.get()) return;
+                while (true) {
+                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+                    if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
+                    ABCore.errorLogger.accept("Purging incremental backup chain - too much space taken up!");
+                    File file = getFirstBackupAfterDate(directory, date);
+                    date = file.lastModified();
+                    if (file.getName().contains("full")) {
+                        file.delete();
+                        while (true) {
+                            file = getFirstBackupAfterDate(directory, date);
+                            date = file.lastModified();
+                            if (!file.getName().contains("full")) {
+                                file.delete();
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        file.delete();
+                    }
+
+                }
+            }
+
+        }
+
     }
 }
