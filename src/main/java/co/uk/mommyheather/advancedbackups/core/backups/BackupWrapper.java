@@ -500,8 +500,42 @@ public class BackupWrapper {
         }
     }
     
-    
     private static void checkSize(File directory) {
+        if (ConfigManager.size.get() <= 0F) return;
+        if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+        long date = 0;
+        while (true) {
+            if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
+            File file = getFirstBackupAfterDate(directory, date);
+            File dependent = getDependent(file);
+            if (dependent == null) {
+                //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
+                file.delete();
+                return;
+            }
+            else {
+                
+                //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
+                if (ConfigManager.type.get() == "incremental") {
+                    if (!ConfigManager.purgeIncrementals.get()) return;
+                    if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
+
+                    file.delete();
+                    dependent.delete();
+                    while ((dependent = getDependent(dependent)) != null) {
+                        dependent.delete();
+                    }
+                }
+                else {
+                    dependent.delete();
+                }
+            }
+        }
+        
+    }
+    
+    
+    /*private static void checkSize(File directory) {
         if (ConfigManager.size.get() <= 0F) return;
         if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
         long date = 0;
@@ -564,5 +598,5 @@ public class BackupWrapper {
             }
             
         }
-    }
+    }*/
 }
