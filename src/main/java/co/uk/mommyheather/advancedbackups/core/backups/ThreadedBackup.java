@@ -78,7 +78,7 @@ public class ThreadedBackup extends Thread {
             if (!shutdown) ABCore.clientContactor.backupFailed();
         }
 
-        BackupWrapper.finishBackup();
+        BackupWrapper.finishBackup(snapshot);
         output.accept("Backup complete!");
         wasRunning = true;
         running = false;
