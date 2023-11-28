@@ -435,7 +435,7 @@ public class BackupWrapper {
             else {
                 
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get() == "incremental") {
+                if (ConfigManager.type.get().equals("incremental")) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
@@ -474,7 +474,7 @@ public class BackupWrapper {
                 //don't purge unless the dependent is also eligible for deletion
                 
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get() == "incremental") {
+                if (ConfigManager.type.get().equals("incremental")) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
                     
@@ -516,7 +516,7 @@ public class BackupWrapper {
             else {
                 
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get() == "incremental") {
+                if (ConfigManager.type.get().equals("incremental")  ) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
