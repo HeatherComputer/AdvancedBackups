@@ -77,9 +77,9 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.frequency.startup  | Whether to make a backup on server startup. | false | 0.3 |
 | config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 30 | 0.3 |
 | config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | 2.0 |
-| config.advancedbackups.purge.size | The maximum total backup size to keep. Moved from `config.advancedbackup.size`, will auto migrate. Optional. | 3.4 |
-| config.advancedbackups.purge.days | The maximum number of days to keep backups for. Optional. | 3.4 |
-| config.advancedbackups.purge.count | The maximum number of backups to keep. Optional. | 3.4 |
+| config.advancedbackups.purge.size | The maximum total backup size to keep. Moved from `config.advancedbackup.size`, will auto migrate. Optional. | 50 | 3.4 |
+| config.advancedbackups.purge.days | The maximum number of days to keep backups for. Optional. | 0 | 3.4 |
+| config.advancedbackups.purge.count | The maximum number of backups to keep. Optional. | 0 | 3.4 |
 | config.advancedbackups.zips.compression  | The attempted compression level for all zip files. | 4 | 0.3 |
 | config.advancedbackups.chains.length  | The maximum chain length for incremental and differential backups. | 50 | 0.3 |
 | config.advancedbackups.chains.compress  | Whether to compress incremental and differential backups into zip files. | true | 0.3 |
