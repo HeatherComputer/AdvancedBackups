@@ -421,7 +421,7 @@ public class BackupWrapper {
     }
     
     private static void checkCount(File directory) {
-        if (ConfigManager.backupsToKeep.get() == 0) return;
+        if (ConfigManager.backupsToKeep.get() <= 0) return;
         long date = 0;
         while (true) {
             if (calculateBackupCount(directory) <= ConfigManager.backupsToKeep.get()) return;
@@ -454,7 +454,7 @@ public class BackupWrapper {
     }
     
     private static void checkDates(File directory) {
-        if (ConfigManager.daysToKeep.get() == 0) return;
+        if (ConfigManager.daysToKeep.get() <= 0) return;
         
         long date = 0;
         long comp = mostRecentBackupTime() / 86400000;
