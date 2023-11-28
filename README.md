@@ -60,7 +60,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 <summary>config</summary>
 
 
-| Config      | Description | Default Value | Supported From |
+| Config      | Description | Default Value | Supported From / Until |
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
 | config.advancedbackups.save | Whether to save before making a backup. | true | 0.3 |
@@ -68,7 +68,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
-| config.advancedbackups.size   | The maximum backup size to keep, in GB. Oldest backups are deleted if this is exceeded. | 50 | 0.3 |
+| config.advancedbackups.size   | The maximum backup size to keep, in GB. Oldest backups are deleted if this is exceeded. | 50 | 0.3 / 3.4 |
 | config.advancedbackups.frequency.min   | The minimum time between backups. Command backups bypass this. | 0.5 | 0.3 |
 | config.advancedbackups.frequency.max | If this time has passed since a backup was last made, one **will** be made. | 24 | 0.3 |
 | config.advancedbackups.frequency.uptime| Whether the schedule is based on uptime. If not. it uses real-time instead. | true | 0.3 |
@@ -77,6 +77,9 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 | config.advancedbackups.frequency.startup  | Whether to make a backup on server startup. | false | 0.3 |
 | config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 30 | 0.3 |
 | config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | 2.0 |
+| config.advancedbackups.purge.size | The maximum total backup size to keep. Moved from `config.advancedbackup.size`, will auto migrate. Optional. | 3.4 |
+| config.advancedbackups.purge.days | The maximum number of days to keep backups for. Optional. | 3.4 |
+| config.advancedbackups.purge.count | The maximum number of backups to keep. Optional. | 3.4 |
 | config.advancedbackups.zips.compression  | The attempted compression level for all zip files. | 4 | 0.3 |
 | config.advancedbackups.chains.length  | The maximum chain length for incremental and differential backups. | 50 | 0.3 |
 | config.advancedbackups.chains.compress  | Whether to compress incremental and differential backups into zip files. | true | 0.3 |
