@@ -48,6 +48,12 @@ Many Minecraft versions are supported - request more if the one you want isn't y
     
 - Incremental backups are similar to differential, but they backup files that have changed since the last *partial* instead - which further reduces space usage, but can create an instability as a loss of a partial can damage all backups up until the next full backup. They also take the longest to restore.
 
+Because of the way this "chain" works with incrementals, they purge slightly differently:
+- Whole chains have to be purged at once.
+- A chain will only be purged when over the configured minimum amount of chains to keep.
+- Purging of incrementals can be outright disabled.
+- When using day-based purging, *all backups in the chain* most be older than the configured day count for the chain in question to be deleted.
+
 
 ## Usage:
 
