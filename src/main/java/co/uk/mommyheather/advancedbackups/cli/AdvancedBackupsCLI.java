@@ -16,8 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -30,8 +32,6 @@ import java.util.zip.ZipOutputStream;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.cli.CLIIOHelpers;
 public class AdvancedBackupsCLI {
 
     private static String backupLocation;
@@ -41,11 +41,6 @@ public class AdvancedBackupsCLI {
     private static File worldFile;
     private static String worldPath;
     public static void main(String args[]){
-
-        //Loggers
-        ABCore.infoLogger = CLIIOHelpers::info;
-        ABCore.warningLogger = CLIIOHelpers::warn;
-        ABCore.errorLogger = CLIIOHelpers::error;
         
         
 
@@ -794,7 +789,7 @@ public class AdvancedBackupsCLI {
     }
 
     private static String backupExistingWorld(File worldDir, boolean export) {
-        File out = new File(worldDir, "../cli" + ABCore.serialiseBackupName(export ? "export" : "backup") + ".zip");
+        File out = new File(worldDir, "../cli" + serialiseBackupName(export ? "export" : "backup") + ".zip");
         try {
             FileOutputStream outputStream = new FileOutputStream(out);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
@@ -879,4 +874,12 @@ public class AdvancedBackupsCLI {
         }
     }
 
+    
+    public static String serialiseBackupName(String in) {
+        Date date = new Date();
+        String pattern = "yyyy-MM-dd_HH-mm-ss";
+        
+        return in + "_" + new SimpleDateFormat(pattern).format(date);
+    }
+    
 }
