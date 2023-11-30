@@ -457,11 +457,12 @@ public class BackupWrapper {
         if (ConfigManager.daysToKeep.get() <= 0) return;
         
         long date = 0;
-        long comp = mostRecentBackupTime() / 86400000;
+        long comp = mostRecentBackupTime();
         while (true) {
             File file = getFirstBackupAfterDate(directory, date);
-            date = file.lastModified(); 
-            if ((date / 86400000) + ConfigManager.daysToKeep.get() >= comp) return;
+            date = file.lastModified();
+            long days = (comp - date) / 86400000L;
+            if (days <= ConfigManager.daysToKeep.get()) return;
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
@@ -470,7 +471,8 @@ public class BackupWrapper {
             }
             else {
                 date = dependent.lastModified();
-                if ((date / 86400000) + ConfigManager.daysToKeep.get() >= comp) return;
+                days = (comp - date) / 86400000L;
+                if (days <= ConfigManager.daysToKeep.get()) return;
                 //don't purge unless the dependent is also eligible for deletion
                 
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
@@ -482,7 +484,8 @@ public class BackupWrapper {
                     //is this a good strategy?
                     while ((dependent = getDependent(dependent)) != null) {
                         date = dependent.lastModified();
-                        if ((date / 86400000) + ConfigManager.daysToKeep.get() >= comp) return;
+                        days = (comp - date) / 86400000L;
+                        if (days <= ConfigManager.daysToKeep.get()) return;
                     }
                     dependent = getDependent(file);
                     file.delete();
