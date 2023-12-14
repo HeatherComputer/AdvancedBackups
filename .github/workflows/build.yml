@@ -592,7 +592,6 @@ jobs:
       uses: geekyeggo/delete-artifact@v2
       with:
           name: |
-#            AdvancedBackups-*
             advancedbackups-corelib.jar
 
     - name: Bundle Archives
