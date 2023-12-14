@@ -1,0 +1,69 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Publish to Curseforge
+
+on:
+  workflow_dispatch:
+    inputs:
+      run:
+        description: 'Build action run to download artifacts from'
+        required: true
+
+      version:
+        type: choice
+        description: Which version to push to curseforge.
+        required: true
+        options: 
+        - All
+        - Forge 1.7.10
+        - Forge 1.12
+        - Forge 1.16
+        - Forge 1.18
+        - Fabric 1.18
+        - Forge 1.19.2
+        - Forge 1.19.3
+        - Fabric 1.19.2
+        - Fabric 1.19.3
+        - Forge 1.20
+        - Forge 1.20.2
+        - Fabric 1.20
+        - Fabric 1.20.2
+        - Neoforge 1.20.2
+
+
+jobs:
+  main:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        run_number: ${{ inputs.run }}  
+
+
+    - name: Get Version
+      id: version
+      run: |
+        X=`echo AdvancedBackups-ALL_JARS-*.zip`; X=${X##AdvancedBackups-ALL_JARS-}; X=${X%%.zip}; echo $X
+        echo VERSION=$X >> "$GITHUB_OUTPUT"
+      
+
+    - name: Extract Jars
+      id: extract-jars
+      env:
+        VERSION: ${{ steps.version.outputs.VERSION }}
+      run: |
+        mv ./AdvancedBackups-ALL_JARS-"$VERSION".zip ./AdvancedBackups-ALL_JARS-dir
+        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-"$VERSION".zip .
+        unzip ./AdvancedBackups-ALL_JARS-"$VERSION".zip
+        rm -r ./AdvancedBackups-ALL_JARS-*
+    
