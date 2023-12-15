@@ -63,4 +63,58 @@ jobs:
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
         ls
+
+
+
+    - name: Upload Forge-1.7.10
+      run: (ls AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Forge-1.12
+      run: (ls AdvancedBackups-forge-1.12.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Forge-1.16
+      run: (ls AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Forge-1.18
+      run: (ls AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Fabric-1.18
+      run: (ls AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Forge-1.19.2
+      run: (ls AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
+
+    - name: Upload Forge-1.19.3
+      run: (ls AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+        
+    - name: Upload Fabric-1.19.2
+      run: (ls AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+        
+    - name: Upload Fabric-1.19.3
+      run: (ls AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+
+    - name: Upload Forge-1.20
+      run: (ls AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Forge-1.20.2
+      run: (ls AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Fabric-1.20
+      run: (ls AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Fabric-1.20.2
+      run: (ls AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Neoforge-1.20.2
+      run: (ls AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+    
     
