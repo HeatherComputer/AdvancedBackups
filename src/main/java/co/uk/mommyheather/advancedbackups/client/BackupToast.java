@@ -1,19 +1,16 @@
 package co.uk.mommyheather.advancedbackups.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ColorHelper;
-import net.minecraft.util.ColorHelper.PackedColor;
 
 public class BackupToast implements IToast {
         
