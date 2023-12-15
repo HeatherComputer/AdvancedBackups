@@ -13,6 +13,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ColorHelper;
+import net.minecraft.util.ColorHelper.PackedColor;
 
 public class BackupToast implements IToast {
         
@@ -98,7 +99,8 @@ public class BackupToast implements IToast {
             return Visibility.HIDE;
         }
 
-        AbstractGui.fill(matrix, 3, 28, Math.max(3, (int) f), 29, -10948014);
+        AbstractGui.fill(matrix, 3, 28, Math.max(3, (int) f), 29, ColorHelper.PackedColor.color
+            (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
         
