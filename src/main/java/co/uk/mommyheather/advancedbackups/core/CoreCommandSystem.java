@@ -13,6 +13,7 @@ import co.uk.mommyheather.advancedbackups.core.backups.BackupCheckEnum;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class CoreCommandSystem {
@@ -38,6 +39,12 @@ public class CoreCommandSystem {
     public static void reloadConfig(Consumer<String> chat) {
         chat.accept("Reloading config...");
         ConfigManager.loadOrCreateConfig();
+        chat.accept("Done!");
+    }
+
+    public static void reloadClientConfig(Consumer<String> chat) {
+        chat.accept("Reloading client config...");
+        ClientConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
     }
 
