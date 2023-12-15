@@ -58,7 +58,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 ## Usage:
 
 ### Ingame:
-\- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client root directory.
+\- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client `config` directory.
 
 \- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
 
