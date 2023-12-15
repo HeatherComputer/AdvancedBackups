@@ -4,10 +4,13 @@ import java.util.function.Supplier;
 
 import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
+import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -39,10 +42,10 @@ public class ClientWrapper {
 
     public static void init(FMLClientSetupEvent e) {
         MinecraftForge.EVENT_BUS.addListener(ClientWrapper::onClientChat);
+        MinecraftForge.EVENT_BUS.addListener(ClientWrapper::onServerConnected);
         ClientConfigManager.loadOrCreateConfig();
     }
 
-    @SubscribeEvent
     public static void onClientChat(ClientChatEvent event) {
         if (event.getMessage().equals("/backup reload-client-config")) {
             event.setCanceled(true);
@@ -50,6 +53,10 @@ public class ClientWrapper {
             CoreCommandSystem.reloadClientConfig(Minecraft.getInstance().player::chat);
         }
 
+    }
+
+    public static void onServerConnected(ClientPlayerNetworkEvent.LoggedInEvent event) {
+        NetworkHandler.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
     }
     
 }
