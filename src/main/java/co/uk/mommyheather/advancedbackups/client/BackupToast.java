@@ -43,7 +43,7 @@ public class BackupToast implements IToast {
 
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
+        AbstractGui.fill(matrix, 4, 28, 156, 29, ColorHelper.PackedColor.color
             (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
         float f = Math.min(156, (
             156 * percent
