@@ -71,7 +71,7 @@ jobs:
     
 
     - name: Upload Forge-1.12
-      run: (ls AdvancedBackups-forge-1.12.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+      run: (ls AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar && echo yes)
     
 
     - name: Upload Forge-1.16
