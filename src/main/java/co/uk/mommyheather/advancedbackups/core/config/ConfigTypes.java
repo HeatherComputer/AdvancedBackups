@@ -2,6 +2,8 @@ package co.uk.mommyheather.advancedbackups.core.config;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 
@@ -10,9 +12,9 @@ public abstract class ConfigTypes {
     private String key;
 
     
-    public ConfigTypes(String key) {
+    public ConfigTypes(String key, BiConsumer<String, ConfigTypes> manager) {
         this.key = key;
-        ConfigManager.register(key, this);
+        manager.accept(key, this);
     }
 
     public String getKey() {
@@ -44,8 +46,8 @@ public abstract class ConfigTypes {
         private long min;
         private long max;
 
-        public LongValue(String key, long defaultValue, long min, long max) {
-            super(key);
+        public LongValue(String key, long defaultValue, long min, long max, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             this.value = defaultValue;
             this.min = min;
             this.max = max;
@@ -85,8 +87,8 @@ public abstract class ConfigTypes {
         private float min;
         private float max;
 
-        public FloatValue(String key, float defaultValue, float min, float max) {
-            super(key);
+        public FloatValue(String key, float defaultValue, float min, float max, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             value = defaultValue;
             this.min = min;
             this.max = max;
@@ -125,8 +127,8 @@ public abstract class ConfigTypes {
 
         private boolean value;
 
-        public BooleanValue(String key, boolean defaultValue) {
-            super(key);
+        public BooleanValue(String key, boolean defaultValue, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             value = defaultValue;
         }
 
@@ -157,8 +159,8 @@ public abstract class ConfigTypes {
         private List<String> allowedStrings;
 
 
-        public ValidatedStringValue(String key, String defaultValue, String[] allowedStrings) {
-            super(key);
+        public ValidatedStringValue(String key, String defaultValue, String[] allowedStrings, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             value = defaultValue;
             this.allowedStrings = Arrays.asList(allowedStrings);
         }
@@ -189,8 +191,8 @@ public abstract class ConfigTypes {
     public static class FreeStringValue extends ConfigTypes {
         private String value;
 
-        public FreeStringValue(String key, String defaultValue) {
-            super(key);
+        public FreeStringValue(String key, String defaultValue, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             value = defaultValue;
         }
 
@@ -217,8 +219,8 @@ public abstract class ConfigTypes {
     public static class StringArrayValue extends ConfigTypes {
         private String[] value;
 
-        public StringArrayValue(String key, String[] defaultValue) {
-            super(key);
+        public StringArrayValue(String key, String[] defaultValue, BiConsumer<String, ConfigTypes> manager) {
+            super(key, manager);
             value = defaultValue;
         }
 

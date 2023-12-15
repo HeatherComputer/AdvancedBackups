@@ -27,25 +27,25 @@ public class ClientConfigManager {
 
 
 
-    public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true);
+    public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true, ClientConfigManager::register);
 
-    public static final BooleanValue darkMode = new BooleanValue("config.advancedbackups.darkToasts", true);
+    public static final BooleanValue darkMode = new BooleanValue("config.advancedbackups.darkToasts", true, ClientConfigManager::register);
 
-    public static final LongValue processTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255);
-    public static final LongValue processTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255);
-    public static final LongValue processTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255);
+    public static final LongValue processTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255, ClientConfigManager::register);
+    public static final LongValue processTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255, ClientConfigManager::register);
+    public static final LongValue processTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255, ClientConfigManager::register);
 
-    public static final LongValue errorTextRed = new LongValue("config.advancedbackups.colours.error.red", 255, 0, 255);
-    public static final LongValue errorTextGreen = new LongValue("config.advancedbackups.colours.error.green", 50, 0, 255);
-    public static final LongValue errorTextBlue = new LongValue("config.advancedbackups.colours.error.blue", 50, 0, 255);
+    public static final LongValue errorTextRed = new LongValue("config.advancedbackups.colours.error.red", 255, 0, 255, ClientConfigManager::register);
+    public static final LongValue errorTextGreen = new LongValue("config.advancedbackups.colours.error.green", 50, 0, 255, ClientConfigManager::register);
+    public static final LongValue errorTextBlue = new LongValue("config.advancedbackups.colours.error.blue", 50, 0, 255, ClientConfigManager::register);
 
-    public static final LongValue progressBarRed = new LongValue("config.advancedbackups.colours.bar.red", 88, 0, 255);
-    public static final LongValue progressBarGreen = new LongValue("config.advancedbackups.colours.bar.green", 242, 0, 255);
-    public static final LongValue progressBarBlue = new LongValue("config.advancedbackups.colours.bar.blue", 82, 0, 255);
+    public static final LongValue progressBarRed = new LongValue("config.advancedbackups.colours.bar.red", 88, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressBarGreen = new LongValue("config.advancedbackups.colours.bar.green", 242, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressBarBlue = new LongValue("config.advancedbackups.colours.bar.blue", 82, 0, 255, ClientConfigManager::register);
 
-    public static final LongValue progressBackgroundRed = new LongValue("config.advancedbackups.colours.background.red", 255, 0, 255);
-    public static final LongValue progressBackgroundGreen = new LongValue("config.advancedbackups.colours.background.green", 255, 0, 255);
-    public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255);
+    public static final LongValue progressBackgroundRed = new LongValue("config.advancedbackups.colours.background.red", 255, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressBackgroundGreen = new LongValue("config.advancedbackups.colours.background.green", 255, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255, ClientConfigManager::register);
 
 
 
