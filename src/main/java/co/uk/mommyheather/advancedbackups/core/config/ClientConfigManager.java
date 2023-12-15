@@ -31,9 +31,9 @@ public class ClientConfigManager {
 
     public static final BooleanValue darkMode = new BooleanValue("config.advancedbackups.darkToasts", true, ClientConfigManager::register);
 
-    public static final LongValue processTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255, ClientConfigManager::register);
-    public static final LongValue processTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255, ClientConfigManager::register);
-    public static final LongValue processTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255, ClientConfigManager::register);
+    public static final LongValue progressTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255, ClientConfigManager::register);
 
     public static final LongValue errorTextRed = new LongValue("config.advancedbackups.colours.error.red", 255, 0, 255, ClientConfigManager::register);
     public static final LongValue errorTextGreen = new LongValue("config.advancedbackups.colours.error.green", 50, 0, 255, ClientConfigManager::register);
