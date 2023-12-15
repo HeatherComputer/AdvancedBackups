@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
@@ -11,7 +12,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.ColorHelper;
 
 public class BackupToast implements IToast {
         
@@ -30,23 +31,27 @@ public class BackupToast implements IToast {
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
 
+    private int textColour;
+
 
     @Override
     public Visibility render(MatrixStack matrix, ToastGui toastGui, long delta) {
         toastGui.getMinecraft().getTextureManager().bind(TEXTURE);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
-        toastGui.blit(matrix, 0, 0, 0, 0, this.width(), this.height());
+        toastGui.blit(matrix, 0, 0, 0, ClientConfigManager.darkMode.get() ? 0 : this.height(), this.width(), this.height());
         toastGui.getMinecraft().getItemRenderer().renderAndDecorateFakeItem(stack, 8, 8);
 
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        AbstractGui.fill(matrix, 3, 28, 156, 29, -1);
+        AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
+            (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
         float f = Math.min(156, (
             156 * percent
         ));
 
-        if (!exists) {   
-            toastGui.getMinecraft().font.draw(matrix, TextFormatting.GREEN + I18n.get("advancedbackups.backup_finished"), 25, 11, -11534256);
+        if (!exists) {
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            toastGui.getMinecraft().font.draw(matrix, I18n.get("advancedbackups.backup_finished"), 25, 11, textColour);
             AbstractGui.fill(matrix, 3, 28, 156, 29, -10948014);
             return Visibility.HIDE;
         }
@@ -55,27 +60,31 @@ public class BackupToast implements IToast {
 
         
         if (starting) {
-            title = TextFormatting.GREEN + I18n.get("advancedbackups.backup_starting");
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.backup_starting");
         }
         else if (started) {
-            title = TextFormatting.GREEN + I18n.get("advancedbackups.progress", round(percent * 100));
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
-            title = TextFormatting.RED + I18n.get("advancedbackups.backup_failed");
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.get("advancedbackups.backup_failed");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
         else if (finished) {
-            title = TextFormatting.GREEN + I18n.get("advancedbackups.backup_finished");
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.backup_finished");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
 
-        toastGui.getMinecraft().font.draw(matrix, title, 25, 11, -11534256);
+        toastGui.getMinecraft().font.draw(matrix, title, 25, 11, textColour);
 
         if (timeSet && System.currentTimeMillis() >= time + 5000) {
             starting = false;

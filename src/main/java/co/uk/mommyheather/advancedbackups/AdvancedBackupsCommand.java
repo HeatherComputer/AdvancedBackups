@@ -26,6 +26,11 @@ public class AdvancedBackupsCommand {
             return 1;
          }))
 
+         .then(Commands.literal("reload-client-config").executes((runner) -> {
+            runner.getSource().sendSuccess(new StringTextComponent("This command can only be ran on a client!"), true);
+            return 1;
+         }))
+
          .then(Commands.literal("reset-chain").executes((runner) -> {
             CoreCommandSystem.resetChainLength((response) -> {
                 runner.getSource().sendSuccess(new StringTextComponent(response), true);
