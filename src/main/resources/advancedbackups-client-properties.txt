@@ -1,6 +1,6 @@
 #Whether to show backup progress when a backup is being made.
 #Options : true, false   #Default : true
-config.advancedbackups.showProgress=
+config.advancedbackups.showProgress
 
 
 #--------------------------------------------------------------------------------------------------------------------
@@ -9,15 +9,15 @@ config.advancedbackups.showProgress=
 
 #The RED value of the backup progress text.
 #Range : 0-255    #Default: 82
-config.advancedbackups.colours.progress.red=
+config.advancedbackups.colours.progress.red
 
 #The GREEN value of the backup progress text.
 #Range : 0-255    #Default: 255
-config.advancedbackups.colours.progress.green=
+config.advancedbackups.colours.progress.green
 
 #The BLUE value of the backup progress text.
 #Range : 0-255    #Default: 82
-config.advancedbackups.colours.progress.blue=
+config.advancedbackups.colours.progress.blue
 
 #--------------------------------------------------------------------------------------------------------------------
 ##The below options control the colour of the text displayed in the event of a backup failure.
@@ -25,15 +25,15 @@ config.advancedbackups.colours.progress.blue=
 
 #The RED value of the backup error text.
 #Range : 0-255    #Default: 255
-config.advancedbackups.colours.error.red=
+config.advancedbackups.colours.error.red
 
 #The GREEN value of the backup error text.
 #Range : 0-255    #Default: 50
-config.advancedbackups.colours.error.green=
+config.advancedbackups.colours.error.green
 
 #The BLUE value of the backup error text.
 #Range : 0-255    #Default: 50
-config.advancedbackups.colours.error.blue=
+config.advancedbackups.colours.error.blue
 
 
 #--------------------------------------------------------------------------------------------------------------------
@@ -42,30 +42,30 @@ config.advancedbackups.colours.error.blue=
 
 #Whether to use a dark version of the toast prompt.
 #Options : true, false   #Default : true
-config.advancedbackups.darkToasts=
+config.advancedbackups.darkToasts
 
 
 #The RED value of the progess bar.
 #Range : 0-255    #Default: 88
-config.advancedbackups.colours.bar.red=
+config.advancedbackups.colours.bar.red
 
 #The GREEN value of the progess bar.
 #Range : 0-255    #Default: 242
-config.advancedbackups.colours.bar.green=
+config.advancedbackups.colours.bar.green
 
 #The BLUE value of the progess bar.
 #Range : 0-255    #Default: 82
-config.advancedbackups.colours.bar.blue=
+config.advancedbackups.colours.bar.blue
 
 
 #The RED value of the progess bar background.
 #Range : 0-255    #Default: 255
-config.advancedbackups.colours.background.red=
+config.advancedbackups.colours.background.red
 
 #The GREEN value of the progess bar background.
 #Range : 0-255    #Default: 255
-config.advancedbackups.colours.background.green=
+config.advancedbackups.colours.background.green
 
 #The BLUE value of the progess bar background.
 #Range : 0-255    #Default: 255
-config.advancedbackups.colours.background.blue=
+config.advancedbackups.colours.background.blue
