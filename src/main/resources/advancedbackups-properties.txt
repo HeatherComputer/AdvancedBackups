@@ -6,6 +6,11 @@ config.advancedbackups.enabled
 #Options : true, false    #Default : true
 config.advancedbackups.save
 
+#Buffer size, in bytes, to use when reading / writing files. Higher will improve speeds, but increase memory usage.
+#Too high can cause an OOM. I'd advise against editing this unless you experience issues.
+#Range : 1-2147483647     #Default : 1048576
+config.advancedbackups.buffer
+
 #Whether to flush when making the aforementioned save. Can cause a lag spike, and is usually not required.
 #Unused prior to minecraft 1.16.
 #Options : true, false    #Default : false

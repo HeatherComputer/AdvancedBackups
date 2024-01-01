@@ -30,6 +30,7 @@ public class ConfigManager {
 
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true);
     public static final BooleanValue save = new BooleanValue("config.advancedbackups.save", true);
+    public static final LongValue buffer = new LongValue("config.advancedbackups.buffer", 1048576, 1024, Integer.MAX_VALUE); //5mb
     public static final BooleanValue flush  = new BooleanValue("config.advancedbackups.flush", false);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"});
