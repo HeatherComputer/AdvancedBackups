@@ -70,6 +70,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 | ----------- | ----------- | ------------- | -------------- |
 | config.advancedbackups.enabled      | Enable or disable backups entirely. | true | 0.3 |
 | config.advancedbackups.save | Whether to save before making a backup. | true | 0.3 |
+| config.advancedbackups.buffer | The buffer size in memory to use for (some) file I/O. | 1048576 | 3.5 |
 | config.advancedbackups.flush | Whether to flush when making this save. Usually never needed, and can create a lag spike if enabled. (Unused prior to minecraft 1.16) | false | 3.1 |
 | config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
