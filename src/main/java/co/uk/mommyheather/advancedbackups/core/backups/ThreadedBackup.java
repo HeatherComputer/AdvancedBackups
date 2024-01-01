@@ -1,6 +1,7 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -154,8 +155,14 @@ public class ThreadedBackup extends Thread {
                 try {
                     targetFile = ABCore.worldDir.relativize(path);
                     zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
-                    byte[] bytes = Files.readAllBytes(path);
-                    zipOutputStream.write(bytes, 0, bytes.length);
+                    byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
+                    FileInputStream is = new FileInputStream(path.toFile());
+                    while (true) {
+                        int i = is.read(bytes);
+                        if (i < 0) break;
+                        zipOutputStream.write(bytes, 0, i);
+                    }
+                    
                     zipOutputStream.closeEntry();
                     index++;
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
@@ -274,7 +281,14 @@ public class ThreadedBackup extends Thread {
                 if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
-                    byte[] bytes = Files.readAllBytes(new File(ABCore.worldDir.toString(), path.toString()).toPath());
+
+                    byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
+                    FileInputStream is = new FileInputStream(new File(ABCore.worldDir.toString(), path.toString()));
+                    while (true) {
+                        int i = is.read(bytes);
+                        if (i < 0) break;
+                        zipOutputStream.write(bytes, 0, i);
+                    }
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                     index++;
@@ -351,8 +365,17 @@ public class ThreadedBackup extends Thread {
 
     private String getFileHash(Path path) {
         try {
-            byte[] data = Files.readAllBytes(path);
-            byte[] hash = MessageDigest.getInstance("MD5").digest(data);
+            
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] data = new byte[(int) ConfigManager.buffer.get()];
+            FileInputStream is = new FileInputStream(path.toFile());
+            while (true) {
+                int i = is.read(data);
+                if (i < 0) break;
+                md5.update(data, 0, i);
+
+            }
+            byte[] hash = md5.digest();
             String checksum = new BigInteger(1, hash).toString(16);
             return checksum;
         } catch (IOException | NoSuchAlgorithmException e) {
