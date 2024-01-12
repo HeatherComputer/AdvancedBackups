@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -129,15 +130,7 @@ public class AdvancedBackupsCLI {
         }
 */
         
-        if (type.equals("snapshots")) type = "zips";
-           
-
-        
-
-
-        
-
-
+               
         boolean exportMode = false;
 
         
@@ -187,6 +180,7 @@ public class AdvancedBackupsCLI {
                 CLIIOHelpers.info("Backing up current world state...");
                 CLIIOHelpers.info("Backup saved to : " + deleteEntireWorld(worldFile, false));
                 switch(type) {
+                    case "snapshots" :
                     case "zips" : { 
                         restoreFullZip(backupDateIndex, worldFile);
                         return;
@@ -203,6 +197,7 @@ public class AdvancedBackupsCLI {
             }
             case "Restore single file" : {
                 switch(type) {
+                    case "snapshots" :
                     case "zips" : {
                         restorePartialZip(backupDateIndex, worldFile);
                         return;
@@ -222,6 +217,7 @@ public class AdvancedBackupsCLI {
                 CLIIOHelpers.info("Restoring to temporary directory...");
 
                 switch(type) {
+                    case "snapshots" :
                     case "zips" : { 
                         restoreFullZip(backupDateIndex, worldFile);
                         break;
@@ -259,9 +255,14 @@ public class AdvancedBackupsCLI {
 
         CLIIOHelpers.info("Select a backup to restore.");
 
-        for (File file : backupDir.listFiles()) {
+        String[] fileNameArray = backupDir.list();
+        List<String> fileNameList = Arrays.asList(fileNameArray);
+
+        for (String fileName : CLIIOHelpers.sortStringsAlphabeticallyWithDirectoryPriority(fileNameList)) {
             if (exportMode) {
-                if (file.getName().endsWith("json")) continue;
+                if (fileName.endsWith("json")) continue;
+                if (fileName.contains("incomplete")) continue;
+                File file = new File(backupDir, fileName);
                 fileNames.add(file.getAbsolutePath());
                 String out = file.getName();
                 String[] outs = out.split("\\_");
@@ -275,7 +276,9 @@ public class AdvancedBackupsCLI {
 
             }
             else {
-                //if (!file.getName().contains(worldPath)) continue;
+                if (fileName.endsWith("json")) continue;
+                if (fileName.contains("incomplete")) continue;
+                File file = new File(backupDir, fileName);
                 fileNames.add(file.getAbsolutePath());
                 String out = file.getName();
                 out = out.replaceAll(".zip", "");
