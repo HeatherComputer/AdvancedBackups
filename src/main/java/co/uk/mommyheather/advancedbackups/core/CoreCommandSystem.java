@@ -101,4 +101,15 @@ public class CoreCommandSystem {
             e.printStackTrace();
         }
     }
+
+    public static void cancelBackup(Consumer<String> chat) {
+        chat.accept("Cancelling ongoing backup if one exists...");
+        chat.accept("This may fail or take a while depending on backup stage.");
+        Thread.getAllStackTraces().keySet().forEach((thread) -> {
+            if (thread instanceof ThreadedBackup) {
+                thread.interrupt();
+            }
+        });
+
+    }
 }
