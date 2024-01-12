@@ -418,12 +418,29 @@ public class ThreadedBackup extends Thread {
 
     public static void performRename(File location) {
         //Renames all incomplete backups to no longer have the incomplete marker. This is only done after a successful backup!
-       System.out.println("REname!"); 
+        for (String string : new String[] {"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
+            File file = new File(location, string);
+            for (String backupName : file.list()) {
+                if (backupName.contains("incomplete")) {
+                    File file2 = new File(file, backupName);
+                    File file3 = new File(file, backupName.replace("incomplete", "backup"));
+                    file2.renameTo(file3);
+                }
+            }
+        }
     }
     
-    private void performDelete(File file) {
+    private void performDelete(File location) {
         //Purges all incomplete backups. This is only done after a cancelled or failed backup!
-        System.out.println("Delete!"); 
+        for (String string : new String[] {"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
+            File file = new File(location, string);
+            for (String backupName : file.list()) {
+                if (backupName.contains("incomplete")) {
+                    File file2 = new File(file, backupName);
+                    file2.delete();
+                }
+            }
+        }
     }
 
 
