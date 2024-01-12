@@ -31,7 +31,6 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
 
 public class ThreadedBackup extends Thread {
     private static GsonBuilder builder = new GsonBuilder(); 
@@ -73,10 +72,15 @@ public class ThreadedBackup extends Thread {
         try {
             makeBackup();
             if (!shutdown) ABCore.clientContactor.backupComplete();
+        } catch (InterruptedException e) {
+            output.accept("Backup cancelled!");
+            performDelete(new File(ABCore.backupPath));
+            if (!shutdown) ABCore.clientContactor.backupCancelled();
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             e.printStackTrace();
             if (!shutdown) ABCore.clientContactor.backupFailed();
+            performDelete(new File(ABCore.backupPath));
         }
 
         BackupWrapper.finishBackup(snapshot);
@@ -84,6 +88,7 @@ public class ThreadedBackup extends Thread {
         wasRunning = true;
         running = false;
     }
+
 
     public void makeBackup() throws Exception {
 
@@ -117,7 +122,7 @@ public class ThreadedBackup extends Thread {
     }
 
 
-    private void makeZipBackup(File file, boolean b) {
+    private void makeZipBackup(File file, boolean b) throws InterruptedException, IOException {
         try {
 
             File zip = new File(file.toString() + (snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
@@ -164,15 +169,23 @@ public class ThreadedBackup extends Thread {
                         if (i < 0) break;
                         zipOutputStream.write(bytes, 0, i);
                     }
+
+                    is.close();
                     
                     zipOutputStream.closeEntry();
+                    //We need to handle interrupts in various styles in different parts of the process!
+                    if (isInterrupted()) {
+                        zipOutputStream.close();
+                        //Here, we need to close the outputstream - otherwise we risk a leak!
+                        throw new InterruptedException();
+                    }
                     index++;
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 catch (IOException e) {
-                    // TODO : Scream at user
                     e.printStackTrace();
                     ABCore.errorLogger.accept(file.toString());
+                    throw e;
                 }
                 
             }
@@ -181,14 +194,15 @@ public class ThreadedBackup extends Thread {
             zipOutputStream.close();
 
         } catch (IOException e){
-            // TODO : Scream at user
             e.printStackTrace();
+            throw e;
         }
         
     }
+    
 
 
-    private void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
+    private void makeDifferentialOrIncrementalBackup(File location, boolean differential) throws InterruptedException, IOException {
         try {
             if (!ConfigManager.silent.get()) {
                 ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName.replace("incomplete", "backup"));
@@ -269,7 +283,12 @@ public class ThreadedBackup extends Thread {
             
             backupName += complete? "-full":"-partial";
 
-            
+
+            //We need to handle interrupts in various styles in different parts of the process!
+            if (isInterrupted()) {
+                //Here however, we have nothing to close! just throw
+                throw new InterruptedException();
+            }
 
             if (ConfigManager.compressChains.get()) {
                 File zip = differential ? new File(location.toString() + "/differential/", backupName +".zip") : new File(location.toString() + "/incremental/", backupName +".zip");
@@ -291,10 +310,18 @@ public class ThreadedBackup extends Thread {
                         if (i < 0) break;
                         zipOutputStream.write(bytes, 0, i);
                     }
+                    is.close();
                     zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                     index++;
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+
+                    //We need to handle interrupts in various styles in different parts of the process!
+                    if (isInterrupted()) {
+                        zipOutputStream.close();
+                        //again, we need to close the outputstream - otherwise we risk a leak!
+                        throw new InterruptedException();
+                    }
                 }
                 zipOutputStream.flush();
                 zipOutputStream.close();
@@ -348,8 +375,8 @@ public class ThreadedBackup extends Thread {
             writer.close();
     
         } catch (IOException e) {
-            // TODO Scream at user
             e.printStackTrace();
+            throw e;
         }
 
 
@@ -390,7 +417,13 @@ public class ThreadedBackup extends Thread {
 
 
     public static void performRename(File location) {
+        //Renames all incomplete backups to no longer have the incomplete marker. This is only done after a successful backup!
        System.out.println("REname!"); 
+    }
+    
+    private void performDelete(File file) {
+        //Purges all incomplete backups. This is only done after a cancelled or failed backup!
+        System.out.println("Delete!"); 
     }
 
 
