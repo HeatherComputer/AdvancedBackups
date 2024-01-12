@@ -88,11 +88,12 @@ public class ThreadedBackup extends Thread {
     public void makeBackup() throws Exception {
 
         File file = new File(ABCore.backupPath);
-        backupName = ABCore.serialiseBackupName("backup");
+        backupName = ABCore.serialiseBackupName("incomplete");
 
         if (snapshot) {
             makeZipBackup(file, true);
             output.accept("Snapshot created! This will not be auto-deleted.");
+            performRename(file);
             return;
         }
 
@@ -111,6 +112,8 @@ public class ThreadedBackup extends Thread {
             }
         }
 
+        performRename(file);
+
     }
 
 
@@ -119,9 +122,9 @@ public class ThreadedBackup extends Thread {
 
             File zip = new File(file.toString() + (snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
             if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName());
+                ABCore.infoLogger.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName().replace("incomplete", "backup"));
             }
-            output.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName());
+            output.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName().replace("incomplete", "backup"));
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -188,9 +191,9 @@ public class ThreadedBackup extends Thread {
     private void makeDifferentialOrIncrementalBackup(File location, boolean differential) {
         try {
             if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
+                ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName.replace("incomplete", "backup"));
             }
-            output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName);
+            output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName.replace("incomplete", "backup"));
             long time = 0;
 
 
@@ -383,6 +386,11 @@ public class ThreadedBackup extends Thread {
             e.printStackTrace();
             return Integer.toString(new Random().nextInt());
         }
+    }
+
+
+    public static void performRename(File location) {
+       System.out.println("REname!"); 
     }
 
 
