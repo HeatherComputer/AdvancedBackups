@@ -76,11 +76,17 @@ public class ThreadedBackup extends Thread {
             output.accept("Backup cancelled!");
             performDelete(new File(ABCore.backupPath));
             if (!shutdown) ABCore.clientContactor.backupCancelled();
+            wasRunning = true;
+            running = false;
+            return;
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             e.printStackTrace();
             if (!shutdown) ABCore.clientContactor.backupFailed();
             performDelete(new File(ABCore.backupPath));
+            wasRunning = true;
+            running = false;
+            return;
         }
 
         BackupWrapper.finishBackup(snapshot);
