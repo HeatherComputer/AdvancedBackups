@@ -157,7 +157,7 @@ public class CLIIOHelpers {
     }
 
 
-    public static ArrayList<String> sortStringsAlphabeticallyWithDirectoryPriority(ArrayList<String> in) {
+    public static ArrayList<String> sortStringsAlphabeticallyWithDirectoryPriority(List<String> in) {
         ArrayList<String> out = new ArrayList<>();
         Collections.sort(in);
         for (String string : in) {
