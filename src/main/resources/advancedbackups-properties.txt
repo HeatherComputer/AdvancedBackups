@@ -1,5 +1,5 @@
 #Enable or disable automatic backups.
-#Options : true, false   #Default : true,
+#Options : true, false   #Default : true
 config.advancedbackups.enabled
 
 #Whether to save before making a backup.
