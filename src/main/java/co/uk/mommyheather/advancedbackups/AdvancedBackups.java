@@ -32,8 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 @Mod(modid = AdvancedBackups.MODID, name = AdvancedBackups.NAME, acceptableRemoteVersions = "*")
@@ -46,6 +45,8 @@ public class AdvancedBackups
     public static Consumer<String> infoLogger;
     public static Consumer<String> warningLogger;
     public static Consumer<String> errorLogger;
+
+    public static ArrayList<String> players = new ArrayList<>();
 
     public static MinecraftServer server;
 
@@ -64,8 +65,9 @@ public class AdvancedBackups
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new ABClientRenderer());
         FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(ABClientRenderer.INSTANCE);
+        FMLCommonHandler.instance().bus().register(ABClientRenderer.INSTANCE);
 		NetworkHandler.init();
     }
 

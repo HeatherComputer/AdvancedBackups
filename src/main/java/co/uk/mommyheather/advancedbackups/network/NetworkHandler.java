@@ -11,6 +11,7 @@ public class NetworkHandler {
 	public static void init()
 	{
 		HANDLER.registerMessage(new PacketBackupStatus.Handler(), PacketBackupStatus.class, 1, Side.CLIENT);
+        HANDLER.registerMessage(new PacketToastSubscribe.Handler(), PacketToastSubscribe.class, 2, Side.SERVER);
 	}
     
 }
