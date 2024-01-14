@@ -2,13 +2,12 @@ package co.uk.mommyheather.advancedbackups.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import cpw.mods.fml.common.Mod.EventHandler;
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.stats.Achievement;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class ABClientRenderer {
@@ -18,6 +17,7 @@ public class ABClientRenderer {
     public static boolean started;
     public static boolean failed;
     public static boolean finished;
+    public static boolean cancelled;
 
     public static int progress;
     public static int max;
@@ -25,6 +25,9 @@ public class ABClientRenderer {
 
     private static long time;
     private static boolean timeSet = false;
+
+
+    public static final ABClientRenderer INSTANCE = new ABClientRenderer();
 
 
     @SubscribeEvent
@@ -50,6 +53,13 @@ public class ABClientRenderer {
                 timeSet = true;
             }
         }
+        else if (cancelled) {
+            event.left.add(ChatFormatting.RED + I18n.format("advancedbackups.backup_cancelled"));
+            if (!timeSet) {
+                time = System.currentTimeMillis();
+                timeSet = true;
+            }
+        }
 
 
         if (timeSet && System.currentTimeMillis() >= time + 5000) {
@@ -57,6 +67,7 @@ public class ABClientRenderer {
             started = false;
             failed = false;
             finished = false;
+            cancelled = false;
             progress = 0;
             max = 0;
             timeSet = false;
@@ -66,6 +77,27 @@ public class ABClientRenderer {
 
     private static String round (float value) {
         return String.format("%.1f", value);
+    }
+
+
+    @SubscribeEvent
+    public void onServerConnected(ClientConnectedToServerEvent event) {
+        //may aswell just do it here. 1.7 is so horribly documented
+        ClientConfigManager.loadOrCreateConfig();
+
+
+        //NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+
+        //You serious? If I use the above line, the packet is just never received.
+        //TODO : rework this in a nicer way. Use something other than a fucking threaded one second delay.
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+
+            }
+            NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+        }).start();
     }
     
 }
