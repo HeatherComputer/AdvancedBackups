@@ -18,5 +18,6 @@ public class NetworkHandler {
         HANDLER = NetworkRegistry.INSTANCE.newSimpleChannel(AdvancedBackups.MODID);
         // Register messages which are sent from the client to the server here:
         HANDLER.registerMessage(PacketBackupStatus.Handler.class, PacketBackupStatus.class, nextID(), Side.CLIENT);
+        HANDLER.registerMessage(PacketToastSubscribe.Handler.class, PacketToastSubscribe.class, nextID(), Side.SERVER);
     }
 }

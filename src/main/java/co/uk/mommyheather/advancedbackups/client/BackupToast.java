@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
 public class BackupToast implements IToast{
     
@@ -92,6 +91,7 @@ public class BackupToast implements IToast{
             started = false;
             failed = false;
             finished = false;
+            cancelled = false;
             progress = 0;
             max = 0;
             timeSet = false;
