@@ -16,6 +16,7 @@ import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
+import co.uk.mommyheather.advancedbackups.network.PacketToastTest;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
@@ -31,7 +32,10 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 
@@ -131,15 +135,23 @@ public class AdvancedBackups
     }
 
     @SubscribeEvent
-    public void onConnectedToServer(ClientConnectedToServerEvent event) {
-        ClientConfigManager.loadOrCreateConfig();
+    public void onConnectedToServer(PlayerLoggedInEvent event) {
 
+        //Here's our answer.
+        //Player logs in. Server sends them a packet. Client responds with a different packet to indicate their wish to subscribe to toasts.
+        //It means a single packet at login is sent to clients without the mod, but it should be dropped fine.
+        if (event.player instanceof EntityPlayerMP) {
+            NetworkHandler.HANDLER.sendTo(new PacketToastTest(), (EntityPlayerMP) event.player);
+        }
+        
+        
+        /*ClientConfigManager.loadOrCreateConfig();
         
         //NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
 
 
         //You serious? If I use the above line, the packet is just never received.
-        //TODO : rework this in a nicer way. Use something other than a fucking threaded five second delay.
+        //DONE : rework this in a nicer way. Use something other than a fucking threaded five second delay.
         new Thread(() -> {
             try {
                 Thread.sleep(5000);
@@ -147,7 +159,7 @@ public class AdvancedBackups
 
             }
             NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
-        }).start();
+        }).start();*/
     }
 
     
