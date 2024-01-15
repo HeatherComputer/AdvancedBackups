@@ -1,17 +1,12 @@
 package co.uk.mommyheather.advancedbackups.client;
 
-import java.util.HashMap;
-
-import com.mojang.authlib.GameProfile;
 
 import co.uk.mommyheather.advancedbackups.AdvancedBackups;
-import co.uk.mommyheather.advancedbackups.AdvancedBackupsCommand;
 import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.world.WorldServer;
 
 @SuppressWarnings("unchecked")
 public class ABClientContactor implements IClientContactor {

@@ -12,6 +12,7 @@ public class NetworkHandler {
 	{
 		HANDLER.registerMessage(new PacketBackupStatus.Handler(), PacketBackupStatus.class, 1, Side.CLIENT);
         HANDLER.registerMessage(new PacketToastSubscribe.Handler(), PacketToastSubscribe.class, 2, Side.SERVER);
+        HANDLER.registerMessage(new PacketClientReload.Handler(), PacketClientReload.class, 3, Side.CLIENT);
 	}
     
 }
