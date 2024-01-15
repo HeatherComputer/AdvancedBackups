@@ -1,11 +1,14 @@
 package co.uk.mommyheather.advancedbackups;
 
 import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import co.uk.mommyheather.advancedbackups.network.PacketClientReload;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 
 public class AdvancedBackupsCommand extends CommandBase
@@ -33,7 +36,7 @@ public class AdvancedBackupsCommand extends CommandBase
 
     public String getCommandUsage(ICommandSender icommandsender)
     {
-        return "/backup (start|reload-config|reset-chain|snapshot)";
+        return "/backup (start|reload-config|reload-client-config|reset-chain|snapshot|cancel)";
     }
 
     @Override
@@ -58,11 +61,18 @@ public class AdvancedBackupsCommand extends CommandBase
         {
             Reload.execute(sender);
         }
+        else if ("reload-client-config".equals(args[0]))
+        {
+            ReloadClient.execute(sender);
+        }
         else if ("reset-chain".equals(args[0])) {
             ResetChain.execute(sender);
         }
         else if ("snapshot".equals(args[0])) {
             Snapshot.execute(sender);
+        }
+        else if ("cancel".equals(args[0])) {
+            Cancel.execute(sender);
         }
         else
         {
@@ -75,6 +85,22 @@ public class AdvancedBackupsCommand extends CommandBase
             CoreCommandSystem.reloadConfig((response) -> {
                 sender.addChatMessage(new ChatComponentText(response));
             });
+        }
+    }   
+
+    public static class ReloadClient {
+        public static void execute(ICommandSender sender) {
+            if (sender instanceof EntityPlayerMP) {
+                EntityPlayerMP player = (EntityPlayerMP) sender;
+                NetworkHandler.HANDLER.sendTo(new PacketClientReload(), player);
+                return;
+            }
+            sender.addChatMessage(new ChatComponentText("This can only be ran on the client!"));
+            /*
+            CoreCommandSystem.reloadClientConfig((response) -> {
+                sender.addChatMessage(new ChatComponentText(response));
+            });
+            */
         }
     }    
     
@@ -97,6 +123,15 @@ public class AdvancedBackupsCommand extends CommandBase
     public static class Snapshot {
         public static void execute(ICommandSender sender) {
             CoreCommandSystem.snapshot((response) -> {
+                sender.addChatMessage(new ChatComponentText(response));
+            });
+        }
+
+    }
+
+    public static class Cancel {
+        public static void execute(ICommandSender sender) {
+            CoreCommandSystem.cancelBackup((response) -> {
                 sender.addChatMessage(new ChatComponentText(response));
             });
         }
