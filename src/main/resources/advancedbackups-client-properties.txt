@@ -3,6 +3,12 @@
 config.advancedbackups.showProgress
 
 
+
+#--------------------------------------------------------------------------------------------------------------------
+##The below options are all irrelevant to 1.7.10 - it lacks toasts, and cannot customise text in the way others do.
+#--------------------------------------------------------------------------------------------------------------------
+
+
 #--------------------------------------------------------------------------------------------------------------------
 ##The below options control the colour of the text showing backup progress.
 #--------------------------------------------------------------------------------------------------------------------
@@ -37,7 +43,7 @@ config.advancedbackups.colours.error.blue
 
 
 #--------------------------------------------------------------------------------------------------------------------
-##The following options are all irrelevant in 1.7.10, as they only affect the toast system.
+##The following options control non-text toast related options.
 #--------------------------------------------------------------------------------------------------------------------
 
 #Whether to use a dark version of the toast prompt.
