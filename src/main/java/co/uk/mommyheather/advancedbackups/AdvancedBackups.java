@@ -1,17 +1,21 @@
 package co.uk.mommyheather.advancedbackups;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.apache.logging.log4j.Logger;
 
+import co.uk.mommyheather.advancedbackups.client.ClientBridge;
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
@@ -27,6 +31,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 
@@ -41,6 +46,8 @@ public class AdvancedBackups
     public static Consumer<String> infoLogger;
     public static Consumer<String> warningLogger;
     public static Consumer<String> errorLogger;
+
+    public static final ArrayList<String> players = new ArrayList<>();
 
     public static MinecraftServer server;
 
@@ -121,6 +128,26 @@ public class AdvancedBackups
     public void onTickEnd(TickEvent.ServerTickEvent event) {
         if (!event.phase.equals(TickEvent.Phase.END)) return;
         BackupTimer.check();
+    }
+
+    @SubscribeEvent
+    public void onConnectedToServer(ClientConnectedToServerEvent event) {
+        ClientConfigManager.loadOrCreateConfig();
+
+        
+        //NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+
+
+        //You serious? If I use the above line, the packet is just never received.
+        //TODO : rework this in a nicer way. Use something other than a fucking threaded five second delay.
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+
+            }
+            NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+        }).start();
     }
 
     
