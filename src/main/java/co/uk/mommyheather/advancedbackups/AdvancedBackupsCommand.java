@@ -16,6 +16,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         addSubcommand(new Reload());
         addSubcommand(new ResetChain());
         addSubcommand(new Snapshot());
+        addSubcommand(new Cancel());
     }
     
     @Override
@@ -34,7 +35,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public String getUsage(ICommandSender icommandsender)
     {
-        return "/backup (check|start|reload-config|snapshot)";
+        return "/backup (check|start|reload-config|snapshot|cancel)";
     }
     
     @Override
@@ -134,6 +135,31 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.backup.snapshot.usage";
+        }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
+        }
+    }
+    
+    public static class Cancel extends CommandTreeBase {
+        public Cancel(){}
+        @Override
+        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+            CoreCommandSystem.cancelBackup((response) -> {
+                sender.sendMessage(new TextComponentString(response));
+            });
+        }    
+        @Override
+        public String getName()
+        {
+            return "cancel";
+        }
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.backup.cancel.usage";
         }
         
         @Override

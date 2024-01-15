@@ -19,6 +19,7 @@ public class BackupToast implements IToast{
     public static boolean started;
     public static boolean failed;
     public static boolean finished;
+    public static boolean cancelled;
 
     public static int progress;
     public static int max;
@@ -64,6 +65,13 @@ public class BackupToast implements IToast{
         }
         else if (failed) {
             title = ChatFormatting.RED + I18n.format("advancedbackups.backup_failed");
+            if (!timeSet) {
+                time = System.currentTimeMillis();
+                timeSet = true;
+            }
+        }
+        else if (cancelled) {
+            title = ChatFormatting.RED + I18n.format("advancedbackups.backup_cancelled");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
