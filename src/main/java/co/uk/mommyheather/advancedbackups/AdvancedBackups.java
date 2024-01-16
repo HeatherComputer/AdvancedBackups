@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.apache.logging.log4j.Logger;
 
+import co.uk.mommyheather.advancedbackups.client.ClientBridge;
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
@@ -17,6 +18,7 @@ import co.uk.mommyheather.advancedbackups.network.PacketToastTest;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -154,6 +156,11 @@ public class AdvancedBackups
             }
             NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
         }).start();*/
+    }
+
+    @SubscribeEvent
+    public void onClientChat(ClientChatEvent event) {
+        ClientBridge.onClientChat(event);
     }
 
     
