@@ -18,6 +18,7 @@ public class BackupToast implements IToast {
     public static boolean started;
     public static boolean failed;
     public static boolean finished;
+    public static boolean cancelled;
 
     public static int progress;
     public static int max;
@@ -30,6 +31,7 @@ public class BackupToast implements IToast {
     public static final ItemStack stack = new ItemStack(Items.PAPER);
 
     private int textColour;
+    private String title = "You shouldn't see this!";
 
 
     @Override
@@ -50,11 +52,11 @@ public class BackupToast implements IToast {
         if (!exists) {
             textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
             toastGui.getMinecraft().font.draw(matrix, I18n.get("advancedbackups.backup_finished"), 25, 11, textColour);
-            AbstractGui.fill(matrix, 3, 28, 156, 29, -10948014);
+            if (title.equals(I18n.get("advancedbackups.backup_finished"))) AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
+                (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
             return Visibility.HIDE;
         }
 
-        String title = "You shouldn't see this!";
 
         
         if (starting) {
@@ -80,6 +82,19 @@ public class BackupToast implements IToast {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
+        }
+        else if (cancelled) {            
+            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.get("advancedbackups.backup_cancelled");
+            if (!timeSet) {
+                time = System.currentTimeMillis();
+                timeSet = true;
+            }
+
+        }
+
+        else {
+            title = "You shouldn't see this!";
         }
 
         toastGui.getMinecraft().font.draw(matrix, title, 25, 11, textColour);
