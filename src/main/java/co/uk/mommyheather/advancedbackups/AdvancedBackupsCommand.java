@@ -36,7 +36,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public String getUsage(ICommandSender icommandsender)
     {
-        return "/backup (check|start|reload-config|snapshot|cancel)";
+        return "/backup (check|start|reload-config|reload-client-config|snapshot|cancel)";
     }
     
     @Override
