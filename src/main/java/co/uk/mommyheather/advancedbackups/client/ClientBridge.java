@@ -1,7 +1,9 @@
 package co.uk.mommyheather.advancedbackups.client;
 
+import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.ClientChatEvent;
 
 public class ClientBridge {
 
@@ -24,6 +26,14 @@ public class ClientBridge {
 
         });
                
+    }
+
+    
+    public static void onClientChat(ClientChatEvent event) {
+        if (event.getMessage().equals("/backup reload-client-config")) {
+            event.setCanceled(true);
+            CoreCommandSystem.reloadClientConfig(Minecraft.getMinecraft().player::sendChatMessage);
+        }
     }
     
 }
