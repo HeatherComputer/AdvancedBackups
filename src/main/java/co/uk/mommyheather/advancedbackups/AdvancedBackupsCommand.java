@@ -44,6 +44,13 @@ public class AdvancedBackupsCommand {
             });
             return 1;
          }))
+
+         .then(Commands.literal("cancel").executes((runner) -> {
+            CoreCommandSystem.cancelBackup((response) -> {
+                runner.getSource().sendSuccess(new StringTextComponent(response), true);
+            });
+            return 1;
+         }))
     
         );
     }
