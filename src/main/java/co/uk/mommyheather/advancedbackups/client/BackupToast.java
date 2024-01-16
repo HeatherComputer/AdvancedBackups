@@ -1,7 +1,6 @@
 package co.uk.mommyheather.advancedbackups.client;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
-
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.client.gui.toasts.IToast;
@@ -11,7 +10,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class BackupToast implements IToast{
+public class BackupToast implements IToast {
     
     
     public static boolean starting;
@@ -30,61 +29,72 @@ public class BackupToast implements IToast{
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
 
+    private int textColour = 0;
+    private static String title = "You shouldn't see this!";
+    
+    private int progressBarColor = ColourHelper.colour(255, ClientConfigManager.progressBarRed.get(), ClientConfigManager.progressBarGreen.get(), ClientConfigManager.progressBarBlue.get());
+
 
     @Override
     public Visibility draw(GuiToast toastGui, long delta) {
         toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-        toastGui.drawTexturedModalRect(0, 0, 0, 0, 160, 32);
+        toastGui.drawTexturedModalRect(0, 0, 0,ClientConfigManager.darkMode.get() ? 0 : 32, 160, 32);
         RenderHelper.enableGUIStandardItemLighting();
         toastGui.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stack, 8, 8);
 
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        Gui.drawRect(3, 28, 156, 29, -1);
+        Gui.drawRect(4, 28, 156, 29, ColourHelper.colour
+            (255, ClientConfigManager.progressBackgroundRed.get(), ClientConfigManager.progressBackgroundGreen.get(), ClientConfigManager.progressBackgroundBlue.get()));
         float f = Math.min(156, (
             156 * percent
         ));
 
         if (!exists) {   
-            toastGui.getMinecraft().fontRenderer.drawString(ChatFormatting.GREEN + I18n.format("advancedbackups.backup_finished"), 25, 12, -11534256);
-            Gui.drawRect(3, 28, 156, 29, -10948014);
+            toastGui.getMinecraft().fontRenderer.drawString(title, 25, 12, textColour);
+            if (title.equals(I18n.format("advancedbackups.backup_finished"))) Gui.drawRect(4, 28, 156, 29, progressBarColor);
             return Visibility.HIDE;
         }
 
-        String title = "You shouldn't see this!";
 
 
         
         if (starting) {
-            title = ChatFormatting.GREEN + I18n.format("advancedbackups.backup_starting");
+            title = I18n.format("advancedbackups.backup_starting");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
         }
         else if (started) {
-            title = ChatFormatting.GREEN + I18n.format("advancedbackups.progress", round(percent * 100));
+            title = I18n.format("advancedbackups.progress", round(percent * 100));
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
         }
         else if (failed) {
-            title = ChatFormatting.RED + I18n.format("advancedbackups.backup_failed");
+            title = I18n.format("advancedbackups.backup_failed");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
         else if (cancelled) {
-            title = ChatFormatting.RED + I18n.format("advancedbackups.backup_cancelled");
+            title = I18n.format("advancedbackups.backup_cancelled");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
         else if (finished) {
-            title = ChatFormatting.GREEN + I18n.format("advancedbackups.backup_finished");
+            title = I18n.format("advancedbackups.backup_finished");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
+        else title = "You shouldn't see this!";
 
-        toastGui.getMinecraft().fontRenderer.drawString(title, 25, 12, -11534256);
+        toastGui.getMinecraft().fontRenderer.drawString(title, 25, 12, textColour);
 
         if (timeSet && System.currentTimeMillis() >= time + 5000) {
             starting = false;
@@ -100,7 +110,7 @@ public class BackupToast implements IToast{
         }
 
 
-        Gui.drawRect(3, 28, (int) f, 29, -10948014);
+        if (progress > 0 || finished) Gui.drawRect(4, 28, (int) f, 29, progressBarColor);
 
         
         return Visibility.SHOW;
