@@ -8,13 +8,10 @@ import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
@@ -28,6 +25,7 @@ public class ClientWrapper {
                 BackupToast.started = packet.started;
                 BackupToast.failed = packet.failed;
                 BackupToast.finished = packet.finished;
+                BackupToast.cancelled = packet.cancelled;
 
                 BackupToast.progress = packet.progress;
                 BackupToast.max = packet.max;
