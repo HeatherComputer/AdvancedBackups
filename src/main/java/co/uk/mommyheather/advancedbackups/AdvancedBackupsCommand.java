@@ -14,6 +14,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     {
         addSubcommand(new Start());
         addSubcommand(new Reload());
+        addSubcommand(new ReloadClient());
         addSubcommand(new ResetChain());
         addSubcommand(new Snapshot());
         addSubcommand(new Cancel());
@@ -60,6 +61,29 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         @Override
         public String getUsage(ICommandSender sender) {
             return "commands.backup.reload-config.usage";
+        }
+        
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+        {
+            return !AdvancedBackups.server.isDedicatedServer() || super.checkPermission(server, sender);
+        }
+    }   
+    
+    public static class ReloadClient extends CommandTreeBase {
+        public ReloadClient(){}
+        @Override
+        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+            sender.sendMessage(new TextComponentString("This command can only be executed on a client!"));
+        }    
+        @Override
+        public String getName()
+        {
+            return "reload-client-config";
+        }
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.backup.reload-client-config.usage";
         }
         
         @Override
