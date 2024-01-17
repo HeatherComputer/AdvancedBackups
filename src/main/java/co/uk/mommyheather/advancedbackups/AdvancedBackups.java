@@ -52,6 +52,9 @@ public class AdvancedBackups
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         NetworkHandler.register();
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
     }
 
     @SubscribeEvent
@@ -66,9 +69,6 @@ public class AdvancedBackups
         ABCore.enableSaving = AdvancedBackups::enableSaving;
         ABCore.saveOnce = AdvancedBackups::saveOnce;
 
-        ABCore.infoLogger = infoLogger;
-        ABCore.warningLogger = warningLogger;
-        ABCore.errorLogger = errorLogger;
 
         ABCore.resetActivity = AdvancedBackups::resetActivity;
 
