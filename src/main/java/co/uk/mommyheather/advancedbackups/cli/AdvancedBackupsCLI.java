@@ -87,14 +87,19 @@ public class AdvancedBackupsCLI {
 
         CLIIOHelpers.info("Config loaded!");
 
+        //What's a good way to check between absolute and relative? Not all absolute paths will start with /..
         File backupDir = new File(serverDir, backupLocation.replaceAll(Pattern.quote("." + File.separator), ""));
 
         if (!backupDir.exists()) {
-            CLIIOHelpers.error("Could not find backup directory!");
-            CLIIOHelpers.error(backupDir.getAbsolutePath());
-            CLIIOHelpers.error("Have you made any backups before?");
-            //Fatal, cannot continue
-            return;
+            //Is it absolute?
+            backupDir = new File(backupLocation.replaceAll(Pattern.quote("." + File.separator), ""));
+            if (!backupDir.exists()) {
+                CLIIOHelpers.error("Could not find backup directory!");
+                CLIIOHelpers.error(backupDir.getAbsolutePath());
+                CLIIOHelpers.error("Have you made any backups before?");
+                //Fatal, cannot continue
+                return;
+            }
         }
 
         
