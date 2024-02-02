@@ -106,7 +106,7 @@ public class AdvancedBackupsCLI {
         //check for backups from "other mods"
         boolean flag = false;
         ArrayList<File> otherBackups = new ArrayList<>();
-        for (File b : backupDir.getParentFile().listFiles()) {
+        for (File b : backupDir.listFiles()) {
             if (b.getName().endsWith("zip")) {
                 flag = true;
                 otherBackups.add(b);
