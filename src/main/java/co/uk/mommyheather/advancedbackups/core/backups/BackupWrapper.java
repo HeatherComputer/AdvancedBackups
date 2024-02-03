@@ -216,6 +216,7 @@ public class BackupWrapper {
             writer.append(dir.charAt(0) + ":\n"); // command prompt defaults to c:, if this is wrong then we need to change drive.
             writer.append("cd \"" + dir + "\"\n");
             writer.append("java -jar \"" + file + "\"\n");
+            writer.append("pause\n"); //simply prompts the user to press any key to continue, so they can see the confirmation message or error message
             
             writer.flush();
             writer.close(); 
