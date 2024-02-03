@@ -15,6 +15,7 @@ public class ClientWrapper implements ClientModInitializer {
             BackupToast.started = message.started;
             BackupToast.failed = message.failed;
             BackupToast.finished = message.finished;
+            BackupToast.cancelled = message.cancelled;
     
             BackupToast.progress = message.progress;
             BackupToast.max = message.max;
