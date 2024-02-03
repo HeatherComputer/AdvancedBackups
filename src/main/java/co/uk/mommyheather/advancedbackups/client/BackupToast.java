@@ -50,10 +50,16 @@ public class BackupToast implements IToast {
         ));
 
         if (!exists) {
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
-            toastGui.getMinecraft().font.draw(matrix, I18n.get("advancedbackups.backup_finished"), 25, 11, textColour);
-            if (title.equals(I18n.get("advancedbackups.backup_finished"))) AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
-                (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+            if (title.equals(I18n.get("advancedbackups.backup_finished"))){
+                textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+                toastGui.getMinecraft().font.draw(matrix, I18n.get(title), 25, 11, textColour);
+                AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
+                    (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+            }
+            else {
+                textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+                toastGui.getMinecraft().font.draw(matrix, I18n.get(title), 25, 11, textColour);
+            }
             return Visibility.HIDE;
         }
 
