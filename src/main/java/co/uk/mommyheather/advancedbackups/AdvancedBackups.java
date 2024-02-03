@@ -1,6 +1,7 @@
 package co.uk.mommyheather.advancedbackups;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -35,6 +36,8 @@ public class AdvancedBackups implements ModInitializer {
     public static final Consumer<String> errorLogger = LOGGER::error;
 
     public static MinecraftServer server;
+    
+    public static final ArrayList<String> players = new ArrayList<>();
 
     @Override
     public void onInitialize() {
