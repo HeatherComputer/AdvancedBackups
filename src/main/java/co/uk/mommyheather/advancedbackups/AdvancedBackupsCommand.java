@@ -38,6 +38,18 @@ public class AdvancedBackupsCommand {
             });
             return 1;
          }))
+         
+         .then(CommandManager.literal("cancel").executes((runner) -> {
+            CoreCommandSystem.cancelBackup((response) -> {
+                runner.getSource().sendFeedback(Text.of(response), true);
+            });
+            return 1;
+         }))
+         
+         .then(CommandManager.literal("reload-client-config").executes((runner) -> {
+            runner.getSource().sendFeedback(Text.of("This command can only be ran on the client!"), true);
+            return 1;
+         }))
     
         );
     }
