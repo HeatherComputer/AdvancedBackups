@@ -137,6 +137,7 @@ public class AdvancedBackupsCLI {
         
                
         boolean exportMode = false;
+        int backupDateIndex;
 
         
 
@@ -147,26 +148,26 @@ public class AdvancedBackupsCLI {
         
             
         if (restore.equals("Export backup as zip")) {
-            worldFile = new File(serverDir, "AdvancedBackups.temp");
-            worldFile.mkdirs();
             exportMode = true;
         }
         
         
-        else {
-            worldFile = CLIIOHelpers.getWorldFile(serverDir);
-            worldPath = worldFile.getName().replace(" ", "_");
-        }
+        worldFile = CLIIOHelpers.getWorldFile(serverDir);
+        worldPath = worldFile.getName().replace(" ", "_");
 
         backupDir = new File(backupDir, worldFile.getName() + "/" + type);
 
-        int backupDateIndex;
         try {
             backupDateIndex = getBackupDate(backupDir, exportMode);
         } catch (IOException e) {
             CLIIOHelpers.error("ERROR VIEWING BACKUPS!");
             e.printStackTrace();
             return;
+        }
+
+        if (exportMode) { 
+            worldFile = new File(serverDir, "AdvancedBackups.temp");
+            worldFile.mkdirs();
         }
 
 
@@ -261,7 +262,19 @@ public class AdvancedBackupsCLI {
         CLIIOHelpers.info("Select a backup to restore.");
 
         String[] fileNameArray = backupDir.list();
+        if (fileNameArray == null || fileNameArray.length <=0) {
+            throw new IOException(String.format("Selected backup directory %s is empty, or is a file!", backupDir.getAbsolutePath()));
+        }
         List<String> fileNameList = Arrays.asList(fileNameArray);
+        fileNameList.removeIf((name) -> {
+            return (name.endsWith("json") ||
+                name.contains("incomplete") ||
+                name.contains("DS_Store"));
+        });
+
+        if (fileNameList.isEmpty()) {
+            throw new IOException(String.format("Selected backup directory %s is empty, or is a file!", backupDir.getAbsolutePath()));
+        }
 
         for (String fileName : CLIIOHelpers.sortStringsAlphabeticallyWithDirectoryPriority(fileNameList)) {
             if (exportMode) {
