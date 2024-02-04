@@ -116,7 +116,7 @@ public class BackupToast implements Toast {
             return Visibility.HIDE;
         }
 
-        Gui.fill(matrix, 4, 28, Math.max(3, (int) f), 29, ColourHelper.colour
+        Gui.fill(matrix, 4, 28, Math.max(4, (int) f), 29, ColourHelper.colour
             (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
