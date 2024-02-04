@@ -11,7 +11,6 @@ import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.Formatting;
 
 public class BackupToast implements Toast {
         
@@ -65,7 +64,7 @@ public class BackupToast implements Toast {
             return Visibility.HIDE;
         }
 
-        String title = "You shouldn't see this!";
+        title = "You shouldn't see this!";
 
         
         if (starting) {
@@ -115,8 +114,8 @@ public class BackupToast implements Toast {
             return Visibility.HIDE;
         }
 
-        DrawableHelper.fill(matrix, 3, 28, Math.max(3, (int) f), 29, ColourHelper.colour
-        (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+        DrawableHelper.fill(matrix, 4, 28, Math.max(3, (int) f), 29, ColourHelper.colour
+            (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
     }
