@@ -18,6 +18,7 @@ public class ClientWrapper {
         BackupToast.started = packet.started;
         BackupToast.failed = packet.failed;
         BackupToast.finished = packet.finished;
+        BackupToast.cancelled = packet.cancelled;
 
         BackupToast.progress = packet.progress;
         BackupToast.max = packet.max;
