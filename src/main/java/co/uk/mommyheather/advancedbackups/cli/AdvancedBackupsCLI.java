@@ -265,7 +265,7 @@ public class AdvancedBackupsCLI {
         if (fileNameArray == null || fileNameArray.length <=0) {
             throw new IOException(String.format("Selected backup directory %s is empty, or is a file!", backupDir.getAbsolutePath()));
         }
-        List<String> fileNameList = Arrays.asList(fileNameArray);
+        ArrayList<String> fileNameList = new ArrayList<String>(Arrays.asList(fileNameArray)); //i need to do this. i hate this.
         fileNameList.removeIf((name) -> {
             return (name.endsWith("json") ||
                 name.contains("incomplete") ||
