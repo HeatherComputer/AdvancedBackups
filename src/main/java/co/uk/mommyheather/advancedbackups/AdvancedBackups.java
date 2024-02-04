@@ -1,6 +1,7 @@
 package co.uk.mommyheather.advancedbackups;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -12,11 +13,14 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,6 +37,8 @@ public class AdvancedBackups implements ModInitializer {
     public static final Consumer<String> infoLogger = LOGGER::info;
     public static final Consumer<String> warningLogger = LOGGER::warn;
     public static final Consumer<String> errorLogger = LOGGER::error;
+    
+    public static final ArrayList<String> players = new ArrayList<>();
 
     public static MinecraftServer server;
 
@@ -80,6 +86,9 @@ public class AdvancedBackups implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register((server) -> {
             BackupTimer.check();
         });
+
+        
+        ServerPlayNetworking.registerGlobalReceiver(NetworkHandler.TOAST_SUBSCRIBE_ID, PacketToastSubscribe::handle);
 
         
             
