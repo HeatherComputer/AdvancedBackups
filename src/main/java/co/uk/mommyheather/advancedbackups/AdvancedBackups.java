@@ -1,5 +1,6 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
+import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
@@ -20,7 +22,6 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -28,6 +29,8 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 @Mod("advancedbackups")
@@ -40,18 +43,18 @@ public class AdvancedBackups
     public static final Consumer<String> warningLogger = LOGGER::warn;
     public static final Consumer<String> errorLogger = LOGGER::error;
 
+    public static final ArrayList<String> players = new ArrayList<>();
+
 
     public AdvancedBackups()
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         NetworkHandler.register();
-    }
-
-    @SubscribeEvent
-    public void onTickEnd(TickEvent.ServerTickEvent event) {
-        if (event.phase != Phase.END) return;
-        BackupTimer.check();
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
     }
 
     @SubscribeEvent
@@ -61,23 +64,27 @@ public class AdvancedBackups
         ABCore.worldName = event.getServer().getWorldData().getLevelName();
         ABCore.worldDir = event.getServer().getWorldPath(LevelResource.ROOT);
 
+
         ABCore.disableSaving = AdvancedBackups::disableSaving;
         ABCore.enableSaving = AdvancedBackups::enableSaving;
         ABCore.saveOnce = AdvancedBackups::saveOnce;
 
-        ABCore.infoLogger = infoLogger;
-        ABCore.warningLogger = warningLogger;
-        ABCore.errorLogger = errorLogger;
 
-        ABCore.resetActivity = AdvancedBackups::resetActivity; 
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
 
         ABCore.clientContactor = new ClientContactor();
+        
         ABCore.modJar = ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
 
         
         ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
         
+        
+    }
+
+    public void clientSetup(FMLClientSetupEvent e) {
+        ClientWrapper.init(e);
     }
 
     @SubscribeEvent
@@ -101,30 +108,36 @@ public class AdvancedBackups
         AdvancedBackupsCommand.register(event.getDispatcher());
     }
 
+    @SubscribeEvent
+    public void onTickEnd(TickEvent.ServerTickEvent event) {
+        if (!event.phase.equals(TickEvent.Phase.END)) return;
+        BackupTimer.check();
+    }
 
+        
     public static final String savesDisabledMessage = """
 
 
-    ***************************************
-    SAVING DISABLED - PREPARING FOR BACKUP!
-    ***************************************
-    """;
+***************************************
+SAVING DISABLED - PREPARING FOR BACKUP!
+***************************************
+""";
     public static final String savesEnabledMessage = """
-    
-    
-    *********************************
-    SAVING ENABLED - BACKUP COMPLETE!
-    *********************************
-    """;
+
+
+*********************************
+SAVING ENABLED - BACKUP COMPLETE!
+*********************************
+""";
     public static final String saveCompleteMessage = """
-    
-    
-    *************************************
-    SAVE COMPLETE - PREPARING FOR BACKUP!
-    *************************************
-    """;
-    
-    
+
+
+*************************************
+SAVE COMPLETE - PREPARING FOR BACKUP!
+*************************************
+""";
+
+
     public static void disableSaving() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         for (ServerLevel level : server.getAllLevels()) {
@@ -147,7 +160,7 @@ public class AdvancedBackups
         warningLogger.accept(savesEnabledMessage);
     }
 
-    public static void saveOnce(boolean flush) {
+    public static void saveOnce(Boolean flush) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         server.saveEverything(true, flush, true);
         if (ConfigManager.silent.get()) return;
