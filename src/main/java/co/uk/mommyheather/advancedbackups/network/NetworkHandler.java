@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 public class NetworkHandler {
 
     public static Identifier STATUS_PACKET_ID = new Identifier("advancedbackups", "backup_status");
+    public static final Identifier TOAST_SUBSCRIBE_ID = new Identifier("advancedbackups", "toast_subscribe");
 
 
     public static void sendToClient(ServerPlayerEntity player, PacketBackupStatus packet) {
