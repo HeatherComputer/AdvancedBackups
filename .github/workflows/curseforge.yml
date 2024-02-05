@@ -68,6 +68,14 @@ jobs:
         rm -r ./AdvancedBackups-ALL_JARS-*
 
 
+    - name: Close Issues
+      id: close-issues
+      uses: bdougie/close-issues-based-on-label@master
+      env:
+        LABEL:  Fixed in Next Release
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     
+
     - name: Upload Forge-1.7.10
 
       uses: itsmeow/curseforge-upload@v3
