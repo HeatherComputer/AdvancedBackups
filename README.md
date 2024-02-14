@@ -60,7 +60,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 ### Ingame:
 \- Upon first boot, an `AdvancedBackups.properties` file will be created in your server or client `config` directory.
 
-\- Adjust this to suit your needs, then restart the server or use `/advancedbackups reload` to reload the config. A small description of each config entry is below.
+\- Adjust this to suit your needs, then restart the server or use `/backup reload-config` in versions 2.2+ or `/advancedbackups reload` in older pre-2.2 versions to reload the config. A small description of each config entry is below.
 
 <details>
 <summary>config</summary>
