@@ -1,5 +1,6 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -38,6 +39,8 @@ public class AdvancedBackups
     public static final Consumer<String> infoLogger = LOGGER::info;
     public static final Consumer<String> warningLogger = LOGGER::warn;
     public static final Consumer<String> errorLogger = LOGGER::error;
+
+    public static final ArrayList<String> players = new ArrayList<>();
 
 
     public AdvancedBackups()
