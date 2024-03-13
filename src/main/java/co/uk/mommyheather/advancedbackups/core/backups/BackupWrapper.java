@@ -430,6 +430,7 @@ public class BackupWrapper {
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
+                if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
                 return;
             }
@@ -440,13 +441,17 @@ public class BackupWrapper {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
+                    if (file.isDirectory()) deleteDirectoryContents(file);
                     file.delete();
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                     while ((dependent = getDependent(dependent)) != null) {
+                        if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                         dependent.delete();
                     }
                 }
                 else {
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                 }
             }
@@ -467,6 +472,7 @@ public class BackupWrapper {
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
+                if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
                 return;
             }
@@ -489,15 +495,19 @@ public class BackupWrapper {
                         if (days <= ConfigManager.daysToKeep.get()) return;
                     }
                     dependent = getDependent(file);
+                    if (file.isDirectory()) deleteDirectoryContents(file);
                     file.delete();
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                     while ((dependent = getDependent(dependent)) != null) {
+                        if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                         dependent.delete();
                     }
 
 
                 }
                 else {
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                 }
             }
@@ -514,6 +524,7 @@ public class BackupWrapper {
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
+                if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
                 return;
             }
@@ -524,18 +535,30 @@ public class BackupWrapper {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
+                    if (file.isDirectory()) deleteDirectoryContents(file);
                     file.delete();
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                     while ((dependent = getDependent(dependent)) != null) {
+                        if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                         dependent.delete();
                     }
                 }
                 else {
+                    if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                 }
             }
         }
         
+    }
+
+    private static void deleteDirectoryContents(File directory) {
+        if (!directory.isDirectory()) return; //safety check
+        for (File file : directory.listFiles()) {
+            if (file.isDirectory()) deleteDirectoryContents(file);
+            file.delete();
+        }
     }
     
     
