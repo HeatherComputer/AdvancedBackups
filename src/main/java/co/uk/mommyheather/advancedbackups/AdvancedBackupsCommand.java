@@ -56,6 +56,13 @@ public class AdvancedBackupsCommand {
             });
             return 1;
          }))
+
+         .then(Commands.literal("reload-client-config").executes((runner) -> {
+                runner.getSource().sendSuccess(() -> { 
+                    return Component.literal("This command can only be ran on the client!") ;
+                }, true);
+            return 1;
+         }))
     
         );
     }
