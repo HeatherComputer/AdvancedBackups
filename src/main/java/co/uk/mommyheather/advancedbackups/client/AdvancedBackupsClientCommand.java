@@ -56,7 +56,9 @@ public class AdvancedBackupsClientCommand {
 
          .then(literal("reload-client-config").executes((runner) -> {
             CoreCommandSystem.reloadClientConfig((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
+                runner.getSource().sendSuccess(() -> {
+                    return Component.literal(response);
+                }, true);
             });
             return 1;
          }))
