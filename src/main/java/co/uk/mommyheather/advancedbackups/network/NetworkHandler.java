@@ -28,10 +28,20 @@ public class NetworkHandler {
         .decoder(buf -> new PacketBackupStatus(buf))
         .consumerNetworkThread(PacketBackupStatus::handle)
         .add();
+        
+        INSTANCE.messageBuilder(PacketToastSubscribe.class, id())
+        .encoder(PacketToastSubscribe::toBytes)
+        .decoder(buf -> new PacketToastSubscribe(buf))
+        .consumerNetworkThread(PacketToastSubscribe::handle)
+        .add();
     }
 
     public static void sendToClient(ServerPlayer player, Object packet) {
         INSTANCE.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    public static void sendToServer(Object packet) {
+        INSTANCE.sendToServer(packet);
     }
 
 }
