@@ -3,6 +3,7 @@ package co.uk.mommyheather.advancedbackups.client;
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
+import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
