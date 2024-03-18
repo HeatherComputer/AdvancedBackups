@@ -6,7 +6,9 @@ plugins {
 group = project.maven_group
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
-
+loom {
+    accessWidenerPath = file("src/main/resources/advancedbackups.accesswidener")
+}
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.

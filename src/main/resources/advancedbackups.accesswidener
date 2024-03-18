@@ -1,0 +1,4 @@
+accessWidener v2 named
+
+#Required for commands for now, should rework this at some point
+accessible field net/minecraft/client/network/ClientPlayNetworkHandler lastSeenMessagesCollector Lnet/minecraft/network/message/LastSeenMessagesCollector;
