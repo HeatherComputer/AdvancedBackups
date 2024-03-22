@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
@@ -19,6 +20,7 @@ public class BackupToast implements Toast {
     public static boolean started;
     public static boolean failed;
     public static boolean finished;
+    public static boolean cancelled;
 
     public static int progress;
     public static int max;
@@ -31,51 +33,75 @@ public class BackupToast implements Toast {
     public static final ItemStack stack = new ItemStack(Items.PAPER);
     private static final Identifier TEXTURE = new Identifier("toast/advancement"); 
 
+    public static String title = "You shouldn't see this!";
+    public static int textColour = 0;
+
     @Override
     public Visibility draw(DrawContext context, ToastManager manager, long startTime) {
-        context.drawGuiTexture(TEXTURE, 0, 0, this.getWidth(), this.getHeight());
+        context.drawGuiTexture(TEXTURE, 0, ClientConfigManager.darkMode.get() ? 0 : this.getHeight(), this.getWidth(), this.getHeight());
 
         context.drawItemWithoutEntity(stack, 8, 8);;
         
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        context.fill(3, 28, 156, 29, -1);
+        context.fill(4, 28, 156, 29, ColourHelper.colour
+        (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
 
         float f = Math.min(156, (
             156 * percent
         ));
 
-        if (!exists) {   
-            context.drawText(manager.getClient().textRenderer, Formatting.GREEN + I18n.translate("advancedbackups.backup_finished"), 25, 11, -11534256, false);
-            context.fill(3, 28, 156, 29, -10948014);
+        if (!exists) {
+            if (title.equals(I18n.translate("advancedbackups.backup_finished"))){
+                textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+                context.drawText(manager.getClient().textRenderer, I18n.translate(title), 25, 11, textColour, false);
+                context.fill(4, 28, 156, 29, ColourHelper.colour
+                    (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+            }
+            else {
+                textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+                context.drawText(manager.getClient().textRenderer, I18n.translate(title), 25, 11, textColour, false);
+            }
             return Visibility.HIDE;
         }
 
-        String title = "You shouldn't see this!";
+        title = "You shouldn't see this!";
 
         
         if (starting) {
-            title = Formatting.GREEN + I18n.translate("advancedbackups.backup_starting");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.translate("advancedbackups.backup_starting");
         }
         else if (started) {
-            title = Formatting.GREEN + I18n.translate("advancedbackups.progress", round(percent * 100));
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.translate("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
-            title = Formatting.RED + I18n.translate("advancedbackups.backup_failed");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.translate("advancedbackups.backup_failed");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
         else if (finished) {
-            title = Formatting.GREEN + I18n.translate("advancedbackups.backup_finished");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.translate("advancedbackups.backup_finished");
+            if (!timeSet) {
+                time = System.currentTimeMillis();
+                timeSet = true;
+            }
+        }
+        else if (cancelled) {
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.translate("advancedbackups.backup_cancelled");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
 
-        context.drawText(manager.getClient().textRenderer, title, 25, 11, -11534256, false);
+        context.drawText(manager.getClient().textRenderer, title, 25, 11, textColour, false);
 
         if (timeSet && System.currentTimeMillis() >= time + 5000) {
             starting = false;
@@ -89,7 +115,8 @@ public class BackupToast implements Toast {
             return Visibility.HIDE;
         }
 
-        context.fill(3, 28, Math.max(3, (int) f), 29, -10948014);
+        context.fill(4, 28, Math.max(4, (int) f), 29, ColourHelper.colour
+        (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
     }
