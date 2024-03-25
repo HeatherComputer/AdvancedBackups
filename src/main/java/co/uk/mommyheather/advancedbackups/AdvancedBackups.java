@@ -1,5 +1,6 @@
 package co.uk.mommyheather.advancedbackups;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import co.uk.mommyheather.advancedbackups.client.ClientContactor;
+import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
@@ -27,6 +29,8 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 @Mod("advancedbackups")
@@ -39,12 +43,19 @@ public class AdvancedBackups
     public static final Consumer<String> warningLogger = LOGGER::warn;
     public static final Consumer<String> errorLogger = LOGGER::error;
 
+    public static final ArrayList<String> players = new ArrayList<>();
+
 
     public AdvancedBackups()
     {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         NetworkHandler.register();
+
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
     }
 
     @SubscribeEvent
@@ -58,10 +69,6 @@ public class AdvancedBackups
         ABCore.enableSaving = AdvancedBackups::enableSaving;
         ABCore.saveOnce = AdvancedBackups::saveOnce;
 
-        ABCore.infoLogger = infoLogger;
-        ABCore.warningLogger = warningLogger;
-        ABCore.errorLogger = errorLogger;
-
         ABCore.resetActivity = AdvancedBackups::resetActivity;
 
 
@@ -72,6 +79,10 @@ public class AdvancedBackups
         ConfigManager.loadOrCreateConfig();
         LOGGER.info("Config loaded!!");
         
+    }
+
+    public void clientSetup(FMLClientSetupEvent e) {
+        ClientWrapper.init(e);
     }
 
     @SubscribeEvent

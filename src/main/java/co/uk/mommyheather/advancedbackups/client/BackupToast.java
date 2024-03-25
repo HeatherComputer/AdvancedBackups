@@ -1,6 +1,6 @@
 package co.uk.mommyheather.advancedbackups.client;
 
-import net.minecraft.ChatFormatting;
+import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
@@ -15,6 +15,7 @@ public class BackupToast implements Toast {
     public static boolean started;
     public static boolean failed;
     public static boolean finished;
+    public static boolean cancelled;
 
     public static int progress;
     public static int max;
@@ -27,53 +28,74 @@ public class BackupToast implements Toast {
     public static final ItemStack stack = new ItemStack(Items.PAPER);
     private static final ResourceLocation TEXTURE = new ResourceLocation("toast/advancement");
     
+    private int textColour;
+    private String title = "You shouldn't see this!";
 
 
     @Override
     public Visibility render(GuiGraphics graphics, ToastComponent toastGui, long delta) {
-        graphics.blitSprite(TEXTURE, 0, 0, this.width(), this.height());
+        graphics.blitSprite(TEXTURE, 0, ClientConfigManager.darkMode.get() ? 0 : this.height(), this.width(), this.height());
         graphics.renderFakeItem(stack, 8, 8);
 
         
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        graphics.fill(3, 28, 156, 29, -1);
+        graphics.fill(4, 28, 156, 29, ColourHelper.colour
+            (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
+
         float f = Math.min(156, (
             156 * percent
         ));
 
-
-        if (!exists) {   
-            graphics.drawString(toastGui.getMinecraft().font, ChatFormatting.GREEN + I18n.get("advancedbackups.backup_finished"), 25, 11, -11534256);
-            graphics.fill(3, 28, 156, 29, -10948014);
+        if (!exists) { 
+            if (title.equals(I18n.get("advancedbackups.backup_finished"))){
+                textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+                graphics.drawString(toastGui.getMinecraft().font, I18n.get(title), 25, 11, textColour);
+                graphics.fill(3, 28, 156, 29, ColourHelper.colour
+                    (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+            }
+            else {
+                textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+                graphics.drawString(toastGui.getMinecraft().font, I18n.get(title), 25, 11, textColour);
+            }
             return Visibility.HIDE;
         }
 
-        String title = "You shouldn't see this!";
-
         
         if (starting) {
-            title = ChatFormatting.GREEN + I18n.get("advancedbackups.backup_starting");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.backup_starting");
         }
         else if (started) {
-            title = ChatFormatting.GREEN + I18n.get("advancedbackups.progress", round(percent * 100));
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
-            title = ChatFormatting.RED + I18n.get("advancedbackups.backup_failed");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.get("advancedbackups.backup_failed");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
         else if (finished) {
-            title = ChatFormatting.GREEN + I18n.get("advancedbackups.backup_finished");
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            title = I18n.get("advancedbackups.backup_finished");
+            if (!timeSet) {
+                time = System.currentTimeMillis();
+                timeSet = true;
+            }
+        }
+        else if (cancelled) {
+            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            title = I18n.get("advancedbackups.backup_cancelled");
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
             }
         }
 
-        graphics.drawString(toastGui.getMinecraft().font, title, 25, 11, -11534256);
+        graphics.drawString(toastGui.getMinecraft().font, title, 25, 11, textColour);
 
         if (timeSet && System.currentTimeMillis() >= time + 5000) {
             starting = false;
@@ -87,7 +109,8 @@ public class BackupToast implements Toast {
             return Visibility.HIDE;
         }
         
-        graphics.fill(3, 28, Math.max(3, (int) f), 29, -10948014);
+        graphics.fill(4, 28, Math.max(4, (int) f), 29, ColourHelper.colour
+        (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
         
