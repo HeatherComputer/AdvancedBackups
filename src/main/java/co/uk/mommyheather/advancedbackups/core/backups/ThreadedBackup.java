@@ -317,7 +317,6 @@ public class ThreadedBackup extends Thread {
                         zipOutputStream.write(bytes, 0, i);
                     }
                     is.close();
-                    zipOutputStream.write(bytes, 0, bytes.length);
                     zipOutputStream.closeEntry();
                     index++;
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
