@@ -18,7 +18,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 public class AdvancedBackupsClientCommand {
     public static void register(CommandDispatcher<CommandSourceStack> commandDispatcher) {
         commandDispatcher.register(literal("backup").requires((runner) -> {
-            return !ServerLifecycleHooks.getCurrentServer().isDedicatedServer() || runner.hasPermission(3);
+            return true;
         }).then(literal("start").executes((runner) -> {
             Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
             Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup start", Instant.now(), 0, 
