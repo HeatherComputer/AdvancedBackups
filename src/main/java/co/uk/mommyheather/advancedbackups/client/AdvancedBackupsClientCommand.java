@@ -10,7 +10,8 @@ import net.minecraft.text.Text;
 public class AdvancedBackupsClientCommand {
     public static void register() {
         ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("backup").requires((runner) -> {
-            return runner.hasPermissionLevel(0);
+            return true;
+            //Originally checked for permission level 0. No point checking whether that caused the issue when just a return true here works
         }).then(ClientCommandManager.literal("start").executes((runner) -> {
             MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket("/backup start"));
             return 1;
