@@ -17,7 +17,8 @@ import net.minecraft.text.Text;
 public class AdvancedBackupsClientCommand {
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommandManager.literal("backup").requires((runner) -> {
-            return runner.hasPermissionLevel(0);
+            //Originally checked for permission level 0, no point checking if that actually caused problems
+            return true;
         }).then(ClientCommandManager.literal("start").executes((runner) -> {
             Acknowledgment acknowledgment = MinecraftClient.getInstance().player.networkHandler.consumeAcknowledgment();
             MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup start", Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, false, acknowledgment));
