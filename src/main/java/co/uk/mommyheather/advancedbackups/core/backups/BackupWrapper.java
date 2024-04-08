@@ -88,7 +88,8 @@ public class BackupWrapper {
     
     
     public static BackupCheckEnum checkBackups() {
-        prepareBackupDestination();
+        //We shouldn't need this anymore.
+        //prepareBackupDestination();
         if (!ConfigManager.enabled.get()) return BackupCheckEnum.DISABLED;
         if (ConfigManager.activity.get() && !ABCore.activity) return BackupCheckEnum.NOACTIVITY;
         if (checkMostRecentBackup()) return BackupCheckEnum.TOORECENT;
