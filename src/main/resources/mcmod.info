@@ -3,7 +3,7 @@
   "modid": "advancedbackups",
   "name": "Advanced Backups",
   "description": "Powerful backup mod.",
-  "version": "${version}",
+  "version": "${mod_version}",
   "url": "https://github.com/MommyHeather/AdvancedBackups",
   "updateUrl": "",
   "authorList": ["MommyHeather"],

@@ -92,6 +92,17 @@ dependencies {
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            mod_version: version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['mcmod.info']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
 jar {
     manifest {
         attributes([
