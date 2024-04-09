@@ -231,6 +231,19 @@ jobs:
         changelog: "${{ vars.CHANGELOG }}"
         display_name: "Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}"
 
+    - name: Upload Forge-1.20.4
+
+      if: inputs.version == 'Forge 1.20.4' || inputs.version == 'All'
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "10407,Java 17,Forge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}"
+
 
     - name: Upload Fabric-1.20
 
@@ -260,6 +273,20 @@ jobs:
         display_name: "Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}"
 
 
+    - name: Upload Fabric-1.20.4
+
+      if: inputs.version == 'Fabric 1.20.4' || inputs.version == 'All'
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "10407,Java 17,Fabric,Quilt"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}"
+
+
     - name: Upload Neoforge-1.20.2
 
       if: inputs.version == 'Neoforge 1.20.2' || inputs.version == 'All'
@@ -272,4 +299,18 @@ jobs:
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
         display_name: "Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}"
+
+
+    - name: Upload Neoforge-1.20.4
+
+      if: inputs.version == 'Neoforge 1.20.4' || inputs.version == 'All'
+      uses: itsmeow/curseforge-upload@v3
+      with:
+        file_path: "AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar"
+        game_endpoint: "minecraft"
+        game_versions: "10407,Java 17,NeoForge"
+        project_id: "876284"
+        token: "${{ secrets.CURSEFORGE_TOKEN }}"
+        changelog: "${{ vars.CHANGELOG }}"
+        display_name: "Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}"
     
