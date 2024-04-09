@@ -595,7 +595,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [core, forge-1-7-10, forge-1-12-2, forge-1-16, forge-1-18, fabric-1-18, forge-1-19-2, 
               forge-1-19-3, fabric-1-19-2, fabric-1-19-3, forge-1-20, forge-1-20-2, fabric-1-20, fabric-1-20-2, neoforge-1-20-2,
-              forge-1-20-4, fabric-1-20-4, neoforge-1-20-4],
+              forge-1-20-4, fabric-1-20-4, neoforge-1-20-4]
 
     steps:
     
