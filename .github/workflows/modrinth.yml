@@ -234,7 +234,7 @@ jobs:
       uses: RubixDev/modrinth-upload@v1
       with:
         file_path: "AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.20.2"
+        game_versions: "1.20.2,1.20.3"
         loaders: "forge"
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
@@ -267,7 +267,7 @@ jobs:
       uses: RubixDev/modrinth-upload@v1
       with:
         file_path: "AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.20.2"
+        game_versions: "1.20.2,1.20.3"
         loaders: "fabric,quilt"
         relations: "P7dR8mSH:required"
         project_id: "Jrmoreqs"
@@ -284,7 +284,7 @@ jobs:
       uses: RubixDev/modrinth-upload@v1
       with:
         file_path: "AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
-        game_versions: "1.20.2"
+        game_versions: "1.20.2,1.20.3"
         loaders: "neoforge"
         project_id: "Jrmoreqs"
         token: "${{ secrets.MODRINTH_TOKEN }}"
