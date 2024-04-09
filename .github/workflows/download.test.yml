@@ -29,9 +29,12 @@ on:
         - Fabric 1.19.3
         - Forge 1.20
         - Forge 1.20.2
+        - Forge 1.20.4
         - Fabric 1.20
         - Fabric 1.20.2
+        - Fabric 1.20.4
         - Neoforge 1.20.2
+        - Neoforge 1.20.4
 
 
 jobs:
@@ -63,15 +66,6 @@ jobs:
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
         ls
-
-
-    - name: Close Issues
-      id: close-issues
-      uses: piroor/close-expired-issues-based-on-label@master
-      env:
-        LABEL:  Fixed in Next Release
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
 
 
 
@@ -117,13 +111,22 @@ jobs:
     - name: Upload Forge-1.20.2
       run: (ls AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
 
+    - name: Upload Forge-1.20.4
+      run: (ls AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
     - name: Upload Fabric-1.20
       run: (ls AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar && echo yes)
 
     - name: Upload Fabric-1.20.2
       run: (ls AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
 
+    - name: Upload Fabric-1.20.4
+      run: (ls AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
     - name: Upload Neoforge-1.20.2
       run: (ls AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Neoforge-1.20.4
+      run: (ls AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar && echo yes)
     
     
