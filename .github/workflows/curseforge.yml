@@ -225,7 +225,7 @@ jobs:
       with:
         file_path: "AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
-        game_versions: "10236,Java 17,Forge"
+        game_versions: "10236,10395,Java 17,Forge"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
@@ -253,7 +253,7 @@ jobs:
       with:
         file_path: "AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
-        game_versions: "10236,Java 17,Fabric,Quilt"
+        game_versions: "10236,10395,Java 17,Fabric,Quilt"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
@@ -267,7 +267,7 @@ jobs:
       with:
         file_path: "AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar"
         game_endpoint: "minecraft"
-        game_versions: "10236,Java 17,NeoForge"
+        game_versions: "10236,10395,Java 17,NeoForge"
         project_id: "876284"
         token: "${{ secrets.CURSEFORGE_TOKEN }}"
         changelog: "${{ vars.CHANGELOG }}"
