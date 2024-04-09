@@ -124,6 +124,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 | ----------- | ----------- | -------------- |
 | start | Makes a backup using the configured backup type.| 2.2 |
 | reload-config | Reloads the config.| 2.2 |
+| reload-client-config | Reloads the clientside config.| 3.5 |
 | snapshot | Creates a "snapshot" backup that cannot be auto-deleted.| 2.2 |
 | reset-chain | Resets any current chain length.| 1.0 |
 
