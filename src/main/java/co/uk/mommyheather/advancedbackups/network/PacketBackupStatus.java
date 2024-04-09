@@ -1,15 +1,20 @@
 package co.uk.mommyheather.advancedbackups.network;
 
-import java.util.function.Supplier;
-
-import co.uk.mommyheather.advancedbackups.client.BackupToast;
 import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.LogicalSide;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketBackupStatus {
+public class PacketBackupStatus implements CustomPacketPayload {
+
+    public static final ResourceLocation ID = new ResourceLocation("advancedbackups", "backup_status");
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
     
     public boolean starting;
     public boolean started;
@@ -45,7 +50,8 @@ public class PacketBackupStatus {
         max = buf.readInt();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeBoolean(starting);
         buf.writeBoolean(started);
         buf.writeBoolean(failed);
@@ -56,14 +62,12 @@ public class PacketBackupStatus {
         buf.writeInt(max);
     }
 
-    public boolean handle(NetworkEvent.Context ctx) {
-        ctx.enqueueWork(() -> {
-            if (ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
+    public void handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> {
+            if (ctx.flow().getReceptionSide() == LogicalSide.CLIENT) {
                 ClientWrapper.handle(this);
             }
         });
-        ctx.setPacketHandled(true);
-        return true;
 
     }
     
