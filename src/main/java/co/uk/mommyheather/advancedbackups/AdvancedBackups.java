@@ -19,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
@@ -46,12 +47,12 @@ public class AdvancedBackups
     public static final ArrayList<String> players = new ArrayList<>();
 
 
-    public AdvancedBackups()
+    public AdvancedBackups(IEventBus modEventBus)
     {
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
-        NetworkHandler.register();
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        modEventBus.addListener(NetworkHandler::onRegisterPayloadHandler);
+        modEventBus.addListener(this::clientSetup);
 
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;

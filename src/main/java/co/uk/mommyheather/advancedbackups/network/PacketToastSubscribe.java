@@ -1,12 +1,20 @@
 package co.uk.mommyheather.advancedbackups.network;
 
-import java.util.function.Supplier;
 
 import co.uk.mommyheather.advancedbackups.AdvancedBackups;
 import net.minecraft.network.FriendlyByteBuf;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketToastSubscribe {
+public class PacketToastSubscribe implements CustomPacketPayload {
+
+    public static final ResourceLocation ID = new ResourceLocation("advancedbackups", "toast_subscribe");
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
     
     private boolean enable;
     
@@ -19,18 +27,19 @@ public class PacketToastSubscribe {
         enable = buf.readBoolean();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeBoolean(enable);
     }
 
-    public boolean handle(NetworkEvent.Context ctx) {
-        ctx.enqueueWork(() -> {
-            if (ctx.getSender() == null) return;
-            if (enable && !AdvancedBackups.players.contains(ctx.getSender().getStringUUID())) {
-                AdvancedBackups.players.add(ctx.getSender().getStringUUID());
+    public boolean handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> {
+            if (!ctx.player().isPresent()) return;
+            if (enable && !AdvancedBackups.players.contains(ctx.player().get().getStringUUID())) {
+                AdvancedBackups.players.add(ctx.player().get().getStringUUID());
             }
             else if (!enable) {
-                AdvancedBackups.players.remove(ctx.getSender().getStringUUID());
+                AdvancedBackups.players.remove(ctx.player().get().getStringUUID());
             }
         });
 
