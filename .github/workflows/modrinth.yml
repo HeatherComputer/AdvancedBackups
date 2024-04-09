@@ -28,9 +28,12 @@ on:
         - Fabric 1.19.3
         - Forge 1.20
         - Forge 1.20.2
+        - Forge 1.20.4
         - Fabric 1.20
         - Fabric 1.20.2
+        - Fabric 1.20.4
         - Neoforge 1.20.2
+        - Neoforge 1.20.4
 
 
 jobs:
