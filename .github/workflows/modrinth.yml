@@ -64,10 +64,7 @@ jobs:
       env:
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
-        mv ./AdvancedBackups-ALL_JARS-"$VERSION".zip ./AdvancedBackups-ALL_JARS-dir
-        mv ./AdvancedBackups-ALL_JARS-dir/AdvancedBackups-ALL_JARS-"$VERSION".zip .
-        unzip ./AdvancedBackups-ALL_JARS-"$VERSION".zip
-        rm -r ./AdvancedBackups-ALL_JARS-*
+        ls
 
 
     - name: Upload Forge-1.7.10
