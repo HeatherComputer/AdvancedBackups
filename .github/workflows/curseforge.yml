@@ -67,28 +67,28 @@ jobs:
       run: |
         ls
 
-
-    - name: Close Issues
-      id: close-issues
-      uses: piroor/close-expired-issues-based-on-label@master
-      env:
-        LABEL:  Fixed in Next Release
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
+    #Disabled, don't close issues until we know the workflow works well
+    #- name: Close Issues
+    #  id: close-issues
+    #  uses: piroor/close-expired-issues-based-on-label@master
+    #  env:
+    #    LABEL:  Fixed in Next Release
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
      
+    #Disabled, is it just 1.7.10 erroring or all?
+    #- name: Upload Forge-1.7.10
 
-    - name: Upload Forge-1.7.10
-
-      uses: itsmeow/curseforge-upload@v3
-      if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
-      with:
-        file_path: "AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
-        game_endpoint: "minecraft"
-        game_versions: "4449,Java 8,Forge"
-        project_id: "876284"
-        token: "${{ secrets.CURSEFORGE_TOKEN }}"
-        changelog: "${{ vars.CHANGELOG }}"
-        display_name: "Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}"
+     # uses: itsmeow/curseforge-upload@v3
+     # if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
+     # with:
+     #   file_path: "AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar"
+     #   game_endpoint: "minecraft"
+     #   game_versions: "4449,Java 8,Forge"
+     #   project_id: "876284"
+     #   token: "${{ secrets.CURSEFORGE_TOKEN }}"
+     #   changelog: "${{ vars.CHANGELOG }}"
+     #   display_name: "Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}"
     
 
     - name: Upload Forge-1.12
