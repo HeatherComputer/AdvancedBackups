@@ -94,6 +94,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -121,6 +122,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.12 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -148,6 +150,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.16 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -175,6 +178,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.18 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -202,6 +206,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.18 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -230,6 +235,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -257,6 +263,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -284,6 +291,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -311,6 +319,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -338,6 +347,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.20 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -366,6 +376,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -393,6 +404,7 @@ jobs:
         files: |
             **/AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         name: Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -420,6 +432,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.20 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -448,6 +461,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -476,6 +490,7 @@ jobs:
         files: |
             **/AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         name: Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -504,6 +519,7 @@ jobs:
         files: |
             **/AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         name: Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             neoforge
@@ -531,6 +547,7 @@ jobs:
         files: |
             **/AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         name: Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             neoforge
