@@ -83,8 +83,8 @@ jobs:
       uses: Kir-Antipov/mc-publish@v3.3
       with:
         #CF specific
-        curseforge-id: 876284
-        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #curseforge-id: 876284
+        #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         #MR specific
         modrinth-id: Jrmoreqs
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
         modrinth-featured: false
         #General
         files: |
-            AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
+            **1.7.10**.jar
         version: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
