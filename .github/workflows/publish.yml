@@ -295,6 +295,7 @@ jobs:
         version-type: release
         loaders: |
             fabric
+            quilt
         game-versions: |
             [1.19,1.19.2]
         java: |
