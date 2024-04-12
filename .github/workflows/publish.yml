@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Publish to CF/MR
+name:  Publish to CF/MR
 
 on:
   workflow_dispatch:
@@ -45,7 +45,7 @@ jobs:
     steps:
 
 
-    - name: Download artifact
+    - name:  Download artifact
       id: download-artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -53,22 +53,22 @@ jobs:
         run_number: ${{ inputs.run }}  
 
 
-    - name: Get Version
+    - name:  Get Version
       id: version
       run: |
         X=`echo AdvancedBackups-ALL_JARS-*.zip`; X=${X##AdvancedBackups-ALL_JARS-}; X=${X%%.zip}; echo $X
         echo VERSION=$X >> $GITHUB_OUTPUT
       
 
-    - name: Extract Jars
+    - name:  Extract Jars
       id: extract-jars
       env:
-        VERSION: ${{ steps.version.outputs.VERSION }}
+        name: ${{ steps.version.outputs.VERSION }}
       run: |
         ls
 
     #Disabled, don't close issues until we know the workflow works well
-    #- name: Close Issues
+    #- name:  Close Issues
     #  id: close-issues
     #  uses: piroor/close-expired-issues-based-on-label@master
     #  env:
@@ -77,14 +77,14 @@ jobs:
     #    COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
     
 
-    - name: Upload Forge-1.7.10
+    - name:  Upload Forge-1.7.10
 
       if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
       with:
         #CF specific
         #curseforge-id: 876284
-        #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
         #MR specific
         modrinth-id: Jrmoreqs
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -92,8 +92,8 @@ jobs:
         modrinth-featured: false
         #General
         files: |
-            **1.7.10**.jar
-        version: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
+            AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
+        name: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -104,7 +104,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge-1.12
+    - name:  Upload Forge-1.12
 
       if: inputs.version == 'Forge 1.12' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -120,7 +120,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.12 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.12 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -131,7 +131,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge-1.16
+    - name:  Upload Forge-1.16
 
       if: inputs.version == 'Forge 1.16' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -147,7 +147,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.16 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.16 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -158,7 +158,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge-1.18
+    - name:  Upload Forge-1.18
 
       if: inputs.version == 'Forge 1.18' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -174,7 +174,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.18 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.18 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -185,7 +185,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric-1.18
+    - name:  Upload Fabric-1.18
 
       if: inputs.version == 'Fabric 1.18' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -201,7 +201,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.18 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.18 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -213,7 +213,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge 1.19.2
+    - name:  Upload Forge 1.19.2
 
       if: inputs.version == 'Forge 1.19.2' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -229,7 +229,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -240,7 +240,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge 1.19.3
+    - name:  Upload Forge 1.19.3
 
       if: inputs.version == 'Forge 1.19.3' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -256,7 +256,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -267,7 +267,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric 1.19.2
+    - name:  Upload Fabric 1.19.2
 
       if: inputs.version == 'Fabric 1.19.2' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -283,7 +283,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.19.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -294,7 +294,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric 1.19.3
+    - name:  Upload Fabric 1.19.3
 
       if: inputs.version == 'Fabric 1.19.3' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -310,7 +310,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.19.3 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -321,7 +321,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge 1.20
+    - name:  Upload Forge 1.20
 
       if: inputs.version == 'Forge 1.20' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -337,7 +337,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.20 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.20 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -349,7 +349,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge 1.20.2
+    - name:  Upload Forge 1.20.2
 
       if: inputs.version == 'Forge 1.20.2' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -365,7 +365,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -376,7 +376,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Forge 1.20.4
+    - name:  Upload Forge 1.20.4
 
       if: inputs.version == 'Forge 1.20.4' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -392,7 +392,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
-        version: Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        name: Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             forge
@@ -403,7 +403,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric 1.20
+    - name:  Upload Fabric 1.20
 
       if: inputs.version == 'Fabric 1.20' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -419,7 +419,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.20 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.20 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -431,7 +431,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric 1.20.2
+    - name:  Upload Fabric 1.20.2
 
       if: inputs.version == 'Fabric 1.20.2' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -447,7 +447,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -459,7 +459,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Fabric 1.20.4
+    - name:  Upload Fabric 1.20.4
 
       if: inputs.version == 'Fabric 1.20.4' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -475,7 +475,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar
-        version: Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        name: Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
@@ -487,7 +487,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Neoforge 1.20.2
+    - name:  Upload Neoforge 1.20.2
 
       if: inputs.version == 'Neoforge 1.20.2' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -503,7 +503,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
-        version: Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        name: Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             neoforge
@@ -514,7 +514,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name: Upload Neoforge 1.20.4
+    - name:  Upload Neoforge 1.20.4
 
       if: inputs.version == 'Neoforge 1.20.4' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -530,7 +530,7 @@ jobs:
         #General
         files: |
             AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
-        version: Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        name: Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             neoforge
