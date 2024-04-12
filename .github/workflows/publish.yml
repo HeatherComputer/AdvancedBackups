@@ -91,7 +91,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -117,7 +118,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.12 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -143,7 +145,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.16 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -169,7 +172,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.18 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -195,7 +199,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.18 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -222,7 +227,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -248,7 +254,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -274,7 +281,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.19.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -300,7 +308,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.19.3 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -326,7 +335,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.20 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -353,7 +363,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -379,7 +390,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         version: Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -405,7 +417,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.20 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -432,7 +445,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -459,7 +473,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         version: Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -486,7 +501,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
         version: Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
@@ -512,7 +528,8 @@ jobs:
         #Modrinth's auto-feature works nicely, so we're going to keep using it.
         modrinth-featured: false
         #General
-        files: AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        files: |
+            AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
         version: Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
