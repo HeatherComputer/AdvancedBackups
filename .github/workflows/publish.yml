@@ -1,0 +1,525 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Publish to Curseforge
+
+on:
+  workflow_dispatch:
+    inputs:
+      run:
+        description: 'Build action run to download artifacts from'
+        required: true
+
+      version:
+        type: choice
+        description: Which version to push to curseforge and modrinth.
+        required: true
+        options: 
+        - All
+        - Forge 1.7.10
+        - Forge 1.12
+        - Forge 1.16
+        - Forge 1.18
+        - Fabric 1.18
+        - Forge 1.19.2
+        - Forge 1.19.3
+        - Fabric 1.19.2
+        - Fabric 1.19.3
+        - Forge 1.20
+        - Forge 1.20.2
+        - Forge 1.20.4
+        - Fabric 1.20
+        - Fabric 1.20.2
+        - Fabric 1.20.4
+        - Neoforge 1.20.2
+        - Neoforge 1.20.4
+
+
+jobs:
+  main:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        run_number: ${{ inputs.run }}  
+
+
+    - name: Get Version
+      id: version
+      run: |
+        X=`echo AdvancedBackups-ALL_JARS-*.zip`; X=${X##AdvancedBackups-ALL_JARS-}; X=${X%%.zip}; echo $X
+        echo VERSION=$X >> $GITHUB_OUTPUT
+      
+
+    - name: Extract Jars
+      id: extract-jars
+      env:
+        VERSION: ${{ steps.version.outputs.VERSION }}
+      run: |
+        ls
+
+    #Disabled, don't close issues until we know the workflow works well
+    #- name: Close Issues
+    #  id: close-issues
+    #  uses: piroor/close-expired-issues-based-on-label@master
+    #  env:
+    #    LABEL:  Fixed in Next Release
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
+    
+
+    - name: Upload Forge-1.7.10
+
+      if: inputs.version == 'Forge 1.7.10' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.7.10-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.7.10 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            1.7.10
+        java: |
+            Java 1.8
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge-1.12
+
+      if: inputs.version == 'Forge 1.12' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.12-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.12 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            1.12.2
+        java: |
+            Java 1.8
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge-1.16
+
+      if: inputs.version == 'Forge 1.16' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.16-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.16 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.16,1.16.5)
+        java: |
+            Java 1.8
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge-1.18
+
+      if: inputs.version == 'Forge 1.18' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.18-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.18 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.18,1.18.2)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric-1.18
+
+      if: inputs.version == 'Fabric 1.18' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.18-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.18 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+            quilt
+        game-versions: |
+            [1.18,1.18.2)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge 1.19.2
+
+      if: inputs.version == 'Forge 1.19.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.19.2-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.19,1.19.2)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge 1.19.3
+
+      if: inputs.version == 'Forge 1.19.3' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.19.3-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.19.3,1.19.4)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric 1.19.2
+
+      if: inputs.version == 'Fabric 1.19.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.19.2-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.19.2 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+        game-versions: |
+            [1.19,1.19.2)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric 1.19.3
+
+      if: inputs.version == 'Fabric 1.19.3' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.19.3-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.19.3 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+        game-versions: |
+            [1.19.3,1.19.4)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge 1.20
+
+      if: inputs.version == 'Forge 1.20' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.20-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.20 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+            neoforge
+        game-versions: |
+            [1.20,1.20.1)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge 1.20.2
+
+      if: inputs.version == 'Forge 1.20.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.20.2,1.20.3)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Forge 1.20.4
+
+      if: inputs.version == 'Forge 1.20.4' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-forge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        version: Forge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.20.4,1.20.4)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric 1.20
+
+      if: inputs.version == 'Fabric 1.20' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.20-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.20 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+            quilt
+        game-versions: |
+            [1.20,1.20.1)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric 1.20.2
+
+      if: inputs.version == 'Fabric 1.20.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+            quilt
+        game-versions: |
+            [1.20.2,1.20.3)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Fabric 1.20.4
+
+      if: inputs.version == 'Fabric 1.20.4' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-fabric-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        version: Fabric 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+            quilt
+        game-versions: |
+            [1.20.4,1.20.4)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Neoforge 1.20.2
+
+      if: inputs.version == 'Neoforge 1.20.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-neoforge-1.20.2-${{ steps.version.outputs.VERSION }}.jar
+        version: Neoforge 1.20.2 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            neoforge
+        game-versions: |
+            [1.20.2,1.20.3)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name: Upload Neoforge 1.20.4
+
+      if: inputs.version == 'Neoforge 1.20.4' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar
+        version: Neoforge 1.20.4 - ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            neoforge
+        game-versions: |
+            [1.20.4,1.20.4)
+        java: |
+            Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
