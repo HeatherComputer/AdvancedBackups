@@ -34,7 +34,7 @@ public class ConfigManager {
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true, ConfigManager::register);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"}, ConfigManager::register);
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups", ConfigManager::register);
-    public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.08F, 0.25F, 500F, ConfigManager::register);
+    public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.25F, 0.08F, 500F, ConfigManager::register);
     public static final FloatValue maxFrequency = new FloatValue("config.advancedbackups.frequency.max", 24F, 0.5F, 500F, ConfigManager::register);
     public static final BooleanValue uptime = new BooleanValue("config.advancedbackups.frequency.uptime", true, ConfigManager::register);
     public static final StringArrayValue timesArray = new StringArrayValue("config.advancedbackups.frequency.schedule", new String[] {"1:00"}, ConfigManager::register);
