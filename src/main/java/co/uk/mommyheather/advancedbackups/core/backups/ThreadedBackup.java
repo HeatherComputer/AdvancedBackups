@@ -65,7 +65,7 @@ public class ThreadedBackup extends Thread {
         try {
             sleep(delay);
         } catch (Exception e) {
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
         if (!shutdown) ABCore.clientContactor.backupStarting();
 
@@ -81,7 +81,7 @@ public class ThreadedBackup extends Thread {
             return;
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             if (!shutdown) ABCore.clientContactor.backupFailed();
             performDelete(new File(ABCore.backupPath));
             wasRunning = true;
@@ -189,7 +189,7 @@ public class ThreadedBackup extends Thread {
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
                 }
                 catch (IOException e) {
-                    e.printStackTrace();
+                    ABCore.logStackTrace(e);
                     ABCore.errorLogger.accept(file.toString());
                     throw e;
                 }
@@ -200,7 +200,7 @@ public class ThreadedBackup extends Thread {
             zipOutputStream.close();
 
         } catch (IOException e){
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             throw e;
         }
         
@@ -227,7 +227,7 @@ public class ThreadedBackup extends Thread {
 
                     ABCore.errorLogger.accept("Malformed backup manifest! It will have to be reset...");
                     output.accept("Malformed backup manifest! It will have to be reset...");
-                    e.printStackTrace();
+                    ABCore.logStackTrace(e);
 
                     manifest = BackupManifest.defaults();
                 }
@@ -380,7 +380,7 @@ public class ThreadedBackup extends Thread {
             writer.close();
     
         } catch (IOException e) {
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             throw e;
         }
 
@@ -415,7 +415,7 @@ public class ThreadedBackup extends Thread {
         } catch (IOException | NoSuchAlgorithmException e) {
             ABCore.errorLogger.accept("ERROR CALCULATING HASH FOR FILE! " + path.getFileName());
             ABCore.errorLogger.accept("It will be backed up anyway.");
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             return Integer.toString(new Random().nextInt());
         }
     }

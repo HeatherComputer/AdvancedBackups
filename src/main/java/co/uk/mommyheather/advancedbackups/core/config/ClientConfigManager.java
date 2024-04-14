@@ -90,7 +90,7 @@ public class ClientConfigManager {
             writer.close();
         } catch (IOException e) {
             // TODO : Scream to user
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
     }
 
@@ -107,7 +107,7 @@ public class ClientConfigManager {
             reader.close();
         } catch (IOException e) {
             // TODO : Scream to user
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             return;
         }
 

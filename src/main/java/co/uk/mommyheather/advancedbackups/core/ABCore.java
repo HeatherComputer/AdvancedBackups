@@ -3,6 +3,8 @@ package co.uk.mommyheather.advancedbackups.core;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -79,7 +81,7 @@ public class ABCore {
                     
                     catch (JsonParseException e) {
                         ABCore.errorLogger.accept("Malformed backup manifest! Overwriting, meaning next backup has to be a full backup...");
-                        e.printStackTrace();
+                        ABCore.logStackTrace(e);
                         
                         BackupManifest manifest = BackupManifest.defaults();
                         
@@ -104,7 +106,7 @@ public class ABCore {
             }
             catch (IOException e) {
                 ABCore.errorLogger.accept("Error writing player activty to backup manifest!!");
-                e.printStackTrace();
+                ABCore.logStackTrace(e);
             }
         }
     }
@@ -116,5 +118,14 @@ public class ABCore {
         String pattern = "yyyy-MM-dd_HH-mm-ss";
         
         return in + "_" + new SimpleDateFormat(pattern).format(date);
+    }
+
+    public static void logStackTrace(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+
+        ABCore.errorLogger.accept(sw.toString());
+        pw.close();
     }
 }
