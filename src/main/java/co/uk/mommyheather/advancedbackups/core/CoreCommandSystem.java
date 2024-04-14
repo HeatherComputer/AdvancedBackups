@@ -78,7 +78,7 @@ public class CoreCommandSystem {
                 } catch (JsonParseException e) {
                     chat.accept("Malformed backup manifest! Will be completely replaced, with no side effects...");
                     chat.accept("Check logs for more info.");
-                    e.printStackTrace();
+                    ABCore.logStackTrace(e);
                     
                     BackupManifest manifest = BackupManifest.defaults();
                     
@@ -98,7 +98,7 @@ public class CoreCommandSystem {
             }
         } catch (Exception e) {
             chat.accept("Error resetting chain length. - check logs for more info.");
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
     }
 

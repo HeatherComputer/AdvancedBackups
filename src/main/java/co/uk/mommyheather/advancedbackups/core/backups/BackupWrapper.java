@@ -58,7 +58,7 @@ public class BackupWrapper {
             }
             catch (IOException e) {
                 ABCore.errorLogger.accept("Error reading player actiivty from backup manifest!!");
-                e.printStackTrace();
+                ABCore.logStackTrace(e);
             }
         }
         
@@ -169,7 +169,7 @@ public class BackupWrapper {
             }
             catch (IOException e) {
                 ABCore.errorLogger.accept("Error initialising backup manifest!!");
-                e.printStackTrace();
+                ABCore.logStackTrace(e);
             }
         }
     }
@@ -191,7 +191,7 @@ public class BackupWrapper {
                 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                ABCore.logStackTrace(e);
             }
             
         }
@@ -238,7 +238,7 @@ public class BackupWrapper {
         }
         catch (IOException e) {
             ABCore.errorLogger.accept("Error writing restoration scripts! Manual running of jar will still work.");
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
         
     }
@@ -299,12 +299,12 @@ public class BackupWrapper {
             }
         } catch (Exception e) {
             ABCore.errorLogger.accept("Error saving or disabling saving!");
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
         
         if (ThreadedBackup.running) {
             ABCore.errorLogger.accept("Backup already running!");
-            new Exception().printStackTrace();
+            ABCore.logStackTrace(new Exception());
             return;
         }
         // Make new thread, run backup utility.
@@ -324,7 +324,7 @@ public class BackupWrapper {
         
         if (ThreadedBackup.running) {
             ABCore.errorLogger.accept("Backup already running!");
-            new Exception().printStackTrace();
+            ABCore.logStackTrace(new Exception());
             return;
         }
         

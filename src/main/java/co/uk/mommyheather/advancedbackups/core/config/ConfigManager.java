@@ -100,7 +100,7 @@ public class ConfigManager {
             writer.close();
         } catch (IOException e) {
             // TODO : Scream to user
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
         }
     }
 
@@ -117,7 +117,7 @@ public class ConfigManager {
             reader.close();
         } catch (IOException e) {
             // TODO : Scream to user
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             return;
         }
 
@@ -183,7 +183,7 @@ public class ConfigManager {
             file.delete();
         } catch (IOException e) {
             // TODO : Scream to user
-            e.printStackTrace();
+            ABCore.logStackTrace(e);
             return;
         }
 
