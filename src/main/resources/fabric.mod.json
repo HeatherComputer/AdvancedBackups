@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "advancedbackups",
 	"version": "${version}",
-    "accessWidener" : "advancedbackups.accesswidener",
+        "accessWidener" : "advancedbackups.accesswidener",
 	"name": "Advanced Backups",
 	"description": "An extremely advanced backup mod.\n\nSupports many backup types.\n\nConfig file and github contain documentation.",
 	"authors": [
