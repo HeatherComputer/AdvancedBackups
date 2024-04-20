@@ -32,6 +32,7 @@ public class ConfigManager {
     public static final LongValue buffer = new LongValue("config.advancedbackups.buffer", 1048576, 1024, Integer.MAX_VALUE, ConfigManager::register); //5mb
     public static final BooleanValue flush  = new BooleanValue("config.advancedbackups.flush", false, ConfigManager::register);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true, ConfigManager::register);
+    public static final StringArrayValue blacklist = new StringArrayValue("config.advancedbackups.blacklist", new String[] {"session.lock"}, ConfigManager::register); //Default can't be empty, so we'll stick session.lock here even though it's forced outside of config.
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"}, ConfigManager::register);
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups", ConfigManager::register);
     public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.25F, 0.08F, 500F, ConfigManager::register);

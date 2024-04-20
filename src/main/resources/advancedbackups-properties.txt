@@ -24,6 +24,10 @@ config.advancedbackups.activity
 #Options : zip, differential, incremental    #Default : differential
 config.advancedbackups.type
 
+#A list of files, relative paths within the world directory, to skip backing up.
+#Default : empty.
+config.advancedbackups.blacklist
+
 #The absolute or relative path to the backup location.
 #Options : any file path. Default : ./backups
 config.advancedbackups.path

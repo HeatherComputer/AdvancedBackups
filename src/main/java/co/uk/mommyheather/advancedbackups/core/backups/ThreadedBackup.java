@@ -160,6 +160,11 @@ public class ThreadedBackup extends Thread {
                     if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
                     }
+                    for (String string : ConfigManager.blacklist.get()) {
+                        if (targetFile.toFile().getName().compareTo(string) == 0) {
+                            return FileVisitResult.CONTINUE;
+                        }
+                    }
                     paths.add(file);
 
                 
@@ -276,6 +281,11 @@ public class ThreadedBackup extends Thread {
                     targetFile = ABCore.worldDir.relativize(file);
                     if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
+                    }
+                    for (String string : ConfigManager.blacklist.get()) {
+                        if (targetFile.toFile().getName().compareTo(string) == 0) {
+                            return FileVisitResult.CONTINUE;
+                        }
                     }
                     count++;
                     completeSize += attributes.size();
