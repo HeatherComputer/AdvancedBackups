@@ -45,7 +45,7 @@ public class ThreadedBackup extends Thread {
     private Consumer<String> output;
     private boolean snapshot = false;
     private boolean shutdown = false;
-    
+    private ArrayList<String> erroringFiles = new ArrayList<>();
     static {
         builder.setPrettyPrinting();
         gson = builder.create();
@@ -90,7 +90,17 @@ public class ThreadedBackup extends Thread {
         }
 
         BackupWrapper.finishBackup(snapshot);
-        output.accept("Backup complete!");
+        if (erroringFiles.isEmpty()) {
+            output.accept("Backup complete!");
+        }
+        else {
+            output.accept("Backup completed with errors - the following files could not be backed up.");
+            output.accept("Check the logs for more information :");
+            for (String string : erroringFiles) {
+                output.accept(string);
+                //TODO have a toast for backup complete with errors
+            }
+        }
         wasRunning = true;
         running = false;
     }
@@ -169,14 +179,21 @@ public class ThreadedBackup extends Thread {
                     targetFile = ABCore.worldDir.relativize(path);
                     zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
                     byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
-                    FileInputStream is = new FileInputStream(path.toFile());
-                    while (true) {
-                        int i = is.read(bytes);
-                        if (i < 0) break;
-                        zipOutputStream.write(bytes, 0, i);
+                    try {
+                        FileInputStream is = new FileInputStream(path.toFile());
+                        while (true) {
+                            int i = is.read(bytes);
+                            if (i < 0) break;
+                            zipOutputStream.write(bytes, 0, i);
+                        }
+    
+                        is.close();
                     }
-
-                    is.close();
+                    catch (Exception e) {
+                        ABCore.errorLogger.accept("Error backing up file : " + targetFile.toString());
+                        ABCore.logStackTrace(e);
+                        erroringFiles.add(targetFile.toString());
+                    }
                     
                     zipOutputStream.closeEntry();
                     //We need to handle interrupts in various styles in different parts of the process!
@@ -310,13 +327,20 @@ public class ThreadedBackup extends Thread {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
 
                     byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
-                    FileInputStream is = new FileInputStream(new File(ABCore.worldDir.toString(), path.toString()));
-                    while (true) {
-                        int i = is.read(bytes);
-                        if (i < 0) break;
-                        zipOutputStream.write(bytes, 0, i);
+                    try {
+                        FileInputStream is = new FileInputStream(new File(ABCore.worldDir.toString(), path.toString()));
+                        while (true) {
+                            int i = is.read(bytes);
+                            if (i < 0) break;
+                            zipOutputStream.write(bytes, 0, i);
+                        }
+                        is.close();
                     }
-                    is.close();
+                    catch (Exception e) {
+                        ABCore.errorLogger.accept("Error backing up file : " + path.toString());
+                        ABCore.logStackTrace(e);
+                        erroringFiles.add(path.toString());
+                    }
                     zipOutputStream.closeEntry();
                     index++;
                     if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
