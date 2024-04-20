@@ -74,6 +74,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 | config.advancedbackups.flush | Whether to flush when making this save. Usually never needed, and can create a lag spike if enabled. (Unused prior to minecraft 1.16) | false | 3.1 |
 | config.advancedbackups.activity   | Enable or disable player activity requirements. | true | 1.0 |
 | config.advancedbackups.type   | Whether to use zip, differential or incremental backups. | differential | 0.3 |
+| config.advancedbackups.blacklist   | A comma separated list of relative paths to files not to backup. | session.lock | 3.5.1 |
 | config.advancedbackups.path   | The relative or absolute location where backups are stored. | ./backups | 0.3 |
 | config.advancedbackups.size   | The maximum backup size to keep, in GB. Oldest backups are deleted if this is exceeded. | 50 | 0.3 / 3.4 |
 | config.advancedbackups.frequency.min   | The minimum time between backups. Command backups bypass this. | 0.5 | 0.3 |
