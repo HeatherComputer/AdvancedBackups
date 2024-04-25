@@ -67,14 +67,14 @@ jobs:
       run: |
         ls
 
-    #Disabled, don't close issues until we know the workflow works well
-    #- name:  Close Issues
-    #  id: close-issues
-    #  uses: piroor/close-expired-issues-based-on-label@master
-    #  env:
-    #    LABEL:  Fixed in Next Release
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #    COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
+
+    - name:  Close Issues
+      id: close-issues
+      uses: piroor/close-expired-issues-based-on-label@master
+      env:
+        LABEL:  Fixed in Next Release
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMENT: This issue has been closed - fixed in ${{ steps.version.outputs.VERSION }} which has now been pushed to Curseforge and Modrinth.
     
 
     - name:  Upload Forge-1.7.10
