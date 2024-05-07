@@ -1,6 +1,7 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
@@ -58,8 +59,10 @@ public class BackupTimer  {
         else if (!BackupWrapper.configuredPlaytime.isEmpty()) {
             long nextTime = 0;
             long currentTime = System.currentTimeMillis();
+            long startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
             ArrayList<Long> timings = new ArrayList<Long>(BackupWrapper.configuredPlaytime);
             for (long time : timings) {
+                time += startTime;
                 if (time >= currentTime) {
                     nextTime = time;
                     break;
