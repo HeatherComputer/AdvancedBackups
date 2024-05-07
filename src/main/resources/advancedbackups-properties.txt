@@ -25,7 +25,7 @@ config.advancedbackups.activity
 config.advancedbackups.type
 
 #A list of files, relative paths within the world directory, to skip backing up.
-#Default : empty.
+#Default : session.lock
 config.advancedbackups.blacklist
 
 #The absolute or relative path to the backup location.
