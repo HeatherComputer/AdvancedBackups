@@ -33,6 +33,7 @@ on:
         - Fabric 1.20
         - Fabric 1.20.2
         - Fabric 1.20.4
+        - Fabric 1.20.5
         - Neoforge 1.20.2
         - Neoforge 1.20.4
 
@@ -501,6 +502,35 @@ jobs:
             [1.20.4]
         java: |
             Java 17
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name:  Upload Fabric 1.20.5
+
+      if: inputs.version == 'Fabric 1.20.5' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: |
+            **/AdvancedBackups-fabric-1.20.5-${{ steps.version.outputs.VERSION }}.jar
+        name: Fabric 1.20.5 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            fabric
+            quilt
+        game-versions: |
+            [1.20.5,1.20.6]
+        java: |
+            Java 21
         changelog: ${{ vars.CHANGELOG }}
 
 
