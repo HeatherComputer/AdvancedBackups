@@ -1,57 +1,37 @@
 package co.uk.mommyheather.advancedbackups.network;
 
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 
-public class PacketBackupStatus {
-    
-    public boolean starting;
-    public boolean started;
-    public boolean failed;
-    public boolean finished;
-    public boolean cancelled;
+public record PacketBackupStatus(boolean starting, boolean started, boolean failed, boolean finished, boolean cancelled, int progress, int max) implements CustomPayload {
 
-    public int progress;
-    public int max;
+    public static final Id<PacketBackupStatus> ID = CustomPayload.id("advancedbackups:backup_status");
+
+    public static final PacketCodec<PacketByteBuf, PacketBackupStatus> CODEC = PacketCodec.of((packet, buf) -> {
+        buf.writeBoolean(packet.starting);
+        buf.writeBoolean(packet.started);
+        buf.writeBoolean(packet.failed);
+        buf.writeBoolean(packet.finished);
+        buf.writeBoolean(packet.cancelled);
+        buf.writeInt(packet.progress);
+        buf.writeInt(packet.max);
+        }, 
+        
+        buf -> new PacketBackupStatus(
+            buf.readBoolean(),
+            buf.readBoolean(),
+            buf.readBoolean(),
+            buf.readBoolean(),
+            buf.readBoolean(),
+            buf.readInt(),
+            buf.readInt()
+        ));
 
 
-    public PacketBackupStatus(boolean starting, boolean started, boolean failed, boolean finished, boolean cancelled, int progress,
-            int max) {
-        this.starting = starting;
-        this.started = started;
-        this.failed = failed;
-        this.finished = finished;
-        this.cancelled = cancelled;
-        this.progress = progress;
-        this.max = max;
-    }
-
-    public PacketBackupStatus() {
-
-    }
-
-    public void read(PacketByteBuf buf) {
-        starting = buf.readBoolean();
-        started = buf.readBoolean();
-        failed = buf.readBoolean();
-        finished = buf.readBoolean();
-        cancelled = buf.readBoolean();
-
-        progress = buf.readInt();
-        max = buf.readInt();
-    }
-
-    public PacketByteBuf write(PacketByteBuf buf) {
-        buf.writeBoolean(starting);
-        buf.writeBoolean(started);
-        buf.writeBoolean(failed);
-        buf.writeBoolean(finished);
-        buf.writeBoolean(cancelled);
-
-        buf.writeInt(progress);
-        buf.writeInt(max);
-
-        return buf;
-
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     

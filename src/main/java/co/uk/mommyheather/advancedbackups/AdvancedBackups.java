@@ -13,12 +13,13 @@ import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
+import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
@@ -88,8 +89,10 @@ public class AdvancedBackups implements ModInitializer {
             BackupTimer.check();
         });
         
-        ServerPlayNetworking.registerGlobalReceiver(NetworkHandler.TOAST_SUBSCRIBE_ID, PacketToastSubscribe::handle);
+        PayloadTypeRegistry.playS2C().register(PacketBackupStatus.ID, PacketBackupStatus.CODEC);
+        PayloadTypeRegistry.playC2S().register(PacketToastSubscribe.ID, PacketToastSubscribe.CODEC);
 
+        ServerPlayNetworking.registerGlobalReceiver(PacketToastSubscribe.ID, PacketToastSubscribe::handle);
         
             
     }

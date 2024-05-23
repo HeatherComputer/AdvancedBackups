@@ -1,4 +1,4 @@
-# Fabric - 1.20
+# Fabric - 1.20.5
 
-This is the branch specifically for fabric 1.20.
+This is the branch specifically for fabric 1.20.5.
 Any differences will be listed below. For full documentation, see the `core` branch.
