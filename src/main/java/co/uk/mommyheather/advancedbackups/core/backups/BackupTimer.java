@@ -41,7 +41,7 @@ public class BackupTimer  {
 
     private static long calculateNextBackupTime() {
         long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (ConfigManager.maxFrequency.get() * 3600000L);
-        if (forcedMillis == ConfigManager.maxFrequency.get() * 3600000L || forcedMillis <= System.currentTimeMillis()) forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
+        if (forcedMillis <= System.currentTimeMillis()) forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
         else forcedMillis -= System.currentTimeMillis();
         long ret = Long.MAX_VALUE;
         if (ConfigManager.uptime.get() && !BackupWrapper.configuredPlaytime.isEmpty()) {
