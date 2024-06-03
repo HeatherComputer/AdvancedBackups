@@ -248,6 +248,8 @@ public class BackupWrapper {
         // Return true if the time difference between the most recent backup and the backup-to-be 
         //    is less than specified in the config.
         
+        if (ConfigManager.minFrequency.get() <= 0) return false;
+
         Date date = new Date();
         long configVal = (long) (3600000F * ConfigManager.minFrequency.get());
         return (date.getTime() - mostRecentBackupTime()) < configVal;
