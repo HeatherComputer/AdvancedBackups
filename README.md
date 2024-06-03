@@ -1,7 +1,7 @@
 # Advanced Backups 
 [![](https://img.shields.io/curseforge/dt/876284?label=downloads&style=for-the-badge&logo=curseforge&color=2D2D2D)](https://www.curseforge.com/minecraft/mc-mods/advanced-backups) [![](https://img.shields.io/modrinth/dt/Jrmoreqs?label=downloads&style=for-the-badge&logo=modrinth&color=2D2D2D)](https://modrinth.com/mod/advanced-backups) [![](https://img.shields.io/badge/discord-2D2D2D?style=for-the-badge&logo=discord)](https://discord.gg/SxN7JtzUyX)
 
-A powerful backup mod for Minecraft, supporting Forge and Fabric.
+A powerful backup mod for Minecraft, supporting Neoforge, Forge and Fabric.
 Many Minecraft versions are supported - request more if the one you want isn't yet supported.
 
 [Supported Versions](#current-versions)
@@ -190,6 +190,7 @@ Once you select a file, it will be restored. The program will then exit.
 - [Profiles](#profiles)
 - [More Commands](#more-commands)
 - [Client Feedback Improvements](#client-feedback-improvements)
+- [API and in-client restoration](#api-and-clientside-restoration)
 
 ## Profiles
 
@@ -225,7 +226,21 @@ Shortly after release, I wish to add more commands.
 ## Client feedback improvements
 
 - As of version 3.2, all players with operator permissions will get progress updates.
-- A clientside toggle and maybe a serverside option for sending this info to *all* players would be beneficial.
+- As of version 3.5, there is a client config which includes a toggle.
+- A serverside option for sending this info to *all* players might be beneficial.
+
+
+## API and clientside restoration
+
+I plan to add an API, which will be a rather hefty project. With this done however:
+
+- I'll be rewriting the commandline to use this api. It'll clear a ton of tech debt, along with allowing for easier maintenance and updates.
+
+- I'll be able to make a separate gui for restoring backups.
+    - It won't have such a wide range of supported versions, but using the API will help keep maintenance costs down and keep older versions of the restoration mod working.
+
+- External tools can have an easier time integrating, if they so choose. (say, control panels, or other mods)
+
 
 
 
