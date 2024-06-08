@@ -9,18 +9,19 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ClientWrapper {
 
-    public static void handle(PacketBackupStatus packet) {
-        BackupToast.starting = packet.starting;
-        BackupToast.started = packet.started;
-        BackupToast.failed = packet.failed;
-        BackupToast.finished = packet.finished;
-        BackupToast.cancelled = packet.cancelled;
+    public static void handle(PacketBackupStatus packet, IPayloadContext context) {
+        BackupToast.starting = packet.starting();
+        BackupToast.started = packet.started();
+        BackupToast.failed = packet.failed();
+        BackupToast.finished = packet.finished();
+        BackupToast.cancelled = packet.cancelled();
 
-        BackupToast.progress = packet.progress;
-        BackupToast.max = packet.max;
+        BackupToast.progress = packet.progress();
+        BackupToast.max = packet.max();
 
         if (!BackupToast.exists) {
             BackupToast.exists = true;

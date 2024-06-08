@@ -27,11 +27,11 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 @Mod("advancedbackups")
@@ -109,8 +109,7 @@ public class AdvancedBackups
 
 
     @SubscribeEvent
-    public void onPostTick(TickEvent.ServerTickEvent event) {
-        if (!event.phase.equals(TickEvent.Phase.END)) return;
+    public void onPostTick(ServerTickEvent.Post event) {
         BackupTimer.check();
     }
 
