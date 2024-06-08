@@ -171,8 +171,6 @@ public class ConfigManager {
 
         ABCore.backupPath = path.get() + "/" + (ABCore.worldDir.getParent().toFile().getName());
 
-        //[^a-zA-Z0-9*]
-
         ThreadedBackup.blacklist.clear();
 
         for (String string : blacklist.get()) {
