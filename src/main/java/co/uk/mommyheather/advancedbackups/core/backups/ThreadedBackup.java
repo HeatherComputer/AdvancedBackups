@@ -9,7 +9,6 @@ import java.math.BigInteger;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
@@ -20,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -46,6 +47,9 @@ public class ThreadedBackup extends Thread {
     private boolean snapshot = false;
     private boolean shutdown = false;
     private ArrayList<String> erroringFiles = new ArrayList<>();
+
+    public static final ArrayList<Pattern> blacklist = new ArrayList<>();
+
     static {
         builder.setPrettyPrinting();
         gson = builder.create();
@@ -160,11 +164,8 @@ public class ThreadedBackup extends Thread {
                     if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
                     }
-                    for (String string : ConfigManager.blacklist.get()) {
-                        if (targetFile.toFile().getName().compareTo(string) == 0) {
-                            return FileVisitResult.CONTINUE;
-                        }
-                    }
+                    if (matchesBlacklist(targetFile)) return FileVisitResult.CONTINUE;
+
                     paths.add(file);
 
                 
@@ -282,11 +283,7 @@ public class ThreadedBackup extends Thread {
                     if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
                         return FileVisitResult.CONTINUE;
                     }
-                    for (String string : ConfigManager.blacklist.get()) {
-                        if (targetFile.toFile().getName().compareTo(string) == 0) {
-                            return FileVisitResult.CONTINUE;
-                        }
-                    }
+                    if (matchesBlacklist(targetFile)) return FileVisitResult.CONTINUE;
                     count++;
                     completeSize += attributes.size();
                     String hash = getFileHash(file.toAbsolutePath());
@@ -443,6 +440,7 @@ public class ThreadedBackup extends Thread {
                 md5.update(data, 0, i);
 
             }
+            is.close();
             byte[] hash = md5.digest();
             String checksum = new BigInteger(1, hash).toString(16);
             return checksum;
@@ -480,6 +478,16 @@ public class ThreadedBackup extends Thread {
                 }
             }
         }
+    }
+
+    private static boolean matchesBlacklist(Path path) {
+        
+        for (Pattern pattern : blacklist) {
+            Matcher matcher = pattern.matcher(path.toString().replace("\\", "/"));
+            if (matcher.matches()) return true;
+        }
+
+        return false;
     }
 
 
