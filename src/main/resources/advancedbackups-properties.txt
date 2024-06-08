@@ -25,7 +25,8 @@ config.advancedbackups.activity
 config.advancedbackups.type
 
 #A list of files, relative paths within the world directory, to skip backing up.
-#Default : session.lock
+#Comma separated, * is a wildcard, and backslashes are replaced with forward slashes.
+#Default : session.lock,*.dat_old
 config.advancedbackups.blacklist
 
 #The absolute or relative path to the backup location.
