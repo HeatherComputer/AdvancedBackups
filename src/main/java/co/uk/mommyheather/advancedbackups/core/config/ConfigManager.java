@@ -181,8 +181,6 @@ public class ConfigManager {
             string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
             string = "^" + string.replace("*", ".*") + "$";
 
-            System.out.println(string);
-
             ThreadedBackup.blacklist.add(Pattern.compile(string, Pattern.CASE_INSENSITIVE));            
         }
         
