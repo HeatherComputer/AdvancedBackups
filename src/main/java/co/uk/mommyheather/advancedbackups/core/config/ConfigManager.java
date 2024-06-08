@@ -177,8 +177,9 @@ public class ConfigManager {
 
         for (String string : blacklist.get()) {
 
+            string = string.replace("\\", "/");
             string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
-            string = "^" + string.replace("*", ".*").replace("\\", "/") + "$";
+            string = "^" + string.replace("*", ".*") + "$";
 
             System.out.println(string);
 
