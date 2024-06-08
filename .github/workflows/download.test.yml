@@ -35,6 +35,7 @@ on:
         - Fabric 1.20.4
         - Neoforge 1.20.2
         - Neoforge 1.20.4
+        - Neoforge 1.20.5
 
 
 jobs:
@@ -128,5 +129,8 @@ jobs:
 
     - name: Upload Neoforge-1.20.4
       run: (ls AdvancedBackups-neoforge-1.20.4-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
+    - name: Upload Neoforge-1.20.5
+      run: (ls AdvancedBackups-neoforge-1.20.5-${{ steps.version.outputs.VERSION }}.jar && echo yes)
     
     
