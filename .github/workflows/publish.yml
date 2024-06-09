@@ -33,10 +33,10 @@ on:
         - Fabric 1.20
         - Fabric 1.20.2
         - Fabric 1.20.4
-        - Fabric 1.20.5
+        - Fabric 1.20.6
         - Neoforge 1.20.2
         - Neoforge 1.20.4
-        - Neoforge 1.20.5
+        - Neoforge 1.20.6
 
 
 jobs:
@@ -506,9 +506,9 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name:  Upload Fabric 1.20.5
+    - name:  Upload Fabric 1.20.6
 
-      if: inputs.version == 'Fabric 1.20.5' || inputs.version == 'All'
+      if: inputs.version == 'Fabric 1.20.6' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
       with:
         #CF specific
@@ -521,15 +521,15 @@ jobs:
         modrinth-featured: false
         #General
         files: |
-            **/AdvancedBackups-fabric-1.20.5-${{ steps.version.outputs.VERSION }}.jar
-        name: Fabric 1.20.5 - ${{ steps.version.outputs.VERSION }}
+            **/AdvancedBackups-fabric-1.20.6-${{ steps.version.outputs.VERSION }}.jar
+        name: Fabric 1.20.6 - ${{ steps.version.outputs.VERSION }}
         version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             fabric
             quilt
         game-versions: |
-            [1.20.5,1.20.6]
+            [1.20.6,1.20.6]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
@@ -591,9 +591,9 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name:  Upload Neoforge 1.20.5
+    - name:  Upload Neoforge 1.20.6
 
-      if: inputs.version == 'Neoforge 1.20.5' || inputs.version == 'All'
+      if: inputs.version == 'Neoforge 1.20.6' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
       with:
         #CF specific
@@ -606,14 +606,14 @@ jobs:
         modrinth-featured: false
         #General
         files: |
-            **/AdvancedBackups-neoforge-1.20.5-${{ steps.version.outputs.VERSION }}.jar
-        name: Neoforge 1.20.5 - ${{ steps.version.outputs.VERSION }}
+            **/AdvancedBackups-neoforge-1.20.6-${{ steps.version.outputs.VERSION }}.jar
+        name: Neoforge 1.20.6 - ${{ steps.version.outputs.VERSION }}
         version: ${{ steps.version.outputs.VERSION }}
         version-type: release
         loaders: |
             neoforge
         game-versions: |
-            [1.20.5,1.20.6]
+            [1.20.6,1.20.6]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
