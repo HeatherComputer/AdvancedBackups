@@ -20,37 +20,27 @@ public class AdvancedBackupsClientCommand {
         commandDispatcher.register(literal("backup").requires((runner) -> {
             return true;
         }).then(literal("start").executes((runner) -> {
-            Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup start", Instant.now(), 0, 
-                ArgumentSignatures.EMPTY, acknowledgment));
+            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup start"));
             return 1;
          }))
 
          .then(literal("reload-config").executes((runner) -> {            
-            Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup reload-config", Instant.now(), 0, 
-                ArgumentSignatures.EMPTY, acknowledgment));
+            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup reload-config"));
             return 1;
          }))
 
          .then(literal("reset-chain").executes((runner) -> {
-            Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup reset-chain", Instant.now(), 0, 
-                ArgumentSignatures.EMPTY, acknowledgment));
+            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup reset-chain"));
             return 1;
          }))
 
          .then(literal("snapshot").executes((runner) -> {
-            Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup snapshot", Instant.now(), 0, 
-                ArgumentSignatures.EMPTY, acknowledgment));
+            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup snapshot"));
             return 1;
          }))
 
          .then(literal("cancel").executes((runner) -> {
-            Update acknowledgment = Minecraft.getInstance().player.connection.lastSeenMessages.generateAndApplyUpdate().update();
-            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup cancel", Instant.now(), 0, 
-                ArgumentSignatures.EMPTY, acknowledgment));
+            Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup cancel"));
             return 1;
          }))
 
