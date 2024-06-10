@@ -27,7 +27,13 @@ public class ClientWrapper implements ClientModInitializer {
         
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             PacketToastSubscribe packet = new PacketToastSubscribe(ClientConfigManager.showProgress.get());
-            ClientPlayNetworking.send(packet);
+            if (ClientPlayNetworking.canSend(packet.getId())) {
+                //Make sure a server can receive the packet before trying to send!
+                ClientPlayNetworking.send(packet);
+            }
+            else {
+                ABCore.warningLogger.accept("Refusing to send packet " + packet + " as the server cannot accept it!");
+            }
         });
         
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
