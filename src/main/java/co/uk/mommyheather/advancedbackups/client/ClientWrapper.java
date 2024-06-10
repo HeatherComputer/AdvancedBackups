@@ -2,6 +2,7 @@ package co.uk.mommyheather.advancedbackups.client;
 
 import java.util.Objects;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
@@ -58,6 +59,7 @@ public class ClientWrapper {
             NetworkRegistry.checkPacket(packet, listener);
         }
         catch (UnsupportedOperationException e) {
+            ABCore.warningLogger.accept("Refusing to send packet " + message + " to server as the serve cannot receive it.");
             return;
         }
         listener.connection.send(packet);
