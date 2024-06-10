@@ -1,5 +1,6 @@
 package co.uk.mommyheather.advancedbackups.network;
 
+
 import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +12,7 @@ public class NetworkHandler {
     
 
     public static void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar("1");
+        final PayloadRegistrar registrar = event.registrar("1").optional(); //this .optional() seems to be required, but will it be a problem for our packets with non-neo servers...?
 
         registrar.commonToClient(PacketBackupStatus.ID, PacketBackupStatus.CODEC, ClientWrapper::handle);
         registrar.commonToServer(PacketToastSubscribe.ID, PacketToastSubscribe.CODEC, PacketToastSubscribe::handle);
@@ -21,8 +22,5 @@ public class NetworkHandler {
         PacketDistributor.sendToPlayer(player, message);
     }
 
-    public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
-        PacketDistributor.sendToServer(message);
-    }
 
 }

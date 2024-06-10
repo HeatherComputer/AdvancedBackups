@@ -1,15 +1,20 @@
 package co.uk.mommyheather.advancedbackups.client;
 
+import java.util.Objects;
+
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
 import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
 import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 
 public class ClientWrapper {
 
@@ -40,7 +45,22 @@ public class ClientWrapper {
     }
 
     public static void onServerConnected(ClientPlayerNetworkEvent.LoggingIn event) {
-        NetworkHandler.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+        sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
+    }
+
+    
+    public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
+        //We do this to implement custom checks!
+        ServerboundCustomPayloadPacket packet = new ServerboundCustomPayloadPacket(message);
+        
+        ClientPacketListener listener = Objects.requireNonNull(Minecraft.getInstance().getConnection());
+        try {
+            NetworkRegistry.checkPacket(packet, listener);
+        }
+        catch (UnsupportedOperationException e) {
+            return;
+        }
+        listener.connection.send(packet);
     }
     
 }
