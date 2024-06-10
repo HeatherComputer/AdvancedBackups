@@ -2,8 +2,8 @@ package co.uk.mommyheather.advancedbackups.network;
 
 import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraftforge.event.network.CustomPayloadEvent;
-import net.minecraftforge.fml.LogicalSide;
 
 public class PacketBackupStatus {
     
@@ -54,7 +54,7 @@ public class PacketBackupStatus {
 
     public static boolean handle(PacketBackupStatus message, CustomPayloadEvent.Context ctx) {
         ctx.enqueueWork(() -> {
-            if (ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
+            if (ctx.getConnection().getReceiving() == PacketFlow.CLIENTBOUND) {
                 ClientWrapper.handle(message);
             }
         });
