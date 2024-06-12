@@ -30,6 +30,7 @@ on:
         - Forge 1.20
         - Forge 1.20.2
         - Forge 1.20.4
+        - Forge 1.20.6
         - Fabric 1.20
         - Fabric 1.20.2
         - Fabric 1.20.4
