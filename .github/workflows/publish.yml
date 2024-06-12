@@ -419,6 +419,34 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
+    - name:  Upload Forge 1.20.6
+
+      if: inputs.version == 'Forge 1.20.6' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: |
+            **/AdvancedBackups-forge-1.20.6-${{ steps.version.outputs.VERSION }}.jar
+        name: Forge 1.20.6 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            forge
+        game-versions: |
+            [1.20.5,1.20.6]
+        java: |
+            Java 21
+        changelog: ${{ vars.CHANGELOG }}
+
+
     - name:  Upload Fabric 1.20
 
       if: inputs.version == 'Fabric 1.20' || inputs.version == 'All'
