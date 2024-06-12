@@ -194,14 +194,8 @@ tasks.named('jar', Jar).configure {
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    // This is the preferred method to reobfuscate your jar file
-    finalizedBy 'reobfJar'
 }
 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing:
-// tasks.named('publish').configure {
-//     dependsOn 'reobfJar'
-// }
 
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
