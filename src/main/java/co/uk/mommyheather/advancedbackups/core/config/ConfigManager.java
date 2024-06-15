@@ -44,7 +44,17 @@ public class ConfigManager {
     public static final BooleanValue shutdown = new BooleanValue("config.advancedbackups.frequency.shutdown", false, ConfigManager::register);
     public static final BooleanValue startup = new BooleanValue("config.advancedbackups.frequency.startup", false, ConfigManager::register);
     public static final LongValue delay = new LongValue("config.advancedbackups.frequency.delay", 30, 5, 1000, ConfigManager::register);
-    public static final BooleanValue silent = new BooleanValue("config.advancedbackups.logging.silent", false, ConfigManager::register);
+    /*
+     * New logging options!
+     * Clients = OPS, ALL, NONE. OPS is default, means operator permission is required. ALL is all clients with the mod. NONE disabled.
+     * Client frequency - how often progress is sent to clients. Only the latest one is sent, and the client toasts persist until a complete, failed or cancelled notification is recieved.
+     * Console - enable or disable console logging for backup progress. Start / finish are always logged.
+     * Console frequency - how often progress is logged in console.
+     */
+    public static final ValidatedStringValue clients = new ValidatedStringValue("config.advancedbackups.logging.clients", "ops", new String[] {"ops", "all", "none"}, ConfigManager::register);
+    public static final LongValue clientFrequency = new LongValue("config.advancedbackups.logging.clientfrequency", 500L, 0L, Long.MAX_VALUE, ConfigManager::register);
+    public static final BooleanValue console = new BooleanValue("config.advancedbackups.logging.console", true, ConfigManager::register);
+    public static final LongValue consoleFrequency = new LongValue("config.advancedbackups.logging.consolefrequency", 5000L, 0L, Long.MAX_VALUE, ConfigManager::register);
     public static final LongValue compression = new LongValue("config.advancedbackups.zips.compression", 4, 1, 9, ConfigManager::register);
     public static final LongValue length = new LongValue("config.advancedbackups.chains.length", 50, 5, 500, ConfigManager::register);
     public static final BooleanValue compressChains = new BooleanValue("config.advancedbackups.chains.compress", true, ConfigManager::register);
