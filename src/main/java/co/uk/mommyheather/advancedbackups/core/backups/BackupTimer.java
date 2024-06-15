@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupStatusInstance.State;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 
@@ -13,9 +14,13 @@ public class BackupTimer  {
     private static int index = 0;
     private static long prev = 0;
 
+    private static long lastConsole = 0;
+    private static long lastClient = 0;
+
     private static long nextBackup = System.currentTimeMillis() + calculateNextBackupTime();
 
     public static void check() {
+        checkLogging();
         if (ThreadedBackup.running) return;
         long currentTime = System.currentTimeMillis();
         if (ThreadedBackup.wasRunning) {
@@ -72,6 +77,44 @@ public class BackupTimer  {
         }
 
         return Math.min(forcedMillis, ret);
+
+    }
+
+
+    private static void checkLogging() {
+        if (BackupStatusInstance.getInstanceCopy() == null) {
+            return;
+        }
+        BackupStatusInstance instance = BackupStatusInstance.getInstanceCopy();
+
+        boolean console = false;
+        boolean clients = false;
+
+        long time = System.currentTimeMillis();
+        if (time - ConfigManager.consoleFrequency.get() <= lastConsole) {
+            console = true;
+            if (instance.getAge() > lastConsole && ConfigManager.console.get()) {
+                lastConsole = instance.getAge();
+                if (instance.getState() == State.STARTED) {
+                    //No reason to care for the others, are they're all logged by default!
+                    int percent = (int) ((((float) instance.getProgress()) / ((float) instance.getMax())) * 100F);
+                    ABCore.infoLogger.accept("Backup in progress : " + percent + "%");
+                }
+            }
+        }
+
+        if (time - ConfigManager.clientFrequency.get() <= lastClient) {
+            clients = true;
+            if (instance.getAge() > lastClient && !ConfigManager.clients.get().equals("none")) {
+                ABCore.clientContactor.handle(instance, ConfigManager.clients.get().equals("all"));
+            }
+        }
+
+        if (instance.getState() == State.COMPLETE || instance.getState() == State.CANCELLED || instance.getState() == State.FAILED) {
+            if (console && clients) {
+                BackupStatusInstance.setInstance(null);
+            }
+        }
 
     }
 
