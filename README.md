@@ -84,7 +84,11 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 | config.advancedbackups.frequency.shutdown  | Whether to make a backup on server shutdown. | false | 0.3 |
 | config.advancedbackups.frequency.startup  | Whether to make a backup on server startup. | false | 0.3 |
 | config.advancedbackups.frequency.delay | The delay in seconds before making a startup backup. Always at least 5 seconds. | 30 | 0.3 |
-| config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | 2.0 |
+| config.advancedbackups.logging.silent  | Whether to disable chat and console logging. Does not affect debug.log or error messages. | false | 2.0 / 3.6 |
+| config.advancedbackups.logging.clients  | Which clients to send backup progress info to. | ops | 3.6 |
+| config.advancedbackups.logging.clientfrequency  | How often to send backup progress info to clients, in milliseconds. | 500 | 3.6 |
+| config.advancedbackups.logging.console  | Whether to log backup progress info to console. Start and end are always logged. | true | 3.6 |
+| config.advancedbackups.logging.consolefrequency  | How often to log backup progress info to console, in milliseconds. | 5000 | 3.6 |
 | config.advancedbackups.purge.size | The maximum total backup size to keep. Moved from `config.advancedbackup.size`, will auto migrate. Optional. | 50 | 3.4 |
 | config.advancedbackups.purge.days | The maximum number of days to keep backups for. Optional. | 0 | 3.4 |
 | config.advancedbackups.purge.count | The maximum number of backups to keep. Optional. | 0 | 3.4 |
