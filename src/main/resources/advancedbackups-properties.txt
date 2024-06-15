@@ -74,9 +74,27 @@ config.advancedbackups.frequency.startup
 #Range : 5-1000    #Default : 30
 config.advancedbackups.frequency.delay
 
-#Whether to disable console and chat logging. Does not affect debug.log, does not affect error messages.
-#Options : true, false    #Default : false
-config.advancedbackups.logging.silent
+
+#--------------------------------------------------------------------------------------------------------------------
+##The following options control logging of backup progress, including which clients to contact.
+##Backup start and end are always logged to console. The rest is configurable.
+#--------------------------------------------------------------------------------------------------------------------
+
+#Which clients to send progress updates to. Behaviour before this was added was `ops`
+#Options : ops, all, none    #Default : ops
+config.advancedbackups.logging.clients
+
+#How often to send progress info to clients, measured in milliseconds. Old behaviour was `0`, not recommended for servers due to network load.
+#Range : 0 - ~infinite #Default : 500
+config.advancedbackups.logging.clientfrequency
+
+#Whether to log backup progress to console. Start / finish are always logged. Old behaviour was `false`.
+#Options : true, false    #Default : true
+config.advancedbackups.logging.console
+
+#How often to send log progress info in the console, measured in milliseconds.
+#Range : 0 - ~infinite #Default : 5000
+config.advancedbackups.logging.consolefrequency
 
 
 
