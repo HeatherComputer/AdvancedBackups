@@ -105,7 +105,7 @@ public class ConfigManager {
                   .collect(Collectors.joining("\n"));
 
             for (String key : entries.keySet()) {
-                text = text.replace(key, key + "=" + entries.get(key).save());
+                text = text.replace(key + "\n", key + "=" + entries.get(key).save());
             }
 
             FileWriter writer = new FileWriter(file);
