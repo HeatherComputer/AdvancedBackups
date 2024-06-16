@@ -1,7 +1,5 @@
 package co.uk.mommyheather.advancedbackups;
 
-import net.minecraft.command.server.CommandSaveAll;
-import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.IProgressUpdate;
@@ -146,7 +144,6 @@ public class AdvancedBackups
                 level.levelSaving = true;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -157,7 +154,6 @@ public class AdvancedBackups
                 level.levelSaving = false;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
@@ -185,8 +181,6 @@ public class AdvancedBackups
                 }
             }
             
-
-            if (ConfigManager.silent.get()) return;
             warningLogger.accept(saveCompleteMessage);
         } catch (MinecraftException e) {
             // TODO Scream at user
