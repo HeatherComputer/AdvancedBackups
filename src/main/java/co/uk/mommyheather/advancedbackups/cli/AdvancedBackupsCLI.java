@@ -33,6 +33,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.fusesource.jansi.AnsiConsole;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
+
 public class AdvancedBackupsCLI {
 
     private static String backupLocation;
@@ -41,7 +43,7 @@ public class AdvancedBackupsCLI {
     private static ArrayList<String> fileNames = new ArrayList<>();
     private static File worldFile;
     private static String worldPath;
-    public static void main(String args[]){
+    public static void main(String args[]) throws IllegalBackupException {
         
         
 
@@ -331,7 +333,7 @@ public class AdvancedBackupsCLI {
 
 
 
-    private static void restoreFullZip(int index, File worldFile) {
+    private static void restoreFullZip(int index, File worldFile) throws IllegalBackupException {
         byte[] buffer = new byte[1024];
         //The most basic of the bunch.
         ZipEntry entry;
@@ -340,8 +342,15 @@ public class AdvancedBackupsCLI {
             ZipInputStream zip = new ZipInputStream(fileInputStream);
             while ((entry = zip.getNextEntry()) != null) {
                 File outputFile;
+                
 
                 outputFile = new File(worldFile, entry.getName());
+
+                if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                    zip.close();
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + entry.getName());
+                }
                 
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
@@ -356,13 +365,14 @@ public class AdvancedBackupsCLI {
                 }
                 outputStream.close();
             }
+            zip.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    private static void restoreFullDifferential(int index, File worldFile) {
+    private static void restoreFullDifferential(int index, File worldFile) throws IllegalBackupException {
         //Do we need to check for past backups? if selected is a full backup, we do not.
         File backup = new File(fileNames.get(index));
         if (backup.getName().contains("-full")) {
@@ -397,7 +407,7 @@ public class AdvancedBackupsCLI {
         }
     }
 
-    private static void restoreFullIncremental(int index, File worldFile) {
+    private static void restoreFullIncremental(int index, File worldFile) throws IllegalBackupException {
         //Do we need to check for past backups? if selected is a full backup, we do not.
         File backup = new File(fileNames.get(index));
         if (backup.getName().contains("-full")) {
@@ -484,7 +494,7 @@ public class AdvancedBackupsCLI {
          
     }
 
-    private static void restorePartialDifferential(int index, File worldFile) {
+    private static void restorePartialDifferential(int index, File worldFile) throws IllegalBackupException {
         //Do we need to check for past backups? if selected is a full backup, we do not.
         HashMap<String, Object> filePaths = new HashMap<>();
         HashMap<String, String> dates = new HashMap<>();
@@ -535,6 +545,12 @@ public class AdvancedBackupsCLI {
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
                 }
+
+                if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + select.toString());
+                }
+
                 CLIIOHelpers.info("\n\nRestoring file : " + select);
                 Files.copy(input, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
@@ -542,6 +558,12 @@ public class AdvancedBackupsCLI {
                 ZipEntry entry = (ZipEntry) select;
 
                 File outputFile = new File(worldFile, entry.toString());
+
+                if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + select.toString());
+                }
+
                 FileOutputStream outputStream = new FileOutputStream(outputFile);
 
                 CLIIOHelpers.info("Restoring " + entry.toString() + "...");
@@ -564,7 +586,7 @@ public class AdvancedBackupsCLI {
         }
     }
 
-    private static void restorePartialIncremental(int index, File worldFile) {
+    private static void restorePartialIncremental(int index, File worldFile) throws IllegalBackupException {
         //Do we need to check for past backups? if selected is a full backup, we do not.
         HashMap<String, Object> filePaths = new HashMap<>();
         HashMap<String, String> dates = new HashMap<>();
@@ -619,6 +641,13 @@ public class AdvancedBackupsCLI {
                 }
     
                 File outputFile = new File(worldFile, select.toString());
+                
+
+                if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + select.toString());
+                }
+                
                 if (!outputFile.getParentFile().exists()) {
                     outputFile.getParentFile().mkdirs();
                 }
@@ -629,6 +658,12 @@ public class AdvancedBackupsCLI {
                 ZipEntry entry = (ZipEntry) select;
 
                 File outputFile = new File(worldFile, entry.toString());
+                
+                if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + select.toString());
+                }
+
                 FileOutputStream outputStream = new FileOutputStream(outputFile);
 
                 CLIIOHelpers.info("Restoring " + entry.toString() + "...");
@@ -652,7 +687,7 @@ public class AdvancedBackupsCLI {
     }
 
 
-    private static void restoreFolder(int index, File worldFile) {
+    private static void restoreFolder(int index, File worldFile) throws IllegalBackupException {
         File backup = new File(fileNames.get(index));
 
         try {
@@ -661,6 +696,12 @@ public class AdvancedBackupsCLI {
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
                     File source = backup.toPath().relativize(file).toFile();
                     File outputFile = new File(worldFile, source.getPath());
+
+                    if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                        ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                        new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + source.getPath()).printStackTrace();
+                        return FileVisitResult.TERMINATE;
+                    }
 
                     if (!outputFile.getParentFile().exists()) {
                         outputFile.getParentFile().mkdirs();
@@ -678,7 +719,7 @@ public class AdvancedBackupsCLI {
     }
 
     
-    private static void restoreOtherModZip(File backupDir) {
+    private static void restoreOtherModZip(File backupDir) throws IllegalBackupException {
         worldFile = serverDir;
         Path file;
         HashMap<String, File> backups = new HashMap<>();
@@ -712,6 +753,11 @@ public class AdvancedBackupsCLI {
                 file = CLIIOHelpers.getFileToRestore(entries, "", worldFile);
                 CLIIOHelpers.info("Restoring " + file.toString() + "...");
                 Path outputFile = new File(worldFile, file.toString()).toPath();
+
+                if (!outputFile.normalize().startsWith(worldFile.toPath())) {
+                    ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                    throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + file.toString());
+                }
                 if (!outputFile.getParent().toFile().exists()) {
                     outputFile.getParent().toFile().mkdirs();
                 }
@@ -753,6 +799,12 @@ public class AdvancedBackupsCLI {
                     File outputFile;
     
                     outputFile = new File(worldFile, entry.getName());
+
+                    if (!outputFile.toPath().normalize().startsWith(worldFile.toPath())) {
+                        zip.close();
+                        ABCore.errorLogger.accept("Found a potentially malicious zip file - cowardly exiting, restoration may be incomplete!");
+                        throw new IllegalBackupException("Zip file is likely malicious! Found an erroneus path: " + entry.getName());
+                    }
                     
                     if (!outputFile.getParentFile().exists()) {
                         outputFile.getParentFile().mkdirs();
@@ -768,6 +820,7 @@ public class AdvancedBackupsCLI {
                     }
                     outputStream.close();
                 }
+                zip.close();
                 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
