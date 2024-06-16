@@ -71,22 +71,43 @@ public class ThreadedBackup extends Thread {
         } catch (Exception e) {
             ABCore.logStackTrace(e);
         }
-        if (!shutdown) ABCore.clientContactor.backupStarting();
+        if (!shutdown) {
+            BackupStatusInstance instance = new BackupStatusInstance();
+            instance.setAge(System.currentTimeMillis());
+            instance.setState(BackupStatusInstance.State.STARTING);
+            BackupStatusInstance.setInstance(instance);
+        };
 
         try {
             makeBackup();
-            if (!shutdown) ABCore.clientContactor.backupComplete();
+            if (!shutdown) {
+                BackupStatusInstance instance = new BackupStatusInstance();
+                instance.setAge(System.currentTimeMillis());
+                instance.setState(BackupStatusInstance.State.COMPLETE);
+                BackupStatusInstance.setInstance(instance);
+                
+            }
         } catch (InterruptedException e) {
             output.accept("Backup cancelled!");
             performDelete(new File(ABCore.backupPath));
-            if (!shutdown) ABCore.clientContactor.backupCancelled();
+            if (!shutdown) {
+                BackupStatusInstance instance = new BackupStatusInstance();
+                instance.setAge(System.currentTimeMillis());
+                instance.setState(BackupStatusInstance.State.CANCELLED);
+                BackupStatusInstance.setInstance(instance);
+            }
             wasRunning = true;
             running = false;
             return;
         } catch (Exception e) {
             ABCore.errorLogger.accept("ERROR MAKING BACKUP!");
             ABCore.logStackTrace(e);
-            if (!shutdown) ABCore.clientContactor.backupFailed();
+            if (!shutdown) {
+                BackupStatusInstance instance = new BackupStatusInstance();
+                instance.setAge(System.currentTimeMillis());
+                instance.setState(BackupStatusInstance.State.FAILED);
+                BackupStatusInstance.setInstance(instance);
+            }
             performDelete(new File(ABCore.backupPath));
             wasRunning = true;
             running = false;
@@ -146,10 +167,8 @@ public class ThreadedBackup extends Thread {
         try {
 
             File zip = new File(file.toString() + (snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
-            if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName().replace("incomplete", "backup"));
-            }
-            output.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup name: " + zip.getName().replace("incomplete", "backup"));
+            ABCore.infoLogger.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", "backup"));
+            output.accept("Preparing " + (snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", "backup"));
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -178,7 +197,14 @@ public class ThreadedBackup extends Thread {
             int max = paths.size();
             int index = 0;
 
-            if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+            if (!shutdown) {
+                BackupStatusInstance instance = new BackupStatusInstance();
+                instance.setAge(System.currentTimeMillis());
+                instance.setMax(max);
+                instance.setProgress(index);
+                instance.setState(BackupStatusInstance.State.STARTED);
+                BackupStatusInstance.setInstance(instance);
+            }
 
             for (Path path : paths) {
                 try {
@@ -209,7 +235,14 @@ public class ThreadedBackup extends Thread {
                         throw new InterruptedException();
                     }
                     index++;
-                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) {
+                        BackupStatusInstance instance = new BackupStatusInstance();
+                        instance.setAge(System.currentTimeMillis());
+                        instance.setMax(max);
+                        instance.setProgress(index);
+                        instance.setState(BackupStatusInstance.State.STARTED);
+                        BackupStatusInstance.setInstance(instance);
+                    }
                 }
                 catch (IOException e) {
                     ABCore.logStackTrace(e);
@@ -233,10 +266,8 @@ public class ThreadedBackup extends Thread {
 
     private void makeDifferentialOrIncrementalBackup(File location, boolean differential) throws InterruptedException, IOException {
         try {
-            if (!ConfigManager.silent.get()) {
-                ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName.replace("incomplete", "backup"));
-            }
-            output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup name: " + backupName.replace("incomplete", "backup"));
+            ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name: " + backupName.replace("incomplete", "backup"));
+            output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name: " + backupName.replace("incomplete", "backup"));
             long time = 0;
 
 
@@ -329,7 +360,14 @@ public class ThreadedBackup extends Thread {
                 int max = toBackup.size();
                 int index = 0;
     
-                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                if (!shutdown) {
+                    BackupStatusInstance instance = new BackupStatusInstance();
+                    instance.setAge(System.currentTimeMillis());
+                    instance.setMax(max);
+                    instance.setProgress(index);
+                    instance.setState(BackupStatusInstance.State.STARTED);
+                    BackupStatusInstance.setInstance(instance);
+                }
                 for (Path path : toBackup) {
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
 
@@ -350,7 +388,14 @@ public class ThreadedBackup extends Thread {
                     }
                     zipOutputStream.closeEntry();
                     index++;
-                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) {
+                        BackupStatusInstance instance = new BackupStatusInstance();
+                        instance.setAge(System.currentTimeMillis());
+                        instance.setMax(max);
+                        instance.setProgress(index);
+                        instance.setState(BackupStatusInstance.State.STARTED);
+                        BackupStatusInstance.setInstance(instance);
+                    }
 
                     //We need to handle interrupts in various styles in different parts of the process!
                     if (isInterrupted()) {
@@ -370,7 +415,14 @@ public class ThreadedBackup extends Thread {
                 int max = toBackup.size();
                 int index = 0;
                 
-                if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                if (!shutdown) {
+                    BackupStatusInstance instance = new BackupStatusInstance();
+                    instance.setAge(System.currentTimeMillis());
+                    instance.setMax(max);
+                    instance.setProgress(index);
+                    instance.setState(BackupStatusInstance.State.STARTED);
+                    BackupStatusInstance.setInstance(instance);
+                }
                 for (Path path : toBackup) {
                     File out = new File(dest, path.toString());
                     if (!out.getParentFile().exists()) {
@@ -378,7 +430,14 @@ public class ThreadedBackup extends Thread {
                     }
                     Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
                     index++;
-                    if (!shutdown) ABCore.clientContactor.backupProgress(index, max);
+                    if (!shutdown) {
+                        BackupStatusInstance instance = new BackupStatusInstance();
+                        instance.setAge(System.currentTimeMillis());
+                        instance.setMax(max);
+                        instance.setProgress(index);
+                        instance.setState(BackupStatusInstance.State.STARTED);
+                        BackupStatusInstance.setInstance(instance);
+                    }
                 }
                 time = dest.lastModified();
             }
