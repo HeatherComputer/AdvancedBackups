@@ -2,7 +2,7 @@ package co.uk.mommyheather.advancedbackups.core.backups;
 
 public class BackupStatusInstance {
 
-    private static BackupStatusInstance instance = new BackupStatusInstance();
+    private static BackupStatusInstance instance = null;
 
     private State state = State.INVALID;
 

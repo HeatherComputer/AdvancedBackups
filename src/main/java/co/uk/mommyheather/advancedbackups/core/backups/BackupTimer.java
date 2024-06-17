@@ -91,7 +91,7 @@ public class BackupTimer  {
         boolean clients = false;
 
         long time = System.currentTimeMillis();
-        if (time - ConfigManager.consoleFrequency.get() <= lastConsole) {
+        if (time - ConfigManager.consoleFrequency.get() >= lastConsole) {
             console = true;
             if (instance.getAge() > lastConsole && ConfigManager.console.get()) {
                 lastConsole = instance.getAge();
@@ -103,7 +103,7 @@ public class BackupTimer  {
             }
         }
 
-        if (time - ConfigManager.clientFrequency.get() <= lastClient) {
+        if (time - ConfigManager.clientFrequency.get() >= lastClient) {
             clients = true;
             if (instance.getAge() > lastClient && !ConfigManager.clients.get().equals("none")) {
                 ABCore.clientContactor.handle(instance, ConfigManager.clients.get().equals("all"));
