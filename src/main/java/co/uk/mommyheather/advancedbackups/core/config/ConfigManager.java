@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -105,7 +106,8 @@ public class ConfigManager {
                   .collect(Collectors.joining("\n"));
 
             for (String key : entries.keySet()) {
-                text = text.replace(key + "\n", key + "=" + entries.get(key).save());
+                Matcher matcher = Pattern.compile(Pattern.quote(key) + "$", Pattern.MULTILINE).matcher(text);
+                text = matcher.replaceAll(key + "=" + entries.get(key).save());
             }
 
             FileWriter writer = new FileWriter(file);
