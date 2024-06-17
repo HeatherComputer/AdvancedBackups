@@ -17,7 +17,7 @@ public class BackupStatusInstance {
     }
 
     public static synchronized BackupStatusInstance getInstanceCopy() {
-        return copyInstance(instance);
+        return instance == null ? null : copyInstance(instance);
     }
 
     private static synchronized BackupStatusInstance copyInstance(BackupStatusInstance in) {
