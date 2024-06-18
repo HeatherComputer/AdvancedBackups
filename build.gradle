@@ -33,6 +33,9 @@ configurations {
 
 dependencies {
     compileOnly libs.org.spigotmc.spigot.api
+
+    implementation files ('advancedbackups-corelib.jar')
+    extraLibs files ('advancedbackups-corelib.jar')
 }
 
 

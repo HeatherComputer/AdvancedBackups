@@ -6,3 +6,6 @@ build
 
 # Ignore vscode files
 .vscode
+
+#Ignore corelib
+advancedbackups-corelib.jar
