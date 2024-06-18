@@ -143,7 +143,6 @@ public class AdvancedBackups
                 level.noSave = true;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -154,14 +153,12 @@ public class AdvancedBackups
                 level.noSave = false;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean flush) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         server.saveEverything(true, flush, true);
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
 
