@@ -127,7 +127,6 @@ public class AdvancedBackups implements ModInitializer {
                 level.savingDisabled = true;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesDisabledMessage);
     }
 
@@ -138,14 +137,12 @@ public class AdvancedBackups implements ModInitializer {
                 level.savingDisabled = false;
             }
         }
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean flush) {
         MinecraftServer server = AdvancedBackups.server;
         server.saveAll(true, flush, true);
-        if (ConfigManager.silent.get()) return;
         warningLogger.accept(saveCompleteMessage);
     }
 
