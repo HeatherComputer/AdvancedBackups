@@ -13,7 +13,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 public class ClientContactor implements IClientContactor {
     
     @Override
-    public void backupComplete() {
+    public void backupComplete(boolean all) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, true, false, 0, 0);
@@ -26,7 +26,7 @@ public class ClientContactor implements IClientContactor {
     }
 
     @Override
-    public void backupFailed() {
+    public void backupFailed(boolean all) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, true, false, false, 0, 0);
@@ -39,7 +39,7 @@ public class ClientContactor implements IClientContactor {
     }
 
     @Override
-    public void backupProgress(int progress, int max) {
+    public void backupProgress(int progress, int max, boolean all) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, false, progress, max);
@@ -52,7 +52,7 @@ public class ClientContactor implements IClientContactor {
     }
 
     @Override
-    public void backupStarting() {
+    public void backupStarting(boolean all) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(true, false, false, false, false, 0, 0);
@@ -65,7 +65,7 @@ public class ClientContactor implements IClientContactor {
     }
 
     @Override
-    public void backupCancelled() {
+    public void backupCancelled(boolean all) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         List<ServerPlayer> players = server.getPlayerList().getPlayers();
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, false, true, 0, 0);
