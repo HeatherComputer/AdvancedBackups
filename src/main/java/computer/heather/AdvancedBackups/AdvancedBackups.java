@@ -32,12 +32,9 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
         this.getCommand("backup").setExecutor(new AdvancedBackupsCommand());
         getServer().getPluginManager().registerEvents(this, this);
         
-        /*
-         * NYI
         ABCore.disableSaving = AdvancedBackups::disableSaving;
         ABCore.enableSaving = AdvancedBackups::enableSaving;
         ABCore.saveOnce = AdvancedBackups::saveOnce;
-         */
         
         ABCore.infoLogger = infoLogger;
         ABCore.warningLogger = warningLogger;
@@ -45,7 +42,7 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
 
         //NYI
         //ABCore.clientContactor = new ABClientContactor();
-        //ABCore.resetActivity = AdvancedBackups::resetActivity;
+        ABCore.resetActivity = AdvancedBackups::resetActivity;
     }
     
     @Override
@@ -95,6 +92,21 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
             level.setAutoSave(true);
         }
         warningLogger.accept(savesEnabledMessage);
+    }
+
+    public static void saveOnce(boolean unused) {
+
+        server.savePlayers();
+        boolean flag;
+        
+        for (World level : server.getWorlds()) {
+            flag = level.isAutoSave();
+            level.setAutoSave(false);
+            level.save();
+            level.setAutoSave(flag);
+        }
+        
+        warningLogger.accept(saveCompleteMessage);
     }
 
 
