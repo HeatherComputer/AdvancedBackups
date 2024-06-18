@@ -7,6 +7,14 @@ plugins {
     id 'maven-publish'
 }
 
+group = 'computer.heather.AdvancedBackups'
+description = 'AdvancedBackups'
+java.sourceCompatibility = JavaVersion.VERSION_21
+
+base {
+    archivesName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
+}
+
 repositories {
     mavenLocal()
     maven {
@@ -58,10 +66,6 @@ tasks.named('jar', Jar).configure {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-
-group = 'computer.heather.AdvancedBackups'
-description = 'AdvancedBackups'
-java.sourceCompatibility = JavaVersion.VERSION_21
 
 publishing {
     publications {
