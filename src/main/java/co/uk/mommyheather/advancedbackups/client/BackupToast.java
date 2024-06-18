@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;

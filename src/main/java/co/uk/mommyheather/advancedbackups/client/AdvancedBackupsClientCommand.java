@@ -11,8 +11,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ArgumentSignatures;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundChatCommandPacket;
-import net.minecraftforge.client.ClientCommandSourceStack;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class AdvancedBackupsClientCommand {
     public static void register(CommandDispatcher<CommandSourceStack> commandDispatcher) {
