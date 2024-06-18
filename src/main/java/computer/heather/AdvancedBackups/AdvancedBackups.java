@@ -4,14 +4,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdvancedBackups extends JavaPlugin {
 
+    private static boolean enabled = false;
+
     @Override
     public void onEnable() {
-        getLogger().info("onEnable called! I don't yet know how to handle this...");
+        enabled = true;
+        this.getCommand("backup").setExecutor(new AdvancedBackupsCommand());
     }
+
     @Override
     public void onDisable() {
-        getLogger().info("onDisable called! I don't yet know how to handle this...");
+        enabled = false;
     }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
 
 
 }
