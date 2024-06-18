@@ -5,6 +5,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'io.github.patrick.remapper' version "1.4.2"
 }
 
 group = 'computer.heather.AdvancedBackups'
@@ -16,7 +17,6 @@ base {
 }
 
 repositories {
-    mavenLocal()
     maven {
         url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
     }
@@ -24,6 +24,8 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    mavenCentral()
+    mavenLocal()
 }
 
 configurations {
@@ -32,7 +34,7 @@ configurations {
 }
 
 dependencies {
-    compileOnly libs.org.spigotmc.spigot.api
+    compileOnly("org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:remapped-mojang")
 
     implementation files ('advancedbackups-corelib.jar')
     extraLibs files ('advancedbackups-corelib.jar')
@@ -67,6 +69,15 @@ tasks.named('jar', Jar).configure {
     }    
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+tasks {
+    remap {
+        version.set("1.21")
+    }
+    build {
+        dependsOn(remap)
     }
 }
 
