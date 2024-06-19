@@ -9,3 +9,6 @@ build
 
 #Ignore corelib
 advancedbackups-corelib.jar
+
+#Runtime
+run

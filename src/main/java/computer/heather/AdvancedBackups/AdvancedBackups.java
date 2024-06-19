@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
 public class AdvancedBackups extends JavaPlugin implements Listener {
     
@@ -31,6 +32,8 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
         errorLogger = getLogger()::severe;
         this.getCommand("backup").setExecutor(new AdvancedBackupsCommand());
         getServer().getPluginManager().registerEvents(this, this);
+
+        ConfigManager.loadOrCreateConfig();
         
         ABCore.disableSaving = AdvancedBackups::disableSaving;
         ABCore.enableSaving = AdvancedBackups::enableSaving;
