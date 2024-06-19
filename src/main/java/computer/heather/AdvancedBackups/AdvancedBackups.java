@@ -9,8 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
@@ -26,26 +28,42 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         enabled = true;
+
+        ABCore.disableSaving = AdvancedBackups::disableSaving;
+        ABCore.enableSaving = AdvancedBackups::enableSaving;
+        ABCore.saveOnce = AdvancedBackups::saveOnce;
+        
         AdvancedBackups.server = getServer();
+        
+        ABCore.worldName = getServer().getWorlds().get(0).getName();
+        ABCore.worldDir = getServer().getWorlds().get(0).getWorldFolder().toPath();
+        ABCore.modJar = getFile();
+        
+
         infoLogger = getLogger()::info;
         warningLogger = getLogger()::warning;
         errorLogger = getLogger()::severe;
+
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
+
         this.getCommand("backup").setExecutor(new AdvancedBackupsCommand());
         getServer().getPluginManager().registerEvents(this, this);
 
         ConfigManager.loadOrCreateConfig();
         
-        ABCore.disableSaving = AdvancedBackups::disableSaving;
-        ABCore.enableSaving = AdvancedBackups::enableSaving;
-        ABCore.saveOnce = AdvancedBackups::saveOnce;
-        
-        ABCore.infoLogger = infoLogger;
-        ABCore.warningLogger = warningLogger;
-        ABCore.errorLogger = errorLogger;
 
         //NYI
         //ABCore.clientContactor = new ABClientContactor();
         ABCore.resetActivity = AdvancedBackups::resetActivity;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                AdvancedBackups.this.onTickEnd();
+            }
+        }.runTaskTimer(this, 0, 0);
     }
     
     @Override
@@ -62,6 +80,7 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
     public void onServerLoad(ServerLoadEvent event) {
         BackupWrapper.checkStartupBackups();
     }
+
     
     /* handled in onDisable
     @EventHandler
@@ -74,15 +93,15 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
         ABCore.setActivity(true);
     }
 
+    public void onTickEnd() {
+        BackupTimer.check();
+    }
+
 
     public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
     public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
     public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
 
-
-    //fun fact : this boolean is named wrong in MCP mappings!
-    //reference : net.minecraft.command.server.CommandSaveOff and CommandSaveOn
-    //notice how off sets the boolean to true, and on sets it to false!
     public static void disableSaving() {
         for (World level : server.getWorlds()) {
             level.setAutoSave(false);
