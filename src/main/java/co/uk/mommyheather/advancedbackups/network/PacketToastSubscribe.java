@@ -11,7 +11,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record PacketToastSubscribe(boolean enable) implements CustomPacketPayload {
     
-    public static final CustomPacketPayload.Type<PacketToastSubscribe> ID = new CustomPacketPayload.Type<>(new ResourceLocation("advancedbackups:toast_subscribe"));
+    public static final CustomPacketPayload.Type<PacketToastSubscribe> ID = new CustomPacketPayload.Type<>(ResourceLocation.parse("advancedbackups:toast_subscribe"));
     
     public PacketToastSubscribe(boolean enable) {
         this.enable = enable;
