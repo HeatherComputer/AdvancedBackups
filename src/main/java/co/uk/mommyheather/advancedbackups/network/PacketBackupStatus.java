@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record PacketBackupStatus(boolean starting, boolean started, boolean failed, boolean finished, boolean cancelled, int progress, int max) implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<PacketBackupStatus> ID = new CustomPacketPayload.Type<PacketBackupStatus>(new ResourceLocation("advancedbackups:backup_status"));
+    public static final CustomPacketPayload.Type<PacketBackupStatus> ID = new CustomPacketPayload.Type<PacketBackupStatus>(ResourceLocation.parse("advancedbackups:backup_status"));
 
     public static final StreamCodec<FriendlyByteBuf, PacketBackupStatus> CODEC = StreamCodec.of((buf, packet) -> {
         buf.writeBoolean(packet.starting);

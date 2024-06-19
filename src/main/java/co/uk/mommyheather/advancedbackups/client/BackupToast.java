@@ -26,7 +26,7 @@ public class BackupToast implements Toast {
     private static boolean timeSet = false;
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
-    private static final ResourceLocation TEXTURE = new ResourceLocation("toast/advancement");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("toast/advancement");
     
     private int textColour;
     private String title = "You shouldn't see this!";
