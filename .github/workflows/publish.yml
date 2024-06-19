@@ -40,6 +40,7 @@ on:
         - Neoforge 1.20.4
         - Neoforge 1.20.6
         - Neoforge 1.21
+        - Spigot 1.21
 
 
 jobs:
@@ -700,6 +701,35 @@ jobs:
         version-type: release
         loaders: |
             neoforge
+        game-versions: |
+            [1.21]
+        java: |
+            Java 21
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name:  Upload Spigot 1.21 Curseforge
+
+      if: inputs.version == 'Spigot 1.21' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: |
+            **/AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar
+        name: Spigot 1.21 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            spigot
+            paper
         game-versions: |
             [1.21]
         java: |
