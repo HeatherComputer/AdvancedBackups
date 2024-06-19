@@ -1,14 +1,20 @@
 package computer.heather.AdvancedBackups;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.util.StringUtil;
 
 import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
 
 
 // /backup start | reload-config | reload-client-config | snapshot | reset-chain
-public class AdvancedBackupsCommand implements CommandExecutor {
+public class AdvancedBackupsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -90,6 +96,14 @@ public class AdvancedBackupsCommand implements CommandExecutor {
             });
         }
 
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        final List<String> completions = new ArrayList<>();
+        StringUtil.copyPartialMatches(args[0], Arrays.asList(new String[] {"start", "reload-config", "reload-client-config", "reset-chain", "snapshot", "cancel"}), completions);
+        
+        return completions;
     }
 
 
