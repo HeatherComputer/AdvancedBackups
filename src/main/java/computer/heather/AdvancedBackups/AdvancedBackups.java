@@ -1,5 +1,6 @@
 package computer.heather.AdvancedBackups;
 
+import java.io.File;
 import java.util.function.Consumer;
 
 import org.bukkit.Server;
@@ -36,7 +37,7 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
         AdvancedBackups.server = getServer();
         
         ABCore.worldName = getServer().getWorlds().get(0).getName();
-        ABCore.worldDir = getServer().getWorlds().get(0).getWorldFolder().toPath();
+        ABCore.worldDir = new File(getServer().getWorlds().get(0).getWorldFolder(), "./").toPath(); //need to have this parent because of some forge compatability bullshit.. if i knew how much I'd need to do this I really would've just called getParent on the offending versions
         ABCore.modJar = getFile();
         
 
