@@ -7,10 +7,11 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 
 public record PacketToastSubscribe(boolean enable) implements CustomPayload {
     
-    public static final Id<PacketToastSubscribe> ID = CustomPayload.id("advancedbackups:toast_subscribe");
+    public static final Id<PacketToastSubscribe> ID = new CustomPayload.Id<PacketToastSubscribe>(Identifier.of("advancedbackups:toast_subscribe"));
     
     public PacketToastSubscribe(boolean enable) {
         this.enable = enable;

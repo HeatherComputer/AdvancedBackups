@@ -1,17 +1,13 @@
 package co.uk.mommyheather.advancedbackups.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 public class BackupToast implements Toast {
@@ -31,7 +27,7 @@ public class BackupToast implements Toast {
     private static boolean timeSet = false;
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
-    private static final Identifier TEXTURE = new Identifier("toast/advancement"); 
+    private static final Identifier TEXTURE = Identifier.of("toast/advancement"); 
 
     public static String title = "You shouldn't see this!";
     public static int textColour = 0;
