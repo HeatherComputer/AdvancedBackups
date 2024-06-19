@@ -7,6 +7,7 @@ plugins {
     id 'maven-publish'
     id 'io.github.patrick.remapper' version "1.4.2"
 }
+apply from: 'customTasks.gradle'
 
 group = 'computer.heather.AdvancedBackups'
 description = 'AdvancedBackups'

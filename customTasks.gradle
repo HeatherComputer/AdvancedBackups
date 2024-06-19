@@ -1,0 +1,5 @@
+task prepareDebug (type: Copy, dependsOn: 'jar') {
+    doNotTrackState("Must run!")
+    from jar
+    into "run/plugins"
+}
