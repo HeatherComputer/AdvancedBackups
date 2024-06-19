@@ -19,6 +19,9 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 [Notices](#notices)
 
 ## Current Versions:
+- Spigot 1.21
+- Fabric/Quilt 1.21
+- Neoforge 1.21
 - Fabric/Quilt 1.20.x
 - Forge 1.20.x
 - Neoforge 1.20.x
