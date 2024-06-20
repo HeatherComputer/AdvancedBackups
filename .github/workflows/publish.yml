@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name:  Publish to CF/MR
+name:  Publish to CF/MR/Hangar
 
 on:
   workflow_dispatch:
@@ -708,7 +708,7 @@ jobs:
         changelog: ${{ vars.CHANGELOG }}
 
 
-    - name:  Upload Spigot 1.21 Curseforge
+    - name:  Upload Spigot 1.21
 
       if: inputs.version == 'Spigot 1.21' || inputs.version == 'All'
       uses: Kir-Antipov/mc-publish@v3.3
@@ -735,4 +735,19 @@ jobs:
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
+
+
+    - name:  Upload Spigot 1.21 (Hangar)
+
+      if: inputs.version == 'Spigot 1.21' || inputs.version == 'All'
+      uses: benwoo1110/hangar-upload-action@v1
+      with:
+
+        slug: AdvancedBackups
+        api_token: ${{ secrets.HANGAR_TOKEN }}
+        version: ${{ steps.version.outputs.VERSION }}
+        channel: Release
+        #Supposedly, this is how it's done... hmm
+        files: '[{"path": "AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar/AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar", "platforms": ["PAPER"]}]'
+        description: ${{ vars.CHANGELOG }}
 
