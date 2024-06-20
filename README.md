@@ -26,7 +26,7 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 - Extensive config options to control schedules, logging, activity requirements and more
 - Three different automatic purging options - full control over when a backup is deleted
 - Command based "snapshots" that are immune to automatic purging
-- Clientside toasts - get notified when backups happen. Can be disabled client or serverside, and restricted to ops or allowed for all players
+- Client-side toasts - get notified when backups happen. Can be disabled client or server-side, and restricted to ops or allowed for all players
 - Set a minimum or maximum time between backups - avoid common problem scenarios for local worlds
 
 
@@ -36,8 +36,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
   - A client needs the Forge, Neoforge or Fabric version of the mod to see the toasts. This works even on Spigot servers.
 - Will a backup be made if nobody has been online since the last backup?
   - By default, no. This can be changed in config if need be.
-- Can the mod run serverside only?
-  - Yes, the mod can work entirely on the server - a clientside installation is only required to see backup toasts.
+- Can the mod run server-side only?
+  - Yes, the mod can work entirely on the server - a client-side installation is only required to see backup toasts.
 - How do I run the command-line tool?
   - There's scripts provided in your backup folder, or you can use `java -jar` to run it. Java is required on your PATH. 
   - See the readme in your backup folder for more information.
