@@ -19,7 +19,7 @@ public class ClientContactor implements IClientContactor {
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, true, false, 0, 0);
         for (ServerPlayer player : players) {
             if (!AdvancedBackups.players.contains(player.getStringUUID())) continue;
-            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3) || all) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -32,7 +32,7 @@ public class ClientContactor implements IClientContactor {
         PacketBackupStatus packet = new PacketBackupStatus(false, false, true, false, false, 0, 0);
         for (ServerPlayer player : players) {
             if (!AdvancedBackups.players.contains(player.getStringUUID())) continue;
-            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3) || all) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -45,7 +45,7 @@ public class ClientContactor implements IClientContactor {
         PacketBackupStatus packet = new PacketBackupStatus(false, true, false, false, false, progress, max);
         for (ServerPlayer player : players) {
             if (!AdvancedBackups.players.contains(player.getStringUUID())) continue;
-            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3) || all) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -58,7 +58,7 @@ public class ClientContactor implements IClientContactor {
         PacketBackupStatus packet = new PacketBackupStatus(true, false, false, false, false, 0, 0);
         for (ServerPlayer player : players) {
             if (!AdvancedBackups.players.contains(player.getStringUUID())) continue;
-            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3) || all) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
@@ -71,7 +71,7 @@ public class ClientContactor implements IClientContactor {
         PacketBackupStatus packet = new PacketBackupStatus(false, false, false, false, true, 0, 0);
         for (ServerPlayer player : players) {
             if (!AdvancedBackups.players.contains(player.getStringUUID())) continue;
-            if (!server.isDedicatedServer() || player.hasPermissions(3)) {
+            if (!server.isDedicatedServer() || player.hasPermissions(3) || all) {
                 NetworkHandler.sendToClient(player, packet);
             }
         }
