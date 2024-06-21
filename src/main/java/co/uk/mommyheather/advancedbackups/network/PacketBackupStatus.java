@@ -1,9 +1,13 @@
 package co.uk.mommyheather.advancedbackups.network;
 
+import co.uk.mommyheather.advancedbackups.client.BackupToast;
+import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record PacketBackupStatus(boolean starting, boolean started, boolean failed, boolean finished, boolean cancelled, int progress, int max) implements CustomPacketPayload {
 
@@ -33,6 +37,10 @@ public record PacketBackupStatus(boolean starting, boolean started, boolean fail
     @Override
     public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return ID;
+    }
+
+    public static void handle(PacketBackupStatus packet, IPayloadContext context) {
+        ClientWrapper.handle(packet, context);
     }
 
     
