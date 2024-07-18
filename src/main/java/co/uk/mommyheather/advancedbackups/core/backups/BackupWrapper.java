@@ -440,8 +440,8 @@ public class BackupWrapper {
                 System.out.println("Deleting full / broken partial backup with name : " + file.toString());
                 if (file.isDirectory()) System.out.println("This is a directory!");
                 if (file.isDirectory()) deleteDirectoryContents(file);
-                file.delete();
-                System.out.println("Backup deleted : " !file.exists());
+                boolean flag = file.delete();
+                System.out.println("Backup deleted : " + flag);
                 return;
             }
             else {
