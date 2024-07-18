@@ -340,6 +340,8 @@ public class BackupWrapper {
     public static void finishBackup(boolean snapshot) {
         
         ABCore.resetActivity();
+
+        System.out.println("Snapshot : " + snapshot);
         
         if (snapshot) return;
         
@@ -359,6 +361,8 @@ public class BackupWrapper {
             }
             
         }
+        
+        System.out.println("Beginning purge checks : " + directory.toString());
         
         checkSize(directory);
         checkCount(directory);
@@ -425,14 +429,16 @@ public class BackupWrapper {
     }
     
     private static void checkCount(File directory) {
-        if (ConfigManager.backupsToKeep.get() <= 0) return;
+        if (ConfigManager.backupsToKeep.get() <= 0) { System.out.println("Backup count check disabled"); return;}
         long date = 0;
         while (true) {
-            if (calculateBackupCount(directory) <= ConfigManager.backupsToKeep.get()) return;
+            if (calculateBackupCount(directory) <= ConfigManager.backupsToKeep.get()) { System.out.println("Backup count under configured size"); return;}
             File file = getFirstBackupAfterDate(directory, date);
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
+                System.out.println("Deleting full / broken partial backup with name : " + file.toString());
+                if (dependent.isDirectory()) System.out.println("This is a directory!");
                 if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
                 return;
@@ -454,6 +460,8 @@ public class BackupWrapper {
                     }
                 }
                 else {
+                    System.out.println("Deleting differential backup with name " + file.toString());
+                    if (dependent.isDirectory()) System.out.println("This is a directory!");
                     if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                 }
