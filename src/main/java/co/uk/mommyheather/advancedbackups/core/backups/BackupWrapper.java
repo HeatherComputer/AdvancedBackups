@@ -438,9 +438,10 @@ public class BackupWrapper {
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
                 System.out.println("Deleting full / broken partial backup with name : " + file.toString());
-                if (dependent.isDirectory()) System.out.println("This is a directory!");
+                if (file.isDirectory()) System.out.println("This is a directory!");
                 if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
+                System.out.println("Backup deleted : " !file.exists());
                 return;
             }
             else {
