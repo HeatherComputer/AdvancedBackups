@@ -444,7 +444,7 @@ public class BackupWrapper {
                 boolean flag = file.delete();
                 System.out.println("Backup deleted : " + flag);
                 System.out.println("File exists : " + file.exists());
-                return;
+                //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             }
             else {
                 
@@ -488,7 +488,7 @@ public class BackupWrapper {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
                 if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
-                return;
+                //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             }
             else {
                 date = dependent.lastModified();
@@ -540,7 +540,7 @@ public class BackupWrapper {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
                 if (file.isDirectory()) deleteDirectoryContents(file);
                 file.delete();
-                return;
+                //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             }
             else {
                 
