@@ -415,7 +415,7 @@ jobs:
   
     - name: Build Mod
       #Here, we have a little override for the minecraft version. Stops us needing a branch whilst still producing a separate jar.
-      run: ./gradlew -Pversion=${{ inputs.version }} build -PminecraftVersion=1.20.4 build
+      run: ./gradlew -Pversion=${{ inputs.version }} build -PminecraftVersion=1.20.4 -Pminecraft_version=1.20.4 -Pminecraft_version_range=[1.20.4,1.21) -Pforge_version=49.1.4 -Pmapping_version=1.20.4 build
 
 
     - name: Upload Mod
