@@ -73,7 +73,7 @@ tasks.named('jar', Jar).configure {
 
 tasks {
     remap {
-        version.set("1.21")
+        version.set("1.21.1")
     }
     build {
         dependsOn(remap)
