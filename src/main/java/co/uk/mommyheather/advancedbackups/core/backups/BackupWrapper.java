@@ -437,13 +437,8 @@ public class BackupWrapper {
             File dependent = getDependent(file);
             if (dependent == null) {
                 //either a broken differential / incremental chain, a full backup with no dependencies or a zip backup
-                System.out.println("Deleting full / broken partial backup with name : " + file.toString());
-                System.out.println("File exists : " + file.exists());
-                if (file.isDirectory()) System.out.println("This is a directory!");
                 if (file.isDirectory()) deleteDirectoryContents(file);
-                boolean flag = file.delete();
-                System.out.println("Backup deleted : " + flag);
-                System.out.println("File exists : " + file.exists());
+                file.delete();
                 //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             }
             else {
@@ -463,8 +458,6 @@ public class BackupWrapper {
                     }
                 }
                 else {
-                    System.out.println("Deleting differential backup with name " + file.toString());
-                    if (dependent.isDirectory()) System.out.println("This is a directory!");
                     if (dependent.isDirectory()) deleteDirectoryContents(dependent);
                     dependent.delete();
                 }
@@ -574,70 +567,5 @@ public class BackupWrapper {
             file.delete();
         }
     }
-    
-    
-    /*private static void checkSize(File directory) {
-        if (ConfigManager.size.get() <= 0F) return;
-        if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-        long date = 0;
-        
-        switch(ConfigManager.type.get()) {
-            case "zip" : {
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    file.delete();
-                }
-            }
-            case "differential" : {
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    if (file.getName().contains("full")) {
-                        File nextFile = getFirstBackupAfterDate(directory, date);
-                        if (nextFile.getName().contains("partial")) {
-                            nextFile.delete();
-                        }
-                        else {
-                            file.delete();
-                        }
-                    }
-                    else {
-                        file.delete();
-                    }
-                    
-                }
-            }
-            case "incremental" : {
-                if (!ConfigManager.purgeIncrementals.get()) return;
-                while (true) {
-                    if (calculateDirectorySize(directory) < ConfigManager.size.get() * 1000000000L) return;
-                    if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
-                    ABCore.errorLogger.accept("Purging incremental backup chain - too much space taken up!");
-                    File file = getFirstBackupAfterDate(directory, date);
-                    date = file.lastModified();
-                    if (file.getName().contains("full")) {
-                        file.delete();
-                        while (true) {
-                            file = getFirstBackupAfterDate(directory, date);
-                            date = file.lastModified();
-                            if (!file.getName().contains("full")) {
-                                file.delete();
-                            }
-                            else {
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        file.delete();
-                    }
-                    
-                }
-            }
-            
-        }
-    }*/
+
 }
