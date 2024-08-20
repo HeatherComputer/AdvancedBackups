@@ -590,7 +590,7 @@ jobs:
             fabric
             quilt
         game-versions: |
-            [1.21]
+            [1.21,1.21.1]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
@@ -702,7 +702,7 @@ jobs:
         loaders: |
             neoforge
         game-versions: |
-            [1.21]
+            [1.21,1.21.1]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
@@ -731,23 +731,8 @@ jobs:
             spigot
             paper
         game-versions: |
-            [1.21]
+            [1.21,1.21.1]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
-
-
-    - name:  Upload Spigot 1.21 (Hangar)
-
-      if: inputs.version == 'Spigot 1.21' || inputs.version == 'All'
-      uses: benwoo1110/hangar-upload-action@v1
-      with:
-
-        slug: AdvancedBackups
-        api_token: ${{ secrets.HANGAR_TOKEN }}
-        version: ${{ steps.version.outputs.VERSION }}
-        channel: Release
-        #Supposedly, this is how it's done... hmm
-        files: '[{"path": "AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar/AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar", "platforms": ["PAPER"]}]'
-        description: ${{ vars.CHANGELOG }}
 
