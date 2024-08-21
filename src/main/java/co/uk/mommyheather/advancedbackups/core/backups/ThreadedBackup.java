@@ -519,7 +519,7 @@ public class ThreadedBackup extends Thread {
             for (String backupName : file.list()) {
                 if (backupName.contains("incomplete")) {
                     File file2 = new File(file, backupName);
-                    File file3 = new File(file, backupName.replace("incomplete", "backup"));
+                    File file3 = new File(file, backupName.replace("incomplete", "backupv4"));
                     file2.renameTo(file3);
                 }
             }
