@@ -200,8 +200,8 @@ public class ConfigManager {
 
         for (String string : whitelist.get()) {
 
+            string = string.replace("?{worldfolder}", ABCore.worldDir.getParent().toString());
             string = string.replace("\\", "/");
-            string = string.replace("${worldpath}", ABCore.worldDir.toString());
             string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
             string = "^" + string.replace("*", ".*") + "$";
 
