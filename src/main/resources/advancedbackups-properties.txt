@@ -27,14 +27,14 @@ config.advancedbackups.type
 #A list of files, relative paths within the world directory, to skip backing up.
 #The blacklist has priority.
 #Comma separated, * is a wildcard, and backslashes are replaced with forward slashes.
-# ${worldfolder} is a placeholder that maps to the world's folder.
-#Default : ${worldfolder},${worldfolder}_nether,${worldfolder}_end
+# ?{worldfolder} is a placeholder that maps to the world's folder.
+#Default : ?{worldfolder},?{worldfolder}_nether,?{worldfolder}_end
 config.advancedbackups.whitelist
 
 #A list of files, relative paths within the instance root directory, to skip backing up.
 #Takes priority over the whitelist.
 #Comma separated, * is a wildcard, and backslashes are replaced with forward slashes.
-# ${worldfolder} is a placeholder that maps to the world's folder.
+# ?{worldfolder} is a placeholder that maps to the world's folder.
 #Default : *session.lock,*.dat_old
 config.advancedbackups.blacklist
 
