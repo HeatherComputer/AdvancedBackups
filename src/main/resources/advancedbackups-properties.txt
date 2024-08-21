@@ -25,8 +25,17 @@ config.advancedbackups.activity
 config.advancedbackups.type
 
 #A list of files, relative paths within the world directory, to skip backing up.
+#The blacklist has priority.
 #Comma separated, * is a wildcard, and backslashes are replaced with forward slashes.
-#Default : session.lock,*.dat_old
+# ${worldfolder} is a placeholder that maps to the world's folder.
+#Default : ${worldfolder}*
+config.advancedbackups.whitelist
+
+#A list of files, relative paths within the instance root directory, to skip backing up.
+#Takes priority over the whitelist.
+#Comma separated, * is a wildcard, and backslashes are replaced with forward slashes.
+# ${worldfolder} is a placeholder that maps to the world's folder.
+#Default : ${worldfolder}/session.lock,${worldfolder}/*.dat_old
 config.advancedbackups.blacklist
 
 #The absolute or relative path to the backup location.
