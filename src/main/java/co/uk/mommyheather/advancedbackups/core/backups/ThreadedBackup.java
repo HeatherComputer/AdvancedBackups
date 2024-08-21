@@ -49,6 +49,7 @@ public class ThreadedBackup extends Thread {
     private ArrayList<String> erroringFiles = new ArrayList<>();
 
     public static final ArrayList<Pattern> blacklist = new ArrayList<>();
+    public static final ArrayList<Pattern> whitelist = new ArrayList<>();
 
     static {
         builder.setPrettyPrinting();

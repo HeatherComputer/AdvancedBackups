@@ -189,10 +189,23 @@ public class ConfigManager {
         for (String string : blacklist.get()) {
 
             string = string.replace("\\", "/");
+            string = string.replace("${worldpath}", ABCore.worldDir.toString());
             string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
             string = "^" + string.replace("*", ".*") + "$";
 
             ThreadedBackup.blacklist.add(Pattern.compile(string, Pattern.CASE_INSENSITIVE));            
+        }
+
+        ThreadedBackup.whitelist.clear();
+
+        for (String string : whitelist.get()) {
+
+            string = string.replace("\\", "/");
+            string = string.replace("${worldpath}", ABCore.worldDir.toString());
+            string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
+            string = "^" + string.replace("*", ".*") + "$";
+
+            ThreadedBackup.whitelist.add(Pattern.compile(string, Pattern.CASE_INSENSITIVE));            
         }
         
 
