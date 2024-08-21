@@ -35,9 +35,8 @@ public class ConfigManager {
     public static final LongValue buffer = new LongValue("config.advancedbackups.buffer", 1048576, 1024, Integer.MAX_VALUE, ConfigManager::register); //5mb
     public static final BooleanValue flush  = new BooleanValue("config.advancedbackups.flush", false, ConfigManager::register);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true, ConfigManager::register);
-    //The whitelist is ${worldfolder}* rather than ${worldfolder}/* to also grab non-overworld dimensions in plugin setups that separate them.
-    public static final StringArrayValue whitelist = new StringArrayValue("config.advancedbackups.whitelist", new String[] {"${worldfolder}*"}, ConfigManager::register);
-    public static final StringArrayValue blacklist = new StringArrayValue("config.advancedbackups.blacklist", new String[] {"${worldfolder}/session.lock","${worldfolder}/*_old"}, ConfigManager::register);
+    public static final StringArrayValue whitelist = new StringArrayValue("config.advancedbackups.whitelist", new String[] {"${worldfolder}", "${worldfolder}_nether", "${worldfolder}_the_end"}, ConfigManager::register);
+    public static final StringArrayValue blacklist = new StringArrayValue("config.advancedbackups.blacklist", new String[] {"*session.lock","*_old"}, ConfigManager::register);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"}, ConfigManager::register);
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups", ConfigManager::register);
     public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.25F, 0F, 500F, ConfigManager::register);
