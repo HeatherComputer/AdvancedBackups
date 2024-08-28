@@ -1,7 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
     }
@@ -10,8 +12,9 @@ buildscript {
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'com.gradleup.shadow' version '8.3.0'
+    id 'java'
 }
-apply plugin: 'java'
 
 if(file('customTasks.gradle').exists()){
     apply from: 'customTasks.gradle'  //customTasks.gradle won't exist in git
@@ -35,9 +38,9 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    // configuration that holds jars to include in the jar
-    extraLibs
+tasks.named('shadowJar', ShadowJar) {
+    enableRelocation true
+    archiveClassifier.set('')
 }
 
 dependencies {
@@ -45,9 +48,8 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     //extraLibs 'com.sun.jna.platform:5.13.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    compileOnly 'com.google.code.gson:gson:2.10.1'
     implementation 'org.fusesource.jansi:jansi:2.4.0'
-    extraLibs 'org.fusesource.jansi:jansi:2.4.0'
  
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -75,9 +77,6 @@ jar {
                 "Implementation-Vendor"   : "raveninthedark",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }    
-    from {
-            configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
