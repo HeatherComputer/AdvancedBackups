@@ -31,6 +31,7 @@ public class BackupWrapper {
         //do it here to prevent excess file i/o and reduce work needed for support on a version-by-version basis
         
         prepareBackupDestination();
+        ABCore.enableSaving();
         
         File file = new File(ABCore.backupPath);
         File backupManifest = new File(file, "manifest.json");
@@ -295,7 +296,7 @@ public class BackupWrapper {
     public static void makeSingleBackup(long delay, Consumer<String> output, boolean shutdown) {
         
         try {  
-            ABCore.disableSaving();
+            if (!shutdown) ABCore.disableSaving();
             if (ConfigManager.save.get()) {
                 ABCore.saveOnce();
             }
