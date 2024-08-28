@@ -1,28 +1,28 @@
 package co.uk.mommyheather.advancedbackups.core;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.util.function.Consumer;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-
 import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
 import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
 import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
 import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.util.function.Consumer;
 
 public class CoreCommandSystem {
-    private static GsonBuilder builder = new GsonBuilder(); 
-    private static Gson gson;    
+    private static GsonBuilder builder = new GsonBuilder();
+    private static Gson gson;
+
     static {
         builder.setPrettyPrinting();
         gson = builder.create();
     }
-    
+
 
     //These methods are all called by relevant command classes in version specific code
     public static void startBackup(Consumer<String> chat) {
@@ -65,11 +65,11 @@ public class CoreCommandSystem {
             if (backupManifest.exists()) {
                 try {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
-                    
+
                     manifest.incremental.chainLength += (int) ConfigManager.length.get();
                     manifest.differential.chainLength += (int) ConfigManager.length.get();
-                    
-                    
+
+
                     FileWriter writer = new FileWriter(backupManifest);
                     writer.write(gson.toJson(manifest));
                     writer.flush();
@@ -79,9 +79,9 @@ public class CoreCommandSystem {
                     chat.accept("Malformed backup manifest! Will be completely replaced, with no side effects...");
                     chat.accept("Check logs for more info.");
                     ABCore.logStackTrace(e);
-                    
+
                     BackupManifest manifest = BackupManifest.defaults();
-                    
+
                     //don't actually need to set them here
 
                     FileWriter writer = new FileWriter(backupManifest);
@@ -90,10 +90,7 @@ public class CoreCommandSystem {
                     writer.close();
 
                 }
-    
-            }
-
-            else {
+            } else {
                 chat.accept("No manifest file exists.");
             }
         } catch (Exception e) {

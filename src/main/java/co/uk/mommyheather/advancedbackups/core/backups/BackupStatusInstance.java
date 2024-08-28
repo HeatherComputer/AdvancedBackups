@@ -22,14 +22,10 @@ public class BackupStatusInstance {
 
     private static synchronized BackupStatusInstance copyInstance(BackupStatusInstance in) {
         BackupStatusInstance other = new BackupStatusInstance();
-
         other.setMax(in.getMax());
         other.setProgress(in.getProgress());
         other.setState(in.getState());
         other.setAge(in.getAge());
-
-        
-
         return other;
 
     }
@@ -37,7 +33,7 @@ public class BackupStatusInstance {
     public State getState() {
         return state;
     }
-    
+
     public void setState(State state) {
         this.state = state;
     }
@@ -53,7 +49,7 @@ public class BackupStatusInstance {
     public int getMax() {
         return max;
     }
-    
+
     public void setMax(int max) {
         this.max = max;
     }

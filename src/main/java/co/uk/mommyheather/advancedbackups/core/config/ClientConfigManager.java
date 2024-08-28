@@ -1,5 +1,10 @@
 package co.uk.mommyheather.advancedbackups.core.config;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.BooleanValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.ConfigValidationEnum;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.LongValue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,18 +18,14 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.*;
-
 public class ClientConfigManager {
 
     private static HashMap<String, ConfigTypes> entries = new HashMap<>();
 
-    
+
     public static void register(String key, ConfigTypes configType) {
         entries.put(key, configType);
     }
-
 
 
     public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true, ClientConfigManager::register);
@@ -48,9 +49,6 @@ public class ClientConfigManager {
     public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255, ClientConfigManager::register);
 
 
-
-
-
     public static void loadOrCreateConfig() {
         // Called when the config needs to be loaded, but one may not exist.
         // Creates a new config it one doesn't exist, then loads it.
@@ -63,7 +61,6 @@ public class ClientConfigManager {
             writeConfig();
         }
         loadConfig();
-  
     }
 
     private static void writeConfig() {
@@ -73,13 +70,11 @@ public class ClientConfigManager {
         File file = new File("./config/AdvancedBackups-client.properties");
         try {
             file.createNewFile();
-            file.setWritable(true); 
+            file.setWritable(true);
             InputStream is = ClientConfigManager.class.getClassLoader().getResourceAsStream("advancedbackups-client-properties.txt");
 
-            String text = new BufferedReader(
-                new InputStreamReader(is, StandardCharsets.UTF_8))
-                  .lines()
-                  .collect(Collectors.joining("\n"));
+            String text = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+                .lines().collect(Collectors.joining("\n"));
 
             for (String key : entries.keySet()) {
                 text = text.replace(key, key + "=" + entries.get(key).save());
@@ -97,12 +92,11 @@ public class ClientConfigManager {
 
     private static void loadConfig() {
         //Load the config file.
-        
         Properties props = new Properties();
         File file = new File("./config/AdvancedBackups-client.properties");
         FileReader reader;
         try {
-            reader = new FileReader(file);   
+            reader = new FileReader(file);
             props.load(reader);
             reader.close();
         } catch (IOException e) {
