@@ -1,5 +1,13 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
+import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,17 +32,8 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
-import co.uk.mommyheather.advancedbackups.core.backups.gson.HashList;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
-
 public class ThreadedBackup extends Thread {
-    private static GsonBuilder builder = new GsonBuilder(); 
+    private static GsonBuilder builder = new GsonBuilder();
     private static Gson gson;
     private long delay;
     private static int count;
@@ -54,7 +53,7 @@ public class ThreadedBackup extends Thread {
         builder.setPrettyPrinting();
         gson = builder.create();
     }
-    
+
     public ThreadedBackup(long delay, Consumer<String> output) {
         setName("AB Active Backup Thread");
         this.output = output;
@@ -76,7 +75,7 @@ public class ThreadedBackup extends Thread {
             instance.setAge(System.currentTimeMillis());
             instance.setState(BackupStatusInstance.State.STARTING);
             BackupStatusInstance.setInstance(instance);
-        };
+        }
 
         try {
             makeBackup();
@@ -85,7 +84,6 @@ public class ThreadedBackup extends Thread {
                 instance.setAge(System.currentTimeMillis());
                 instance.setState(BackupStatusInstance.State.COMPLETE);
                 BackupStatusInstance.setInstance(instance);
-                
             }
         } catch (InterruptedException e) {
             output.accept("Backup cancelled!");
@@ -117,8 +115,7 @@ public class ThreadedBackup extends Thread {
         BackupWrapper.finishBackup(snapshot);
         if (erroringFiles.isEmpty()) {
             output.accept("Backup complete!");
-        }
-        else {
+        } else {
             output.accept("Backup completed with errors - the following files could not be backed up.");
             output.accept("Check the logs for more information :");
             for (String string : erroringFiles) {
@@ -143,16 +140,16 @@ public class ThreadedBackup extends Thread {
             return;
         }
 
-        switch(ConfigManager.type.get()) {
-            case "zip" : {
+        switch (ConfigManager.type.get()) {
+            case "zip": {
                 makeZipBackup(file, false);
                 break;
             }
-            case "differential" : {
+            case "differential": {
                 makeDifferentialOrIncrementalBackup(file, true);
                 break;
             }
-            case "incremental" : {
+            case "incremental": {
                 makeDifferentialOrIncrementalBackup(file, false);
                 break;
             }
@@ -186,10 +183,8 @@ public class ThreadedBackup extends Thread {
                     if (matchesBlacklist(targetFile)) return FileVisitResult.CONTINUE;
 
                     paths.add(file);
-
-                
                     return FileVisitResult.CONTINUE;
-                    }
+                }
             });
 
             Path targetFile;
@@ -218,15 +213,13 @@ public class ThreadedBackup extends Thread {
                             if (i < 0) break;
                             zipOutputStream.write(bytes, 0, i);
                         }
-    
                         is.close();
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         ABCore.errorLogger.accept("Error backing up file : " + targetFile.toString());
                         ABCore.logStackTrace(e);
                         erroringFiles.add(targetFile.toString());
                     }
-                    
+
                     zipOutputStream.closeEntry();
                     //We need to handle interrupts in various styles in different parts of the process!
                     if (isInterrupted()) {
@@ -243,25 +236,21 @@ public class ThreadedBackup extends Thread {
                         instance.setState(BackupStatusInstance.State.STARTED);
                         BackupStatusInstance.setInstance(instance);
                     }
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     ABCore.logStackTrace(e);
                     ABCore.errorLogger.accept(file.toString());
                     throw e;
                 }
-                
             }
 
             zipOutputStream.flush();
             zipOutputStream.close();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             ABCore.logStackTrace(e);
             throw e;
         }
-        
     }
-    
 
 
     private void makeDifferentialOrIncrementalBackup(File location, boolean differential) throws InterruptedException, IOException {
@@ -285,8 +274,7 @@ public class ThreadedBackup extends Thread {
 
                     manifest = BackupManifest.defaults();
                 }
-            }
-            else {
+            } else {
                 manifest = BackupManifest.defaults();
             }
 
@@ -305,7 +293,7 @@ public class ThreadedBackup extends Thread {
 
 
             boolean completeTemp = chain >= ConfigManager.length.get() ? true : false;
-            
+
             Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
@@ -341,8 +329,8 @@ public class ThreadedBackup extends Thread {
             if (complete || !differential) {
                 comp.putAll(newHashes);
             }
-            
-            backupName += complete? "-full":"-partial";
+
+            backupName += complete ? "-full" : "-partial";
 
 
             //We need to handle interrupts in various styles in different parts of the process!
@@ -352,14 +340,14 @@ public class ThreadedBackup extends Thread {
             }
 
             if (ConfigManager.compressChains.get()) {
-                File zip = differential ? new File(location.toString() + "/differential/", backupName +".zip") : new File(location.toString() + "/incremental/", backupName +".zip");
+                File zip = differential ? new File(location.toString() + "/differential/", backupName + ".zip") : new File(location.toString() + "/incremental/", backupName + ".zip");
                 FileOutputStream outputStream = new FileOutputStream(zip);
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 zipOutputStream.setLevel((int) ConfigManager.compression.get());
 
                 int max = toBackup.size();
                 int index = 0;
-    
+
                 if (!shutdown) {
                     BackupStatusInstance instance = new BackupStatusInstance();
                     instance.setAge(System.currentTimeMillis());
@@ -380,8 +368,7 @@ public class ThreadedBackup extends Thread {
                             zipOutputStream.write(bytes, 0, i);
                         }
                         is.close();
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         ABCore.errorLogger.accept("Error backing up file : " + path.toString());
                         ABCore.logStackTrace(e);
                         erroringFiles.add(path.toString());
@@ -408,13 +395,12 @@ public class ThreadedBackup extends Thread {
                 zipOutputStream.close();
 
                 time = zip.lastModified();
-            }
-            else {
-                File dest = differential ? new File(location.toString() + "/differential/", backupName + "/") :new File(location.toString() + "/incremental/", backupName + "/");
+            } else {
+                File dest = differential ? new File(location.toString() + "/differential/", backupName + "/") : new File(location.toString() + "/incremental/", backupName + "/");
                 dest.mkdirs();
                 int max = toBackup.size();
                 int index = 0;
-                
+
                 if (!shutdown) {
                     BackupStatusInstance instance = new BackupStatusInstance();
                     instance.setAge(System.currentTimeMillis());
@@ -447,18 +433,15 @@ public class ThreadedBackup extends Thread {
                 if (differential) {
                     manifest.differential.setChainLength(0);
                     manifest.differential.setLastBackup(new Date().getTime());
-                }
-                else {
+                } else {
                     manifest.incremental.setChainLength(0);
                     manifest.incremental.setLastBackup(new Date().getTime());
                 }
-            }
-            else {
+            } else {
                 if (differential) {
                     manifest.differential.chainLength++;
                     //manifest.differential.setLastBackup(new Date().getTime());
-                }
-                else {
+                } else {
                     manifest.incremental.chainLength++;
                     manifest.incremental.setLastBackup(new Date().getTime());
                 }
@@ -468,7 +451,6 @@ public class ThreadedBackup extends Thread {
             writer.write(gson.toJson(manifest));
             writer.flush();
             writer.close();
-    
         } catch (IOException e) {
             ABCore.logStackTrace(e);
             throw e;
@@ -486,10 +468,8 @@ public class ThreadedBackup extends Thread {
     }
 
 
-
     private String getFileHash(Path path) {
         try {
-            
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] data = new byte[(int) ConfigManager.buffer.get()];
             FileInputStream is = new FileInputStream(path.toFile());
@@ -514,7 +494,7 @@ public class ThreadedBackup extends Thread {
 
     public static void performRename(File location) {
         //Renames all incomplete backups to no longer have the incomplete marker. This is only done after a successful backup!
-        for (String string : new String[] {"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
+        for (String string : new String[]{"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
             File file = new File(location, string);
             for (String backupName : file.list()) {
                 if (backupName.contains("incomplete")) {
@@ -525,10 +505,10 @@ public class ThreadedBackup extends Thread {
             }
         }
     }
-    
+
     private void performDelete(File location) {
         //Purges all incomplete backups. This is only done after a cancelled or failed backup!
-        for (String string : new String[] {"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
+        for (String string : new String[]{"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
             File file = new File(location, string);
             for (String backupName : file.list()) {
                 if (backupName.contains("incomplete")) {
@@ -540,7 +520,6 @@ public class ThreadedBackup extends Thread {
     }
 
     private static boolean matchesBlacklist(Path path) {
-        
         for (Pattern pattern : blacklist) {
             Matcher matcher = pattern.matcher(path.toString().replace("\\", "/"));
             if (matcher.matches()) return true;
