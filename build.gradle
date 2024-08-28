@@ -46,8 +46,8 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     //extraLibs 'com.sun.jna.platform:5.13.0'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation files('dependencies/jansi-2.4.0.jar')
-    extraLibs files('dependencies/jansi-2.4.0.jar')
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
+    extraLibs 'org.fusesource.jansi:jansi:2.4.0'
  
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
