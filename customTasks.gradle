@@ -8,7 +8,7 @@ task copyToOtherVersions
 
 
 copyDestinations.eachWithIndex { outputDir, index ->
-    task "copyTo-${outputDir.substring(3)}" (type: Copy, dependsOn: 'jar') {
+    task "copyTo-${outputDir.substring(3)}" (type: Copy, dependsOn: 'shadowJar') {
         doNotTrackState("Must run!")
         from jar
         into outputDir
