@@ -49,6 +49,9 @@ public class ThreadedBackup extends Thread {
     private ArrayList<String> erroringFiles = new ArrayList<>();
 
     public static final ArrayList<Pattern> blacklist = new ArrayList<>();
+    public static final ArrayList<Pattern> whitelist = new ArrayList<>();
+
+    private static final Path root = new File("").toPath();
 
     static {
         builder.setPrettyPrinting();
@@ -306,15 +309,16 @@ public class ThreadedBackup extends Thread {
 
             boolean completeTemp = chain >= ConfigManager.length.get() ? true : false;
             
-            Files.walkFileTree(ABCore.worldDir, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
                     Path targetFile;
-                    targetFile = ABCore.worldDir.relativize(file);
-                    if (targetFile.toFile().getName().compareTo("session.lock") == 0) {
+                    targetFile = root.relativize(file);
+                    if (targetFile.toFile().getName().equals("session.lock")) {
                         return FileVisitResult.CONTINUE;
                     }
                     if (matchesBlacklist(targetFile)) return FileVisitResult.CONTINUE;
+                    if (!matchesWhitelist(targetFile)) return FileVisitResult.CONTINUE;
                     count++;
                     completeSize += attributes.size();
                     String hash = getFileHash(file.toAbsolutePath());
@@ -373,7 +377,7 @@ public class ThreadedBackup extends Thread {
 
                     byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
                     try {
-                        FileInputStream is = new FileInputStream(new File(ABCore.worldDir.toString(), path.toString()));
+                        FileInputStream is = new FileInputStream(new File(path.toString()));
                         while (true) {
                             int i = is.read(bytes);
                             if (i < 0) break;
@@ -519,7 +523,7 @@ public class ThreadedBackup extends Thread {
             for (String backupName : file.list()) {
                 if (backupName.contains("incomplete")) {
                     File file2 = new File(file, backupName);
-                    File file3 = new File(file, backupName.replace("incomplete", "backup"));
+                    File file3 = new File(file, backupName.replace("incomplete", "backupv4"));
                     file2.renameTo(file3);
                 }
             }
@@ -543,6 +547,20 @@ public class ThreadedBackup extends Thread {
         
         for (Pattern pattern : blacklist) {
             Matcher matcher = pattern.matcher(path.toString().replace("\\", "/"));
+            if (matcher.matches()) return true;
+            matcher = pattern.matcher(("./" + path.toString().replace("\\", "/")));
+            if (matcher.matches()) return true;
+        }
+
+        return false;
+    }
+
+    private static boolean matchesWhitelist(Path path) {
+        
+        for (Pattern pattern : whitelist) {
+            Matcher matcher = pattern.matcher(path.toString().replace("\\", "/"));
+            if (matcher.matches()) return true;
+            matcher = pattern.matcher(("./" + path.toString().replace("\\", "/")));
             if (matcher.matches()) return true;
         }
 
