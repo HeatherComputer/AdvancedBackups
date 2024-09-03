@@ -5,6 +5,8 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
 }
 
+apply from: '../../global.properties'
+
 group = mod_group_id
 
 base {
@@ -147,8 +149,8 @@ dependencies {
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 
-    minecraftLibrary files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    minecraftLibrary files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
