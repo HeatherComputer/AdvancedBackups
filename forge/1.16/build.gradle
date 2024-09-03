@@ -12,6 +12,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
+apply from: '../../global.properties'
+
 group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
@@ -32,7 +34,7 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'official', version: '1.16.5'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -42,7 +44,7 @@ minecraft {
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
-            // The markers can be changed as needed. 
+            // The markers can be changed as needed.
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
@@ -64,7 +66,7 @@ minecraft {
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
-            // The markers can be changed as needed. 
+            // The markers can be changed as needed.
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
@@ -86,7 +88,7 @@ minecraft {
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
-            // The markers can be changed as needed. 
+            // The markers can be changed as needed.
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
@@ -123,8 +125,9 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
-    implementation files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    implementation files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
+
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
@@ -170,7 +173,7 @@ jar {
             "Implementation-Vendor"   : "mommyheather",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }    
+    }
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -178,7 +181,7 @@ jar {
 
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
+jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 //publish.dependsOn('reobfJar')
 

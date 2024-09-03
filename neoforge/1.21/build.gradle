@@ -16,6 +16,8 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
+apply from: '../../global.properties'
+
 group = mod_group_id
 
 version = "${version != 'unspecified' ? version : '0.1-dev'}" //debuggins sake
@@ -106,9 +108,8 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    
-    implementation files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    implementation files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -164,7 +165,7 @@ tasks.named('jar', Jar).configure {
                 "Implementation-Vendor"   : "mommyheather",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }    
+    }
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }

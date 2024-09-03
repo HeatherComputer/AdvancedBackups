@@ -7,6 +7,9 @@ plugins {
     id 'maven-publish'
     id 'io.github.patrick.remapper' version "1.4.2"
 }
+
+apply from: '../../global.properties'
+
 group = 'computer.heather.AdvancedBackups'
 description = 'AdvancedBackups'
 java.sourceCompatibility = JavaVersion.VERSION_21
@@ -35,8 +38,8 @@ configurations {
 dependencies {
     compileOnly("org.spigotmc:spigot:1.21.1-R0.1-SNAPSHOT:remapped-mojang")
 
-    implementation files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    implementation files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
 }
 
 
@@ -65,7 +68,7 @@ tasks.named('jar', Jar).configure {
                 "Implementation-Vendor"   : "mommyheather",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }    
+    }
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }

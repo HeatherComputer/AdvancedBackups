@@ -3,6 +3,8 @@ plugins {
 	id 'maven-publish'
 }
 
+apply from: '../../global.properties'
+
 group = project.maven_group
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
@@ -37,8 +39,8 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-    implementation files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    implementation files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
 }
 
 processResources {

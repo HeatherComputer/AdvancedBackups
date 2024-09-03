@@ -7,8 +7,7 @@ plugins {
   id("com.gtnewhorizons.retrofuturagradle") version "1.2.5"
 }
 
-
-
+apply from: '../../global.properties'
 
 //version = "2.0"
 group = "co.uk.mommyheather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -105,9 +104,10 @@ val extraLibs by configurations.creating
 dependencies {
   // Adds NotEnoughItems and its dependencies (CCL&CCC) to runClient/runServer
   runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.3.39-GTNH:dev")
-  
-  implementation  (files("advancedbackups-corelib.jar"))
-  extraLibs (files("advancedbackups-corelib.jar"))
+
+  implementation files(abCoreLibPath)
+  extraLibs files(abCoreLibPath)
+
   // Example: grab the ic2 jar from curse maven and deobfuscate
   // api(rfg.deobf("curse.maven:ic2-242638:2353971"))
   // Example: grab the ic2 jar from libs/ in the workspace and deobfuscate
@@ -144,7 +144,7 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI"
         attributes["Implementation-Version"] = "${version}"
-    } 
+    }
 }
 
 

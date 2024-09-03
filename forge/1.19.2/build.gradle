@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-
+apply from: '../../global.properties'
 
 group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
@@ -121,8 +121,8 @@ dependencies {
     //implementation files('dependencies/jansi-2.4.0.jar')
     //extraLibs files('dependencies/jansi-2.4.0.jar')
 
-    minecraftLibrary files ('advancedbackups-corelib.jar')
-    extraLibs files ('advancedbackups-corelib.jar')
+    minecraftLibrary files(abCoreLibPath)
+    extraLibs files(abCoreLibPath)
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -161,7 +161,7 @@ jar {
                 "Implementation-Vendor"   : "mommyheather",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
-    }    
+    }
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
