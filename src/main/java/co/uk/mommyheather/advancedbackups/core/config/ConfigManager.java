@@ -1,5 +1,16 @@
 package co.uk.mommyheather.advancedbackups.core.config;
 
+import co.uk.mommyheather.advancedbackups.core.ABCore;
+import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
+import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.BooleanValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.ConfigValidationEnum;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.FloatValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.FreeStringValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.LongValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.StringArrayValue;
+import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.ValidatedStringValue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,33 +26,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.*;
-
 public class ConfigManager {
 
     private static HashMap<String, ConfigTypes> entries = new HashMap<>();
 
-    
+
     public static void register(String key, ConfigTypes configType) {
         entries.put(key, configType);
     }
 
-    
+
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true, ConfigManager::register);
     public static final BooleanValue save = new BooleanValue("config.advancedbackups.save", true, ConfigManager::register);
     public static final LongValue buffer = new LongValue("config.advancedbackups.buffer", 1048576, 1024, Integer.MAX_VALUE, ConfigManager::register); //5mb
-    public static final BooleanValue flush  = new BooleanValue("config.advancedbackups.flush", false, ConfigManager::register);
+    public static final BooleanValue flush = new BooleanValue("config.advancedbackups.flush", false, ConfigManager::register);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true, ConfigManager::register);
-    public static final StringArrayValue blacklist = new StringArrayValue("config.advancedbackups.blacklist", new String[] {"session.lock","*_old"}, ConfigManager::register);
+    public static final StringArrayValue blacklist = new StringArrayValue("config.advancedbackups.blacklist", new String[]{"session.lock", "*_old"}, ConfigManager::register);
     public static final ValidatedStringValue type = new ValidatedStringValue("config.advancedbackups.type", "differential", new String[]{"zip", "differential", "incremental"}, ConfigManager::register);
     public static final FreeStringValue path = new FreeStringValue("config.advancedbackups.path", "./backups", ConfigManager::register);
     public static final FloatValue minFrequency = new FloatValue("config.advancedbackups.frequency.min", 0.25F, 0F, 500F, ConfigManager::register);
     public static final FloatValue maxFrequency = new FloatValue("config.advancedbackups.frequency.max", 24F, 0.5F, 500F, ConfigManager::register);
     public static final BooleanValue uptime = new BooleanValue("config.advancedbackups.frequency.uptime", true, ConfigManager::register);
-    public static final StringArrayValue timesArray = new StringArrayValue("config.advancedbackups.frequency.schedule", new String[] {"1:00"}, ConfigManager::register);
+    public static final StringArrayValue timesArray = new StringArrayValue("config.advancedbackups.frequency.schedule", new String[]{"1:00"}, ConfigManager::register);
     public static final BooleanValue shutdown = new BooleanValue("config.advancedbackups.frequency.shutdown", false, ConfigManager::register);
     public static final BooleanValue startup = new BooleanValue("config.advancedbackups.frequency.startup", false, ConfigManager::register);
     public static final LongValue delay = new LongValue("config.advancedbackups.frequency.delay", 30, 5, 1000, ConfigManager::register);
@@ -52,7 +58,7 @@ public class ConfigManager {
      * Console - enable or disable console logging for backup progress. Start / finish are always logged.
      * Console frequency - how often progress is logged in console.
      */
-    public static final ValidatedStringValue clients = new ValidatedStringValue("config.advancedbackups.logging.clients", "ops", new String[] {"ops", "all", "none"}, ConfigManager::register);
+    public static final ValidatedStringValue clients = new ValidatedStringValue("config.advancedbackups.logging.clients", "ops", new String[]{"ops", "all", "none"}, ConfigManager::register);
     public static final LongValue clientFrequency = new LongValue("config.advancedbackups.logging.clientfrequency", 500L, 0L, Long.MAX_VALUE, ConfigManager::register);
     public static final BooleanValue console = new BooleanValue("config.advancedbackups.logging.console", true, ConfigManager::register);
     public static final LongValue consoleFrequency = new LongValue("config.advancedbackups.logging.consolefrequency", 5000L, 0L, Long.MAX_VALUE, ConfigManager::register);
@@ -66,9 +72,6 @@ public class ConfigManager {
     public static final LongValue backupsToKeep = new LongValue("config.advancedbackups.purge.count", 0L, 0L, Long.MAX_VALUE, ConfigManager::register);
     public static final BooleanValue purgeIncrementals = new BooleanValue("config.advancedbackups.purge.incrementals", true, ConfigManager::register);
     public static final LongValue incrementalChains = new LongValue("config.advancedbackups.purge.incrementalchains", 1, 1, Long.MAX_VALUE, ConfigManager::register);
-
-
-
 
 
     public static void loadOrCreateConfig() {
@@ -87,7 +90,6 @@ public class ConfigManager {
             writeConfig();
         }
         loadConfig();
-  
     }
 
     private static void writeConfig() {
@@ -97,13 +99,11 @@ public class ConfigManager {
         File file = new File("./config/AdvancedBackups.properties");
         try {
             file.createNewFile();
-            file.setWritable(true); 
+            file.setWritable(true);
             InputStream is = ConfigManager.class.getClassLoader().getResourceAsStream("advancedbackups-properties.txt");
 
-            String text = new BufferedReader(
-                new InputStreamReader(is, StandardCharsets.UTF_8))
-                  .lines()
-                  .collect(Collectors.joining("\n"));
+            String text = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+                .lines().collect(Collectors.joining("\n"));
 
             for (String key : entries.keySet()) {
                 Matcher matcher = Pattern.compile(Pattern.quote(key) + "$", Pattern.MULTILINE).matcher(text);
@@ -122,12 +122,11 @@ public class ConfigManager {
 
     private static void loadConfig() {
         //Load the config file.
-        
         Properties props = new Properties();
         File file = new File("./config/AdvancedBackups.properties");
         FileReader reader;
         try {
-            reader = new FileReader(file);   
+            reader = new FileReader(file);
             props.load(reader);
             reader.close();
         } catch (IOException e) {
@@ -172,11 +171,11 @@ public class ConfigManager {
             writeConfig();
         }
 
-        
+
         BackupWrapper.configuredPlaytime = new ArrayList<>();
         for (String time : timesArray.get()) {
             String[] hm = time.split(":");
-            long hours = Long.parseLong(hm[0]) * 3600000L; 
+            long hours = Long.parseLong(hm[0]) * 3600000L;
             long mins = Long.parseLong(hm[1]) * 60000;
             BackupWrapper.configuredPlaytime.add(hours + mins);
         }
@@ -191,21 +190,18 @@ public class ConfigManager {
             string = string.replaceAll("[^a-zA-Z0-9*]", "\\\\$0");
             string = "^" + string.replace("*", ".*") + "$";
 
-            ThreadedBackup.blacklist.add(Pattern.compile(string, Pattern.CASE_INSENSITIVE));            
+            ThreadedBackup.blacklist.add(Pattern.compile(string, Pattern.CASE_INSENSITIVE));
         }
-        
-
     }
 
-    
+
     private static void migrateConfig() {
         //Load the config file.
-        
         Properties props = new Properties();
         File file = new File("./AdvancedBackups.properties");
         FileReader reader;
         try {
-            reader = new FileReader(file);   
+            reader = new FileReader(file);
             props.load(reader);
             reader.close();
             file.delete();

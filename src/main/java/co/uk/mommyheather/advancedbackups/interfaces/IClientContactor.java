@@ -11,24 +11,28 @@ public interface IClientContactor {
      */
     @Deprecated
     public void backupStarting(boolean all);
+
     /*
      * This shouldn't be called anymore!
      * Would be private, but that's J9+ and this is J8.
      */
     @Deprecated
     public void backupProgress(int current, int max, boolean all);
+
     /*
      * This shouldn't be called anymore!
      * Would be private, but that's J9+ and this is J8.
      */
     @Deprecated
     public void backupComplete(boolean all);
+
     /*
      * This shouldn't be called anymore!
      * Would be private, but that's J9+ and this is J8.
      */
     @Deprecated
     public void backupFailed(boolean all);
+
     /*
      * This shouldn't be called anymore!
      * Would be private, but that's J9+ and this is J8.
@@ -38,30 +42,29 @@ public interface IClientContactor {
 
 
     public default void handle(BackupStatusInstance instance, boolean all) {
-        
-        switch(instance.getState()) {
-            case STARTING : {
+        switch (instance.getState()) {
+            case STARTING: {
                 backupStarting(all);
                 break;
             }
-            case STARTED : {
+            case STARTED: {
                 backupProgress(instance.getProgress(), instance.getMax(), all);
                 break;
             }
-            case COMPLETE : {
+            case COMPLETE: {
                 backupComplete(all);
                 break;
             }
-            case FAILED : {
+            case FAILED: {
                 backupFailed(all);
                 break;
             }
-            case CANCELLED : {
+            case CANCELLED: {
                 backupCancelled(all);
                 break;
             }
 
-            case INVALID : {
+            case INVALID: {
                 ABCore.errorLogger.accept("Backup state of INVALID was attempted to be sent to clients!");
                 ABCore.logStackTrace(new Exception());
             }
