@@ -3,15 +3,12 @@ package co.uk.mommyheather.advancedbackups.core.config;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import co.uk.mommyheather.advancedbackups.core.ABCore;
 
 public abstract class ConfigTypes {
 
     private String key;
 
-    
+
     public ConfigTypes(String key, BiConsumer<String, ConfigTypes> manager) {
         this.key = key;
         manager.accept(key, this);
@@ -22,7 +19,9 @@ public abstract class ConfigTypes {
     }
 
     public abstract ConfigValidationEnum validate(String in);
+
     public abstract void load(String in);
+
     public abstract String save();
 
 
@@ -32,10 +31,13 @@ public abstract class ConfigTypes {
         VALID;
 
         public String getError() {
-            switch(this) {
-                case OUT_OF_RANGE : return "Value not within specified parameters!";
-                case INCORRECT_FORMAT : return "Value is of an incorrect type!";
-                default : return "";
+            switch (this) {
+                case OUT_OF_RANGE:
+                    return "Value not within specified parameters!";
+                case INCORRECT_FORMAT:
+                    return "Value is of an incorrect type!";
+                default:
+                    return "";
             }
         }
     }
@@ -56,10 +58,10 @@ public abstract class ConfigTypes {
         public long get() {
             return value;
         }
-        
+
         @Override
         public void load(String in) {
-            value = Long.parseLong(in);;
+            value = Long.parseLong(in);
         }
 
         @Override
@@ -151,7 +153,7 @@ public abstract class ConfigTypes {
         public Boolean get() {
             return value;
         }
-        
+
     }
 
     public static class ValidatedStringValue extends ConfigTypes {
@@ -213,7 +215,7 @@ public abstract class ConfigTypes {
 
         public String get() {
             return value;
-        }     
+        }
     }
 
     public static class StringArrayValue extends ConfigTypes {

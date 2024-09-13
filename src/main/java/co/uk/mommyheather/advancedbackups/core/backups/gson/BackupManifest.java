@@ -47,12 +47,13 @@ public class BackupManifest {
         public void setLastBackup(long lastBackup) {
             this.lastBackup = lastBackup;
         }
-        
+
     }
 
     public static class Incremental {
         //holds information specific to incremental backups - mainly, the last backup and the chain length
         public int chainLength;
+        public long lastBackup;
 
         public HashList hashList;
 
@@ -80,10 +81,7 @@ public class BackupManifest {
             this.lastBackup = lastBackup;
         }
 
-        public long lastBackup;
-        
     }
-
 
 
     public General general;
@@ -93,18 +91,23 @@ public class BackupManifest {
     public General getGeneral() {
         return general;
     }
+
     public void setGeneral(General general) {
         this.general = general;
     }
+
     public Differential getDifferential() {
         return differential;
     }
+
     public void setDifferential(Differential differential) {
         this.differential = differential;
     }
+
     public Incremental getIncremental() {
         return incremental;
     }
+
     public void setIncremental(Incremental incremental) {
         this.incremental = incremental;
     }

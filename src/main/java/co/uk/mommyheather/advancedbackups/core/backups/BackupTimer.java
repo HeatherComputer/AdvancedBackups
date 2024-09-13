@@ -1,15 +1,15 @@
 package co.uk.mommyheather.advancedbackups.core.backups;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-
 import co.uk.mommyheather.advancedbackups.core.ABCore;
 import co.uk.mommyheather.advancedbackups.core.backups.BackupStatusInstance.State;
 import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 
-public class BackupTimer  {
+
+public class BackupTimer {
     private static int loops = 0;
     private static int index = 0;
     private static long prev = 0;
@@ -34,8 +34,7 @@ public class BackupTimer  {
 
         if (BackupWrapper.checkBackups().equals(BackupCheckEnum.SUCCESS)) {
             BackupWrapper.makeSingleBackup(0, false);
-        }
-        else {
+        } else {
             //We can just wait here if the backup check fails.
             //It'll only be a 5m wait if a backup was meant to happen - or if the next time should be extended, say, a manual backup was made, we can go back to idle rather than running checks every tick.
             nextBackup = calculateNextBackupTime() + currentTime;
@@ -46,7 +45,9 @@ public class BackupTimer  {
 
     private static long calculateNextBackupTime() {
         long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (ConfigManager.maxFrequency.get() * 3600000L);
-        if (forcedMillis <= System.currentTimeMillis()) forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
+        if (forcedMillis <= System.currentTimeMillis()) {
+            forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
+        }
         else forcedMillis -= System.currentTimeMillis();
         long ret = Long.MAX_VALUE;
         if (ConfigManager.uptime.get() && !BackupWrapper.configuredPlaytime.isEmpty()) {
@@ -56,12 +57,10 @@ public class BackupTimer  {
                 loops++;
             }
             ret = (timings.get(index) + (timings.get(timings.size() - 1) * loops));
-            ret -= prev; 
+            ret -= prev;
             prev += ret;
             index++;
-        }
-
-        else if (!BackupWrapper.configuredPlaytime.isEmpty()) {
+        } else if (!BackupWrapper.configuredPlaytime.isEmpty()) {
             long nextTime = 0;
             long currentTime = System.currentTimeMillis();
             long startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
@@ -118,5 +117,4 @@ public class BackupTimer  {
 
     }
 
-    
 }
