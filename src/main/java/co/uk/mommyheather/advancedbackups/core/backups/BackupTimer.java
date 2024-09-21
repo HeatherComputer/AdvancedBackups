@@ -17,27 +17,27 @@ public class BackupTimer {
     private static long lastConsole = 0;
     private static long lastClient = 0;
 
-    private static long nextBackup = System.currentTimeMillis() + calculateNextBackupTime();
+    private static long nextBackup = System.currentTimeMillis() + BackupTimer.calculateNextBackupTime();
 
     public static void check() {
-        checkLogging();
+        BackupTimer.checkLogging();
         if (ThreadedBackup.running) return;
         long currentTime = System.currentTimeMillis();
         if (ThreadedBackup.wasRunning) {
             ThreadedBackup.wasRunning = false;
             ABCore.enableSaving();
-            nextBackup = calculateNextBackupTime() + currentTime;
+            BackupTimer.nextBackup = BackupTimer.calculateNextBackupTime() + currentTime;
             return;
         }
-        if (currentTime < nextBackup) return;
+        if (currentTime < BackupTimer.nextBackup) return;
         //make the backup
 
-        if (BackupWrapper.checkBackups().equals(BackupCheckEnum.SUCCESS)) {
+        if (BackupCheckEnum.SUCCESS.equals(BackupWrapper.checkBackups())) {
             BackupWrapper.makeSingleBackup(0, false);
         } else {
             //We can just wait here if the backup check fails.
             //It'll only be a 5m wait if a backup was meant to happen - or if the next time should be extended, say, a manual backup was made, we can go back to idle rather than running checks every tick.
-            nextBackup = calculateNextBackupTime() + currentTime;
+            BackupTimer.nextBackup = BackupTimer.calculateNextBackupTime() + currentTime;
         }
 
     }
@@ -52,14 +52,14 @@ public class BackupTimer {
         long ret = Long.MAX_VALUE;
         if (ConfigManager.uptime.get() && !BackupWrapper.configuredPlaytime.isEmpty()) {
             ArrayList<Long> timings = new ArrayList<Long>(BackupWrapper.configuredPlaytime);
-            if (index >= timings.size()) {
-                index = 0;
-                loops++;
+            if (BackupTimer.index >= timings.size()) {
+                BackupTimer.index = 0;
+                BackupTimer.loops++;
             }
-            ret = (timings.get(index) + (timings.get(timings.size() - 1) * loops));
-            ret -= prev;
-            prev += ret;
-            index++;
+            ret = (timings.get(BackupTimer.index) + (timings.get(timings.size() - 1) * BackupTimer.loops));
+            ret -= BackupTimer.prev;
+            BackupTimer.prev += ret;
+            BackupTimer.index++;
         } else if (!BackupWrapper.configuredPlaytime.isEmpty()) {
             long nextTime = 0;
             long currentTime = System.currentTimeMillis();
@@ -72,7 +72,20 @@ public class BackupTimer {
                     break;
                 }
             }
-            ret = nextTime >= currentTime ? nextTime - currentTime : 86640000 - currentTime;
+            //Temporary fix for making backups too frequently after the last backup of the day has been made
+            //TODO tidy this all up (prolly after uberbranch)
+            if (ret < currentTime) {
+                startTime += 86400000L; //goes from start of today to start of tomorrow
+                for (long time : timings) {
+                    time += startTime;
+                    if (time >= currentTime) {
+                        nextTime = time;
+                        break;
+                    }
+                }
+            }
+
+            ret = nextTime - currentTime;
         }
 
         return Math.min(forcedMillis, ret);
@@ -90,10 +103,10 @@ public class BackupTimer {
         boolean clients = false;
 
         long time = System.currentTimeMillis();
-        if (time - ConfigManager.consoleFrequency.get() >= lastConsole) {
+        if (time - ConfigManager.consoleFrequency.get() >= BackupTimer.lastConsole) {
             console = true;
-            if (instance.getAge() > lastConsole && ConfigManager.console.get()) {
-                lastConsole = instance.getAge();
+            if (instance.getAge() > BackupTimer.lastConsole && ConfigManager.console.get()) {
+                BackupTimer.lastConsole = instance.getAge();
                 if (instance.getState() == State.STARTED) {
                     //No reason to care for the others, are they're all logged by default!
                     int percent = (int) ((((float) instance.getProgress()) / ((float) instance.getMax())) * 100F);
@@ -102,10 +115,10 @@ public class BackupTimer {
             }
         }
 
-        if (time - ConfigManager.clientFrequency.get() >= lastClient) {
+        if (time - ConfigManager.clientFrequency.get() >= BackupTimer.lastClient) {
             clients = true;
-            if (instance.getAge() > lastClient && !ConfigManager.clients.get().equals("none")) {
-                ABCore.clientContactor.handle(instance, ConfigManager.clients.get().equals("all"));
+            if (instance.getAge() > BackupTimer.lastClient && !"none".equals(ConfigManager.clients.get())) {
+                ABCore.clientContactor.handle(instance, "all".equals(ConfigManager.clients.get()));
             }
         }
 
