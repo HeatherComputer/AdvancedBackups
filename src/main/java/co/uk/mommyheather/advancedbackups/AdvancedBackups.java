@@ -55,6 +55,11 @@ public class AdvancedBackups
         infoLogger = LOGGER::info;
         warningLogger = LOGGER::warn;
         errorLogger =  LOGGER::error;
+        
+        ABCore.infoLogger = infoLogger;
+        ABCore.warningLogger = warningLogger;
+        ABCore.errorLogger = errorLogger;
+
     }
 
 
@@ -89,10 +94,6 @@ public class AdvancedBackups
         ABCore.disableSaving = AdvancedBackups::disableSaving;
         ABCore.enableSaving = AdvancedBackups::enableSaving;
         ABCore.saveOnce = AdvancedBackups::saveOnce;
-
-        ABCore.infoLogger = infoLogger;
-        ABCore.warningLogger = warningLogger;
-        ABCore.errorLogger = errorLogger;
 
         ABCore.clientContactor = new ABClientContactor();
         ABCore.resetActivity = AdvancedBackups::resetActivity;
