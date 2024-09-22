@@ -320,7 +320,6 @@ public class BackupWrapper {
 
     public static void finishBackup(boolean snapshot) {
         ABCore.resetActivity();
-        System.out.println("Snapshot : " + snapshot);
 
         if (snapshot) return;
 
@@ -340,7 +339,6 @@ public class BackupWrapper {
             }
         }
 
-        System.out.println("Beginning purge checks : " + directory.toString());
         checkSize(directory);
         checkCount(directory);
         checkDates(directory);
@@ -403,14 +401,12 @@ public class BackupWrapper {
 
     private static void checkCount(File directory) {
         if (ConfigManager.backupsToKeep.get() <= 0) {
-            System.out.println("Backup count check disabled");
             return;
         }
 
         long date = 0;
         while (true) {
             if (calculateBackupCount(directory) <= ConfigManager.backupsToKeep.get()) {
-                System.out.println("Backup count under configured size");
                 return;
             }
 
