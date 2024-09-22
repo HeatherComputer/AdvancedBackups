@@ -123,7 +123,7 @@ public class AdvancedBackupsCLI {
         }
 
         type = CLIIOHelpers.getBackupType(type);
-        if (type.equals("snapshot (command-made only)")) type = "snapshots";
+        if ("snapshot (command-made only)".equals(type)) type = "snapshots";
 
         /*/
         if (backupLocation.startsWith(Pattern.quote(File.separator)) || backupLocation.indexOf(":") == 1) {
@@ -146,7 +146,7 @@ public class AdvancedBackupsCLI {
                 Arrays.asList(new String[]{"Export backup as zip", "Restore single file", "Restore entire world"})
         );
 
-        if (restore.equals("Export backup as zip")) {
+        if ("Export backup as zip".equals(restore)) {
             exportMode = true;
         }
 
@@ -263,7 +263,7 @@ public class AdvancedBackupsCLI {
             throw new IOException(String.format("Selected backup directory %s is empty, or is a file!", backupDir.getAbsolutePath()));
         }
         ArrayList<String> fileNameList = new ArrayList<String>(Arrays.asList(fileNameArray)); //i need to do this. i hate this.
-        fileNameList.removeIf((name) -> (
+        fileNameList.removeIf(name -> (
             name.endsWith("json") ||
             name.contains("incomplete") ||
             name.contains("DS_Store")
@@ -779,7 +779,7 @@ public class AdvancedBackupsCLI {
                 Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-                        if (file.getFileName().toString().equals("level.dat")) levelDatPathWrapper.add(file);
+                        if ("level.dat".equals(file.getFileName().toString())) levelDatPathWrapper.add(file);
                         return FileVisitResult.CONTINUE;
                     }
                 });
@@ -856,6 +856,7 @@ public class AdvancedBackupsCLI {
             FileOutputStream outputStream = new FileOutputStream(out);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel(4);
+            byte[] bytes = new byte[1024];
             Files.walkFileTree(worldDir.toPath(), new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
@@ -866,8 +867,15 @@ public class AdvancedBackupsCLI {
                             return FileVisitResult.CONTINUE;
                         }
                         zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
-                        byte[] bytes = Files.readAllBytes(file);
-                        zipOutputStream.write(bytes, 0, bytes.length);
+                        FileInputStream is = new FileInputStream(file.toFile());
+                        while (true) {
+                            int i = is.read(bytes);
+                            if (i < 0) break;
+                            zipOutputStream.write(bytes, 0, i);
+                        }
+                        is.close();
+                        //byte[] bytes = Files.readAllBytes(file);
+                        //zipOutputStream.write(bytes, 0, bytes.length);
                         zipOutputStream.closeEntry();
 
                     } catch (IOException e) {
