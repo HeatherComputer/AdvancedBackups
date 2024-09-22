@@ -74,7 +74,7 @@ public class BackupTimer {
             }
             //Temporary fix for making backups too frequently after the last backup of the day has been made
             //TODO tidy this all up (prolly after uberbranch)
-            if (ret < currentTime) {
+            if (nextTime < currentTime) {
                 startTime += 86400000L; //goes from start of today to start of tomorrow
                 for (long time : timings) {
                     time += startTime;
