@@ -271,14 +271,16 @@ public class BackupWrapper {
 
 
     public static void makeSingleBackup(long delay, boolean shutdown) {
-        makeSingleBackup(delay, (s) -> {}, shutdown);
+        makeSingleBackup(delay, s -> {}, shutdown);
     }
 
     public static void makeSingleBackup(long delay, Consumer<String> output, boolean shutdown) {
         try {
-            if (!shutdown) ABCore.disableSaving();
-            if (ConfigManager.save.get()) {
-                ABCore.saveOnce();
+            if (!shutdown) {
+                ABCore.disableSaving();
+                if (ConfigManager.save.get()) {
+                    ABCore.saveOnce();
+                }
             }
         } catch (Exception e) {
             ABCore.errorLogger.accept("Error saving or disabling saving!");
@@ -419,7 +421,7 @@ public class BackupWrapper {
                 //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             } else {
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get().equals("incremental")) {
+                if ("incremental".equals(ConfigManager.type.get())) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
@@ -462,7 +464,7 @@ public class BackupWrapper {
                 //don't purge unless the dependent is also eligible for deletion
 
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get().equals("incremental")) {
+                if ("incremental".equals(ConfigManager.type.get())) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
@@ -505,7 +507,7 @@ public class BackupWrapper {
                 //return; we in theory don't need this - it was a good optimisation, but may do more harm than good now.
             } else {
                 //because we can only purge full incremental chains, we need to make sure we're good to delete the entire chain
-                if (ConfigManager.type.get().equals("incremental")) {
+                if ("incremental".equals(ConfigManager.type.get())) {
                     if (!ConfigManager.purgeIncrementals.get()) return;
                     if (calculateChainCount(directory) <= ConfigManager.incrementalChains.get()) return;
 
