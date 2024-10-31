@@ -42,11 +42,13 @@ public class ABCore {
     public static String backupPath;
 
     public static void disableSaving() {
-        disableSaving.run();
+        if (ConfigManager.toggleSave.get()) disableSaving.run();
     }
 
     public static void enableSaving() {
-        enableSaving.run();
+        //Technically there's an edgecase here where someone could let saving be disabled, then adjust + reload config to stop it being enabled again...
+        //but I don't know a good way to counter this right now and there's a failsafe on server boot regardless.
+        if (ConfigManager.toggleSave.get()) enableSaving.run();
     }
 
     public static void resetActivity() {
