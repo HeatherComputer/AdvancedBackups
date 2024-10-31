@@ -58,6 +58,7 @@ config.advancedbackups.frequency.uptime
     #A strict schedule, using hours:minutes to follow real-world time. Examples:
     #4:00 - Makes a backup at 4am each day.
     #4:00,8:00,12:00,16:00,17:00,18:00,19:00,20:00,21:00,24:00 - Makes a backup at specific times of day.
+    #Note : use 24:00 instead of 0:00 to represent midnight.
 
 #Default : 1:00
 config.advancedbackups.frequency.schedule
