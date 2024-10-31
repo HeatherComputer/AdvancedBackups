@@ -6,6 +6,11 @@ config.advancedbackups.enabled
 #Options : true, false    #Default : true
 config.advancedbackups.save
 
+#Whether to disable autosave before making a backup, and whether to re-enable saving afterwards.
+#Don't edit this unless you know what you're doing. Saving mid-backup can cause issues!
+#Options : true, false    #Default: true
+config.advancedbackups.togglesave
+
 #Buffer size, in bytes, to use when reading / writing files. Higher will improve speeds, but increase memory usage.
 #Too high can cause an OOM. I'd advise against editing this unless you experience issues.
 #Range : 1-2147483647     #Default : 1048576

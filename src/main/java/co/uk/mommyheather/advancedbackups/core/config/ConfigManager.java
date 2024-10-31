@@ -38,6 +38,7 @@ public class ConfigManager {
 
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true, ConfigManager::register);
     public static final BooleanValue save = new BooleanValue("config.advancedbackups.save", true, ConfigManager::register);
+    public static final BooleanValue toggleSave = new BooleanValue("config.advancedbackups.togglesave", true, ConfigManager::register);
     public static final LongValue buffer = new LongValue("config.advancedbackups.buffer", 1048576, 1024, Integer.MAX_VALUE, ConfigManager::register); //5mb
     public static final BooleanValue flush = new BooleanValue("config.advancedbackups.flush", false, ConfigManager::register);
     public static final BooleanValue activity = new BooleanValue("config.advancedbackups.activity", true, ConfigManager::register);
