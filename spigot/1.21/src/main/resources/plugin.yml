@@ -1,0 +1,9 @@
+name: AdvancedBackups
+version: ${version}
+api-version: '1.21'
+main: computer.heather.AdvancedBackups.AdvancedBackups
+commands:
+   backup:
+      description: Commands for Advanced Backups.
+      usage: /backup start | reload-config | reload-client-config | snapshot | reset-chain
+      permission: advancedbackups.backup 

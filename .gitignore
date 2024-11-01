@@ -5,6 +5,7 @@ bin
 .metadata
 .classpath
 .project
+eclipse
 
 # idea
 out
@@ -13,19 +14,13 @@ out
 *.iml
 .idea
 
+# vscode
+.vscode
+
 # gradle
 build
 .gradle
-gradlew.bat
+
 # other
-eclipse
 run
-
-# Files from Forge MDK
 forge*changelog.txt
-
-
-
-#custom for core lib
-.gitattributes
-.vscode
