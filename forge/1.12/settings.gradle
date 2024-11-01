@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven {
+            name 'MinecraftForge'
+            url 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+rootProject.name = 'forge-1.12'
