@@ -18,6 +18,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: HoldYourWaffle-uberbranch
     
     - name: Set up JDK 8
       uses: actions/setup-java@v3
@@ -44,6 +46,8 @@ jobs:
     steps:
     
     - uses: actions/checkout@v3
+      with:
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v3
