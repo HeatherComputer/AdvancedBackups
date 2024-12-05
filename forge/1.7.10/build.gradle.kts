@@ -149,7 +149,9 @@ tasks.withType<Jar> {
     }
 }
 
-
+tasks.jar {
+    archiveBaseName.set("AdvancedBackups-forge-1.7.10")
+}
 
 
 
