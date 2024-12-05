@@ -7,8 +7,10 @@ plugins {
   id("com.gtnewhorizons.retrofuturagradle") version "1.2.5"
 }
 
-apply from: '../../global.properties'
-
+apply {
+  from ("../../global.properties")
+}
+val abCoreLibPath: String by project
 //version = "2.0"
 group = "co.uk.mommyheather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 //archivesBaseName = "AdvancedBackups-forge-1.7.10"
@@ -105,8 +107,8 @@ dependencies {
   // Adds NotEnoughItems and its dependencies (CCL&CCC) to runClient/runServer
   runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.3.39-GTNH:dev")
 
-  implementation files(abCoreLibPath)
-  extraLibs files(abCoreLibPath)
+  implementation (files(abCoreLibPath))
+  extraLibs (files(abCoreLibPath))
 
   // Example: grab the ic2 jar from curse maven and deobfuscate
   // api(rfg.deobf("curse.maven:ic2-242638:2353971"))
@@ -135,7 +137,7 @@ publishing {
 }
 
 tasks.withType<Jar> {
-    from(zipTree("advancedbackups-corelib.jar"))
+    from(zipTree(abCoreLibPath))
     into("/")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     //from(zipTree("dependencies/jna-platform-5.13.0.jar"))
