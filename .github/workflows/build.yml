@@ -33,7 +33,7 @@ jobs:
         ./gradlew shadowJar
 
     - name: Upload Core
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: advancedbackups-corelib.jar
           path: core/build/libs/advancedbackups-corelib.jar
@@ -50,7 +50,7 @@ jobs:
         ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -69,7 +69,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.7.10-${{ inputs.version }}.jar
           path: forge/1.7.10/build/libs/AdvancedBackups-forge-1.7.10-${{ inputs.version }}.jar
@@ -86,7 +86,7 @@ jobs:
         ref: forge-1.12
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -103,7 +103,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
@@ -120,7 +120,7 @@ jobs:
         ref: forge-1.16
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -137,7 +137,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
@@ -154,7 +154,7 @@ jobs:
         ref: forge-1.18
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -171,7 +171,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
@@ -188,7 +188,7 @@ jobs:
         ref: fabric-1.18
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -205,7 +205,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
@@ -222,7 +222,7 @@ jobs:
         ref: forge-1.19.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -238,7 +238,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
@@ -255,7 +255,7 @@ jobs:
         ref: forge-1.19.3
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -271,7 +271,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
@@ -288,7 +288,7 @@ jobs:
         ref: fabric-1.19.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -304,7 +304,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
@@ -321,7 +321,7 @@ jobs:
         ref: fabric-1.19.3
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -337,7 +337,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
@@ -354,7 +354,7 @@ jobs:
         ref: forge-1.20
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -370,7 +370,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
@@ -387,7 +387,7 @@ jobs:
         ref: forge-1.20.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -403,7 +403,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
@@ -420,7 +420,7 @@ jobs:
         ref: forge-1.20.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -437,7 +437,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
@@ -454,7 +454,7 @@ jobs:
         ref: forge-1.20.6
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -471,7 +471,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
@@ -488,7 +488,7 @@ jobs:
         ref: fabric-1.20
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -505,7 +505,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
@@ -522,7 +522,7 @@ jobs:
         ref: fabric-1.20.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -539,7 +539,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
@@ -556,7 +556,7 @@ jobs:
         ref: fabric-1.20.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -573,7 +573,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
@@ -590,7 +590,7 @@ jobs:
         ref: fabric-1.20.6
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -607,7 +607,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
@@ -624,7 +624,7 @@ jobs:
         ref: fabric-1.21
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -641,7 +641,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
@@ -658,7 +658,7 @@ jobs:
         ref: neoforge-1.20.2
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -675,7 +675,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
@@ -692,7 +692,7 @@ jobs:
         ref: neoforge-1.20.4
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -709,7 +709,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
@@ -727,7 +727,7 @@ jobs:
         ref: neoforge-1.20.6
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -744,7 +744,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
@@ -762,7 +762,7 @@ jobs:
         ref: neoforge-1.21
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -779,7 +779,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
@@ -797,7 +797,7 @@ jobs:
         ref: spigot-1.21
 
     - name: Download corelib
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: advancedbackups-corelib.jar
         path: core/build/libs/advancedbackups-corelib.jar
@@ -819,7 +819,7 @@ jobs:
 
 
     - name: Upload Mod
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
           path: build/libs/AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
@@ -835,139 +835,139 @@ jobs:
     
     
     - name: Download Forge-1-7-10
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.7.10-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-12
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
         path: archives/
     
     - name: Download Forge-1-16
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
         path: archives/
     
     - name: Download Forge-1-18
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
         path: archives/
     
     - name: Download Fabric-1-18
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-19-2
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-19-3
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-19-2
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-19-3
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-20
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-20-2
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-20
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-20-4
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
         path: archives/
    
     - name: Download Forge-1-20-6
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-20-2
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-20-4
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-20-6
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Fabric-1-21
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Neoforge-1-20-2
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Neoforge-1-20-4
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Neoforge-1-20-6
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Neoforge-1-21
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Spigot-1-21
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
         path: archives/
@@ -987,7 +987,7 @@ jobs:
 
         
     - name: Upload Archives
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ steps.bundle.conclusion != 'failure' }}
       with:
           name: AdvancedBackups-ALL_JARS-${{ inputs.version }}.zip
