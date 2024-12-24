@@ -63,8 +63,8 @@ jobs:
   
     - name: Build Mod
       run: |
-        ls core/build/libs
         cd forge/1.7.10
+        ls ../../core/build/libs
         ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
