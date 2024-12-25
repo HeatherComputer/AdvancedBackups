@@ -1,10 +1,10 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
-import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
-import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
-import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
+import computer.heather.advancedbackups.core.CoreCommandSystem;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.network.NetworkHandler;
+import computer.heather.advancedbackups.network.PacketBackupStatus;
+import computer.heather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;

@@ -1,8 +1,8 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;

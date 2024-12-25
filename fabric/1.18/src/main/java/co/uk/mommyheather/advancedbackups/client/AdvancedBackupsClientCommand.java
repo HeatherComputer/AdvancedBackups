@@ -1,7 +1,7 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
 
-import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
+import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;

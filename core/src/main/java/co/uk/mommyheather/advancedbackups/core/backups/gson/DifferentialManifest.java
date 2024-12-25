@@ -5,7 +5,7 @@ UNUSED - ONLY EXISTS FOR BACKWARDS COMPAT REASONS
 */
 
 
-package co.uk.mommyheather.advancedbackups.core.backups.gson;
+package computer.heather.advancedbackups.core.backups.gson;
 
 import java.util.ArrayList;
 import java.util.List;

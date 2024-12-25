@@ -1,9 +1,9 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;

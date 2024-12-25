@@ -1,11 +1,11 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
 import java.util.List;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
-import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
-import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
+import computer.heather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.interfaces.IClientContactor;
+import computer.heather.advancedbackups.network.NetworkHandler;
+import computer.heather.advancedbackups.network.PacketBackupStatus;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public class ClientContactor implements IClientContactor {

@@ -1,7 +1,7 @@
-package co.uk.mommyheather.advancedbackups.interfaces;
+package computer.heather.advancedbackups.interfaces;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupStatusInstance;
+import computer.heather.advancedbackups.core.ABCore;
+import computer.heather.advancedbackups.core.backups.BackupStatusInstance;
 
 public interface IClientContactor {
 

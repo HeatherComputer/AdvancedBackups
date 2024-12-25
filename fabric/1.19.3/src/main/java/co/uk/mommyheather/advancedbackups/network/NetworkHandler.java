@@ -1,4 +1,4 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

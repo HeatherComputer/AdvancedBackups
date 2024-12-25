@@ -1,10 +1,10 @@
-package co.uk.mommyheather.advancedbackups.core;
+package computer.heather.advancedbackups.core;
 
-import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
-import co.uk.mommyheather.advancedbackups.core.backups.gson.BackupManifest;
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import computer.heather.advancedbackups.core.backups.BackupWrapper;
+import computer.heather.advancedbackups.core.backups.ThreadedBackup;
+import computer.heather.advancedbackups.core.backups.gson.BackupManifest;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.core.config.ConfigManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;

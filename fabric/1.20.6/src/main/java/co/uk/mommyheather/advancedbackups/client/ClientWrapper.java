@@ -1,10 +1,10 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
-import co.uk.mommyheather.advancedbackups.network.PacketBackupStatus;
-import co.uk.mommyheather.advancedbackups.network.PacketToastSubscribe;
+import computer.heather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.core.ABCore;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.network.PacketBackupStatus;
+import computer.heather.advancedbackups.network.PacketToastSubscribe;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;

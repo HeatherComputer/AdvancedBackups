@@ -145,7 +145,7 @@ tasks.withType(ProcessResources).configureEach {
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
-                "Main-Class"              : "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI",
+                "Main-Class"              : "computer.heather.advancedbackups.cli.AdvancedBackupsCLI",
                 "Specification-Title"     : "advancedbackups",
                 "Specification-Vendor"    : "mommyheather",
                 "Specification-Version"   : "1", // We are version 1 of ourselves

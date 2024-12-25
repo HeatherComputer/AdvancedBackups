@@ -1,8 +1,8 @@
-package co.uk.mommyheather.advancedbackups;
+package computer.heather.advancedbackups;
 
-import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
-import co.uk.mommyheather.advancedbackups.network.NetworkHandler;
-import co.uk.mommyheather.advancedbackups.network.PacketClientReload;
+import computer.heather.advancedbackups.core.CoreCommandSystem;
+import computer.heather.advancedbackups.network.NetworkHandler;
+import computer.heather.advancedbackups.network.PacketClientReload;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 

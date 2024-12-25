@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.AdvancedBackups;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 

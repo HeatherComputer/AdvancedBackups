@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.AdvancedBackups;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;

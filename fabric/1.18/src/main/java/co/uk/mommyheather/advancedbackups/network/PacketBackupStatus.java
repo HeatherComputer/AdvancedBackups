@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
+import computer.heather.advancedbackups.client.ClientWrapper;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

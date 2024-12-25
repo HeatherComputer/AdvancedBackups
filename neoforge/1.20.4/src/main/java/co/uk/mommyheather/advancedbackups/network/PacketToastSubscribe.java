@@ -1,7 +1,7 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.AdvancedBackups;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;

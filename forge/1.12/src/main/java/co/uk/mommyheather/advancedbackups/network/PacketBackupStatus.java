@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.client.ClientBridge;
+import computer.heather.advancedbackups.client.ClientBridge;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

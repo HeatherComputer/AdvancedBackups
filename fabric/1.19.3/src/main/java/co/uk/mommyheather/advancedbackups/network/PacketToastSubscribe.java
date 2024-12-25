@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.AdvancedBackups;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;

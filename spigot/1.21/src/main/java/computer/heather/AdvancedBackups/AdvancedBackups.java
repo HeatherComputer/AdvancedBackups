@@ -13,10 +13,10 @@ import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupTimer;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigManager;
+import computer.heather.advancedbackups.core.ABCore;
+import computer.heather.advancedbackups.core.backups.BackupTimer;
+import computer.heather.advancedbackups.core.backups.BackupWrapper;
+import computer.heather.advancedbackups.core.config.ConfigManager;
 import computer.heather.AdvancedBackups.network.ClientContactor;
 import computer.heather.AdvancedBackups.network.PacketListener;
 

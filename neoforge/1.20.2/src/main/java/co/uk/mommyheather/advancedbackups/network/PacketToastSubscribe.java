@@ -1,8 +1,8 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
 import java.util.function.Supplier;
 
-import co.uk.mommyheather.advancedbackups.AdvancedBackups;
+import computer.heather.advancedbackups.AdvancedBackups;
 import net.minecraft.network.FriendlyByteBuf;
 import net.neoforged.neoforge.network.NetworkEvent;
 

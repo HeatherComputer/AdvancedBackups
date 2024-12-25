@@ -1,6 +1,6 @@
 package computer.heather.AdvancedBackups.network;
 
-import co.uk.mommyheather.advancedbackups.interfaces.IClientContactor;
+import computer.heather.advancedbackups.interfaces.IClientContactor;
 import computer.heather.AdvancedBackups.AdvancedBackups;
 
 public class ClientContactor implements IClientContactor {

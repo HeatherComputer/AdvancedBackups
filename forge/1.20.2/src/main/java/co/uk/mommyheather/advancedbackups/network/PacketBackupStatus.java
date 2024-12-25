@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
-import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
+import computer.heather.advancedbackups.client.ClientWrapper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.fml.LogicalSide;

@@ -1,8 +1,8 @@
-package co.uk.mommyheather.advancedbackups;
+package computer.heather.advancedbackups;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
+import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;

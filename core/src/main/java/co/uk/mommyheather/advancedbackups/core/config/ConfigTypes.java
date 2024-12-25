@@ -1,4 +1,4 @@
-package co.uk.mommyheather.advancedbackups.core.config;
+package computer.heather.advancedbackups.core.config;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,15 +1,15 @@
-package co.uk.mommyheather.advancedbackups.core.config;
+package computer.heather.advancedbackups.core.config;
 
-import co.uk.mommyheather.advancedbackups.core.ABCore;
-import co.uk.mommyheather.advancedbackups.core.backups.BackupWrapper;
-import co.uk.mommyheather.advancedbackups.core.backups.ThreadedBackup;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.BooleanValue;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.ConfigValidationEnum;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.FloatValue;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.FreeStringValue;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.LongValue;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.StringArrayValue;
-import co.uk.mommyheather.advancedbackups.core.config.ConfigTypes.ValidatedStringValue;
+import computer.heather.advancedbackups.core.ABCore;
+import computer.heather.advancedbackups.core.backups.BackupWrapper;
+import computer.heather.advancedbackups.core.backups.ThreadedBackup;
+import computer.heather.advancedbackups.core.config.ConfigTypes.BooleanValue;
+import computer.heather.advancedbackups.core.config.ConfigTypes.ConfigValidationEnum;
+import computer.heather.advancedbackups.core.config.ConfigTypes.FloatValue;
+import computer.heather.advancedbackups.core.config.ConfigTypes.FreeStringValue;
+import computer.heather.advancedbackups.core.config.ConfigTypes.LongValue;
+import computer.heather.advancedbackups.core.config.ConfigTypes.StringArrayValue;
+import computer.heather.advancedbackups.core.config.ConfigTypes.ValidatedStringValue;
 
 import java.io.BufferedReader;
 import java.io.File;

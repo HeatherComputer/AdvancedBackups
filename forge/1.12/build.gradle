@@ -6,7 +6,7 @@ plugins {
 
 apply from: '../../global.properties'
 
-group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'computer.heather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'AdvancedBackups-' + modloaderName + "-" + minecraftVersion
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -108,7 +108,7 @@ tasks.withType(ProcessResources).configureEach {
 jar {
     manifest {
         attributes([
-            "Main-Class"              : "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI",
+            "Main-Class"              : "computer.heather.advancedbackups.cli.AdvancedBackupsCLI",
             "Specification-Title"     : "advancedbackups",
             "Specification-Vendor"    : "mommyheather",
             "Specification-Version"   : "1", // We are version 1 of ourselves

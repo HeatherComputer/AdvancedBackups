@@ -21,7 +21,7 @@ if(file('customTasks.gradle').exists()){
 }
 
 version = ''
-group = 'co.uk.mommyheather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'computer.heather.advancedbackups' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "advancedbackups-corelib"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
@@ -68,7 +68,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Main-Class"              : "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI",
+                "Main-Class"              : "computer.heather.advancedbackups.cli.AdvancedBackupsCLI",
                 "Specification-Title"     : "advancedbackups",
                 "Specification-Vendor"    : "raveninthedark",
                 "Specification-Version"   : "1", // We are version 1 of ourselves

@@ -1,9 +1,9 @@
-package co.uk.mommyheather.advancedbackups.network;
+package computer.heather.advancedbackups.network;
 
 import java.util.function.Supplier;
 
-import co.uk.mommyheather.advancedbackups.client.BackupToast;
-import co.uk.mommyheather.advancedbackups.client.ClientWrapper;
+import computer.heather.advancedbackups.client.BackupToast;
+import computer.heather.advancedbackups.client.ClientWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;

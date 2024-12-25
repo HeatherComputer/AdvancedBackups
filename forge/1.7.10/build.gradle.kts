@@ -12,7 +12,7 @@ apply {
 }
 val abCoreLibPath: String by project
 //version = "2.0"
-group = "co.uk.mommyheather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "computer.heather.advancedbackups" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 //archivesBaseName = "AdvancedBackups-forge-1.7.10"
 
 
@@ -144,7 +144,7 @@ tasks.withType<Jar> {
     //into("/")
     //duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes["Main-Class"] = "co.uk.mommyheather.advancedbackups.cli.AdvancedBackupsCLI"
+        attributes["Main-Class"] = "computer.heather.advancedbackups.cli.AdvancedBackupsCLI"
         attributes["Implementation-Version"] = "${version}"
     }
 }

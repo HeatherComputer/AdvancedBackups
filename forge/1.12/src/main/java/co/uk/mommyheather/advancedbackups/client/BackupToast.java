@@ -1,6 +1,6 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
-import co.uk.mommyheather.advancedbackups.core.config.ClientConfigManager;
+import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.client.gui.toasts.IToast;

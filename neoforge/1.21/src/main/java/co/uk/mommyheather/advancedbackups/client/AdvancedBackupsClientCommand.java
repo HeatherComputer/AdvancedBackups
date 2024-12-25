@@ -1,9 +1,9 @@
-package co.uk.mommyheather.advancedbackups.client;
+package computer.heather.advancedbackups.client;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import co.uk.mommyheather.advancedbackups.core.CoreCommandSystem;
+import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;

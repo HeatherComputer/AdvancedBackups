@@ -1,4 +1,4 @@
-package co.uk.mommyheather.advancedbackups.core.backups.gson;
+package computer.heather.advancedbackups.core.backups.gson;
 
 import java.util.HashMap;
 import java.util.Map;
