@@ -112,27 +112,7 @@ public class AdvancedBackups
     }
 
 
-    public static final String savesDisabledMessage = """
 
-
-    ***************************************
-    SAVING DISABLED - PREPARING FOR BACKUP!
-    ***************************************
-    """;
-    public static final String savesEnabledMessage = """
-    
-    
-    *********************************
-    SAVING ENABLED - BACKUP COMPLETE!
-    *********************************
-    """;
-    public static final String saveCompleteMessage = """
-    
-    
-    *************************************
-    SAVE COMPLETE - PREPARING FOR BACKUP!
-    *************************************
-    """;
     
     
     public static void disableSaving() {
@@ -142,7 +122,6 @@ public class AdvancedBackups
                 level.noSave = true;
             }
         }
-        warningLogger.accept(savesDisabledMessage);
     }
 
     public static void enableSaving() {
@@ -152,13 +131,11 @@ public class AdvancedBackups
                 level.noSave = false;
             }
         }
-        warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean flush) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         server.saveEverything(true, flush, true);
-        warningLogger.accept(saveCompleteMessage);
     }
 
 

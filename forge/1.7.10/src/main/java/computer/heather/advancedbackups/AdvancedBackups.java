@@ -129,9 +129,6 @@ public class AdvancedBackups
     }
     
     
-    public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
-    public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
-    public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
 
 
     //fun fact : this boolean is named wrong in MCP mappings!
@@ -144,7 +141,6 @@ public class AdvancedBackups
                 level.levelSaving = true;
             }
         }
-        warningLogger.accept(savesDisabledMessage);
     }
 
     public static void enableSaving() {
@@ -154,7 +150,6 @@ public class AdvancedBackups
                 level.levelSaving = false;
             }
         }
-        warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean unused) { //flush doesn't seem to be an option in 1.7.10

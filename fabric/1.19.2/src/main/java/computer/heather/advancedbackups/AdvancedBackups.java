@@ -94,27 +94,7 @@ public class AdvancedBackups implements ModInitializer {
             
     }
 
-    public static final String savesDisabledMessage = """
 
-
-    ***************************************
-    SAVING DISABLED - PREPARING FOR BACKUP!
-    ***************************************
-    """;
-    public static final String savesEnabledMessage = """
-
-
-    *********************************
-    SAVING ENABLED - BACKUP COMPLETE!
-    *********************************
-    """;
-    public static final String saveCompleteMessage = """
-
-
-    *************************************
-    SAVE COMPLETE - PREPARING FOR BACKUP!
-    *************************************
-    """;
 
 
     public static void disableSaving() {
@@ -124,7 +104,6 @@ public class AdvancedBackups implements ModInitializer {
                 level.savingDisabled = true;
             }
         }
-        warningLogger.accept(savesDisabledMessage);
     }
 
     public static void enableSaving() {
@@ -134,13 +113,11 @@ public class AdvancedBackups implements ModInitializer {
                 level.savingDisabled = false;
             }
         }
-        warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean flush) {
         MinecraftServer server = AdvancedBackups.server;
         server.saveAll(true, flush, true);
-        warningLogger.accept(saveCompleteMessage);
     }
 
     public static void resetActivity() {

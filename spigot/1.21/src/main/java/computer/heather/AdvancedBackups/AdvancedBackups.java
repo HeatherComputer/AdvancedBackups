@@ -112,22 +112,17 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
     }
 
 
-    public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
-    public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
-    public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
 
     public static void disableSaving() {
         for (World level : server.getWorlds()) {
             level.setAutoSave(false);
         }
-        warningLogger.accept(savesDisabledMessage);
     }
 
     public static void enableSaving() {
         for (World level : server.getWorlds()) {
             level.setAutoSave(true);
         }
-        warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean unused) {
@@ -142,7 +137,6 @@ public class AdvancedBackups extends JavaPlugin implements Listener {
             level.setAutoSave(flag);
         }
         
-        warningLogger.accept(saveCompleteMessage);
     }
 
 

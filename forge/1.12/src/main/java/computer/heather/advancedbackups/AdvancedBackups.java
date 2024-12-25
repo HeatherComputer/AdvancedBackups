@@ -165,9 +165,6 @@ public class AdvancedBackups
 
     
     
-    public static final String savesDisabledMessage = "\n\n\n***************************************\nSAVING DISABLED - PREPARING FOR BACKUP!\n***************************************";
-    public static final String savesEnabledMessage = "\n\n\n*********************************\nSAVING ENABLED - BACKUP COMPLETE!\n*********************************";
-    public static final String saveCompleteMessage = "\n\n\n*************************************\nSAVE COMPLETE - PREPARING FOR BACKUP!\n*************************************";
 
 
     public static void disableSaving() {
@@ -176,7 +173,6 @@ public class AdvancedBackups
                 level.disableLevelSaving = true;
             }
         }
-        warningLogger.accept(savesDisabledMessage);
     }
 
     public static void enableSaving() {
@@ -185,12 +181,10 @@ public class AdvancedBackups
                 level.disableLevelSaving = false;
             }
         }
-        warningLogger.accept(savesEnabledMessage);
     }
 
     public static void saveOnce(boolean unused) { //no flush bool in 1.12 either
         server.saveAllWorlds(false);
-        warningLogger.accept(saveCompleteMessage);
     }
 
     public static void resetActivity() {
