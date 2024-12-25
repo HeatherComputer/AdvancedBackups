@@ -83,7 +83,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.12
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -117,7 +117,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.16
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -151,7 +151,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.18
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -185,7 +185,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.18
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -219,7 +219,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.19.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -252,7 +252,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.19.3
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -285,7 +285,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.19.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -318,7 +318,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.19.3
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -351,7 +351,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.20
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -384,7 +384,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.20.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -417,7 +417,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.20.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -451,7 +451,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: forge-1.20.6
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -485,7 +485,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.20
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -519,7 +519,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.20.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -553,7 +553,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.20.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -587,7 +587,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.20.6
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -621,7 +621,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: fabric-1.21
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -655,7 +655,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: neoforge-1.20.2
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -689,7 +689,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: neoforge-1.20.4
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -724,7 +724,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: neoforge-1.20.6
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -759,7 +759,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: neoforge-1.21
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -794,7 +794,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: spigot-1.21
+        ref: HoldYourWaffle-uberbranch
 
     - name: Download corelib
       uses: actions/download-artifact@v4
