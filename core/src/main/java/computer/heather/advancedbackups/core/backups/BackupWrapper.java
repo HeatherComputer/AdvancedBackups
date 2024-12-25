@@ -28,7 +28,7 @@ public class BackupWrapper {
     public static void checkStartupBackups() {
         //do it here to prevent excess file i/o and reduce work needed for support on a version-by-version basis
         prepareBackupDestination();
-        ABCore.enableSaving();
+        ABCore.enableSaving(true);
 
         File file = new File(ABCore.backupPath);
         File backupManifest = new File(file, "manifest.json");

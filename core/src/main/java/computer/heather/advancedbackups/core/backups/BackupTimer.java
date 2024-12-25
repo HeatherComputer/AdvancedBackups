@@ -25,7 +25,7 @@ public class BackupTimer {
         long currentTime = System.currentTimeMillis();
         if (ThreadedBackup.wasRunning) {
             ThreadedBackup.wasRunning = false;
-            ABCore.enableSaving();
+            ABCore.enableSaving(false);
             BackupTimer.nextBackup = BackupTimer.calculateNextBackupTime() + currentTime;
             return;
         }

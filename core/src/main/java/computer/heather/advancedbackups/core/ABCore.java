@@ -41,22 +41,44 @@ public class ABCore {
 
     public static String backupPath;
 
+    
+    private static final String savesDisabledMessage =
+    "***************************************" +
+    "SAVING DISABLED - PREPARING FOR BACKUP!" +
+    "***************************************";
+    
     public static void disableSaving() {
-        if (ConfigManager.toggleSave.get()) disableSaving.run();
+        if (ConfigManager.toggleSave.get()){
+            disableSaving.run();
+            infoLogger.accept(savesDisabledMessage);
+        } 
     }
-
-    public static void enableSaving() {
+    
+    private static final String savesEnabledMessage =
+    "*********************************" +
+    "SAVING ENABLED - BACKUP COMPLETE!" +
+    "*********************************";
+    public static void enableSaving(boolean boot) {
         //Technically there's an edgecase here where someone could let saving be disabled, then adjust + reload config to stop it being enabled again...
         //but I don't know a good way to counter this right now and there's a failsafe on server boot regardless.
-        if (ConfigManager.toggleSave.get()) enableSaving.run();
+        if (ConfigManager.toggleSave.get()) {
+            enableSaving.run();
+            //Here we have the boot boolean to prevent the failsafe from falsely saying a backup was complete.
+            if (!boot) infoLogger.accept(savesEnabledMessage);
+        }
+    }
+
+    private static final String saveCompleteMessage =
+    "************************************" +
+    "SAVE COMPLETE - PREPARING FOR BACKUP!" +
+    "************************************";
+    public static void saveOnce() {
+        saveOnce.accept(ConfigManager.flush.get());
+        infoLogger.accept(saveCompleteMessage);
     }
 
     public static void resetActivity() {
         resetActivity.run();
-    }
-
-    public static void saveOnce() {
-        saveOnce.accept(ConfigManager.flush.get());
     }
 
     public static void setActivity(boolean in) {
