@@ -150,6 +150,9 @@ jobs:
     - name: Upload Neoforge-1.21
       run: (ls -lR AdvancedBackups-neoforge-1.21-${{ steps.version.outputs.VERSION }}.jar && echo yes)
 
+    - name: Upload Neoforge-1.21.2
+      run: (ls -lR AdvancedBackups-neoforge-1.21.2-${{ steps.version.outputs.VERSION }}.jar && echo yes)
+
     - name: Upload Spigot-1.21
       run: (ls -lR AdvancedBackups-spigot-1.21-${{ steps.version.outputs.VERSION }}.jar && echo yes)
     

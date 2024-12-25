@@ -41,6 +41,7 @@ on:
         - Neoforge 1.20.4
         - Neoforge 1.20.6
         - Neoforge 1.21
+        - Neoforge 1.21.2
         - Spigot 1.21
 
 
@@ -733,6 +734,34 @@ jobs:
             neoforge
         game-versions: |
             [1.21,1.21.1]
+        java: |
+            Java 21
+        changelog: ${{ vars.CHANGELOG }}
+
+
+    - name:  Upload Neoforge 1.21.2
+
+      if: inputs.version == 'Neoforge 1.21.2' || inputs.version == 'All'
+      uses: Kir-Antipov/mc-publish@v3.3
+      with:
+        #CF specific
+        curseforge-id: 876284
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #MR specific
+        modrinth-id: Jrmoreqs
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        #Modrinth's auto-feature works nicely, so we're going to keep using it.
+        modrinth-featured: false
+        #General
+        files: |
+            **/AdvancedBackups-neoforge-1.21.2-${{ steps.version.outputs.VERSION }}.jar
+        name: Neoforge 1.21.2 - ${{ steps.version.outputs.VERSION }}
+        version: ${{ steps.version.outputs.VERSION }}
+        version-type: release
+        loaders: |
+            neoforge
+        game-versions: |
+            [1.21.2,1.21.3,1.21.4]
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
