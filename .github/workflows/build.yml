@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
     
     - name: Set up JDK 8
       uses: actions/setup-java@v3
@@ -47,7 +47,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -83,7 +83,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -119,7 +119,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -155,7 +155,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -191,7 +191,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -227,7 +227,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -262,7 +262,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -297,7 +297,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -332,7 +332,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -367,7 +367,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -402,7 +402,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -437,7 +437,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -473,7 +473,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -508,7 +508,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -544,7 +544,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -580,7 +580,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -616,7 +616,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -652,7 +652,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -688,7 +688,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -724,7 +724,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -761,7 +761,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -798,7 +798,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
@@ -835,7 +835,7 @@ jobs:
     
     - uses: actions/checkout@v3
       with:
-        ref: HoldYourWaffle-uberbranch
+        ref: main
 
     - name: Download corelib
       uses: actions/download-artifact@v4
