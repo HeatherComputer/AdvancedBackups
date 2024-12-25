@@ -175,8 +175,6 @@ public class AdvancedBackups
                     worldserver.levelSaving = flag;
                 }
             }
-            
-            warningLogger.accept(saveCompleteMessage);
         } catch (MinecraftException e) {
             // TODO Scream at user
             errorLogger.accept("FAILED TO SAVE WORLD!");
