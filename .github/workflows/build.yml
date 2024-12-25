@@ -680,6 +680,42 @@ jobs:
           path: fabric/1.21/build/libs/AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
 
 
+  fabric-1-21.2:
+    runs-on: ubuntu-latest
+    needs: core
+
+    steps:
+    
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Download corelib
+      uses: actions/download-artifact@v4
+      with:
+        name: advancedbackups-corelib.jar
+        path: core/build/libs/
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: 21
+        distribution: 'temurin'
+  
+    - name: Build Mod
+      run: |
+        cd fabric/1.21.2
+        ./gradlew -Pversion=${{ inputs.version }} build
+      #run: ls -la advancedbackups-corelib.jar
+
+
+    - name: Upload Mod
+      uses: actions/upload-artifact@v4
+      with:
+          name: AdvancedBackups-fabric-1.21.2-${{ inputs.version }}.jar
+          path: fabric/1.21.2/build/libs/AdvancedBackups-fabric-1.21.2-${{ inputs.version }}.jar
+
+
   neoforge-1-20-2:
     runs-on: ubuntu-latest
     needs: core
@@ -871,7 +907,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [core, forge-1-7-10, forge-1-12-2, forge-1-16, forge-1-18, fabric-1-18, forge-1-19-2, 
               forge-1-19-3, fabric-1-19-2, fabric-1-19-3, forge-1-20, forge-1-20-2, fabric-1-20, fabric-1-20-2, neoforge-1-20-2,
-              forge-1-20-4, forge-1-20-6, fabric-1-20-4, fabric-1-21, neoforge-1-20-4, fabric-1-20-6, neoforge-1-20-6, neoforge-1-21,
+              forge-1-20-4, forge-1-20-6, fabric-1-20-4, fabric-1-21, fabric-1-21-2, neoforge-1-20-4, fabric-1-20-6, neoforge-1-20-6, neoforge-1-21,
               spigot-1-21]
 
     steps:
@@ -983,6 +1019,12 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
+        path: archives/
+
+    - name: Download Fabric-1-21.2
+      uses: actions/download-artifact@v4
+      with:
+        name: AdvancedBackups-fabric-1.21.2-${{ inputs.version }}.jar
         path: archives/
 
     - name: Download Neoforge-1-20-2
