@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
+          path: forge/1.12/build/libs/AdvancedBackups-forge-1.12-${{ inputs.version }}.jar
         
 
   forge-1-16:
@@ -140,7 +140,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
+          path: forge/1.16/build/libs/AdvancedBackups-forge-1.16-${{ inputs.version }}.jar
         
 
   forge-1-18:
@@ -174,7 +174,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
+          path: forge/1.18/build/libs/AdvancedBackups-forge-1.18-${{ inputs.version }}.jar
         
 
   fabric-1-18:
@@ -208,7 +208,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
+          path: fabric/1.18/build/libs/AdvancedBackups-fabric-1.18-${{ inputs.version }}.jar
         
 
   forge-1-19-2:
@@ -241,7 +241,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
+          path: forge/1.19.2/build/libs/AdvancedBackups-forge-1.19.2-${{ inputs.version }}.jar
                
 
   forge-1-19-3:
@@ -274,7 +274,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
+          path: forge/1.19.3/build/libs/AdvancedBackups-forge-1.19.3-${{ inputs.version }}.jar
         
         
   fabric-1-19-2:
@@ -307,7 +307,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
+          path: fabric/1.19.2/build/libs/AdvancedBackups-fabric-1.19.2-${{ inputs.version }}.jar
         
         
   fabric-1-19-3:
@@ -340,7 +340,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
+          path: fabric/1.19.3/build/libs/AdvancedBackups-fabric-1.19.3-${{ inputs.version }}.jar
         
 
   forge-1-20:
@@ -373,7 +373,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
+          path: forge/1.20/build/libs/AdvancedBackups-forge-1.20-${{ inputs.version }}.jar
         
 
   forge-1-20-2:
@@ -406,7 +406,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
+          path: forge/1.20.2/build/libs/AdvancedBackups-forge-1.20.2-${{ inputs.version }}.jar
         
 
   forge-1-20-4:
@@ -440,7 +440,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
+          path: forge/1.20.2/build/libs/AdvancedBackups-forge-1.20.4-${{ inputs.version }}.jar
         
 
   forge-1-20-6:
@@ -474,7 +474,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
+          path: forge/1.20.6/build/libs/AdvancedBackups-forge-1.20.6-${{ inputs.version }}.jar
 
 
   fabric-1-20:
@@ -508,7 +508,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
+          path: fabric/1.20/build/libs/AdvancedBackups-fabric-1.20-${{ inputs.version }}.jar
 
 
   fabric-1-20-2:
@@ -542,7 +542,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
+          path: fabric/1.20.2/build/libs/AdvancedBackups-fabric-1.20.2-${{ inputs.version }}.jar
 
 
   fabric-1-20-4:
@@ -576,7 +576,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
+          path: fabric/1.20.2/build/libs/AdvancedBackups-fabric-1.20.4-${{ inputs.version }}.jar
 
 
   fabric-1-20-6:
@@ -610,7 +610,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
+          path: fabric/1.20.6/build/libs/AdvancedBackups-fabric-1.20.6-${{ inputs.version }}.jar
 
 
   fabric-1-21:
@@ -644,7 +644,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
+          path: fabric/1.21/build/libs/AdvancedBackups-fabric-1.21-${{ inputs.version }}.jar
 
 
   neoforge-1-20-2:
@@ -678,7 +678,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
+          path: neoforge/1.20.2/build/libs/AdvancedBackups-neoforge-1.20.2-${{ inputs.version }}.jar
 
 
   neoforge-1-20-4:
@@ -712,7 +712,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
+          path: neoforge/1.20.4/build/libs/AdvancedBackups-neoforge-1.20.4-${{ inputs.version }}.jar
 
 
 
@@ -747,7 +747,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
+          path: neoforge/1.20.6/build/libs/AdvancedBackups-neoforge-1.20.6-${{ inputs.version }}.jar
 
 
 
@@ -782,7 +782,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
+          path: neoforge/1.21/build/libs/AdvancedBackups-neoforge-1.21-${{ inputs.version }}.jar
 
 
 
@@ -822,7 +822,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
-          path: build/libs/AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
+          path: spigot/1.21/build/libs/AdvancedBackups-spigot-1.21-${{ inputs.version }}.jar
 
   bundle-archives:
     runs-on: ubuntu-latest
