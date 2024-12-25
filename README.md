@@ -33,19 +33,6 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 ## FAQ:
 - How do the client toasts work with Spigot servers?
 
-  - A client needs the Forge, Neoforge or Fabric version of the mod to see the toasts. This works even on Spigot servers.
-- Will a backup be made if nobody has been online since the last backup?
-  - By default, no. This can be changed in config if need be.
-- Can the mod run server-side only?
-  - Yes, the mod can work entirely on the server - a client-side installation is only required to see backup toasts.
-- How do I run the command-line tool?
-  - There's scripts provided in your backup folder, or you can use `java -jar` to run it. Java is required on your PATH. 
-  - See the readme in your backup folder for more information.
-
-
-## FAQ:
-- How do the client toasts work with Spigot servers?
-
   - A client needs the Forge, Neoforge or Fabric version of the mod to see the toasts. This works even on Spigot servers!
 - Will a backup be made if nobody has been online since the last backup?
   - By default, no! This can be changed in config if need be.
