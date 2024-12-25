@@ -98,7 +98,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.12
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -132,7 +134,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.16
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -166,7 +170,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.18
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -200,7 +206,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.18
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -234,7 +242,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.19.2
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -267,7 +277,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.19.3
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -300,7 +312,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.19.2
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -333,7 +347,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.19.3
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -366,7 +382,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.20
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -399,7 +417,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.20.2
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -433,7 +453,9 @@ jobs:
   
     - name: Build Mod
       #Here, we have a little override for the minecraft version. Stops us needing a branch whilst still producing a separate jar.
-      run: ./gradlew -Pversion=${{ inputs.version }} build -PminecraftVersion=1.20.4 -Pminecraft_version=1.20.4 -Pforge_version=49.1.4 -Pmapping_version=1.20.4 build
+      run: |
+        cd forge/1.20.2
+        ./gradlew -Pversion=${{ inputs.version }} build -PminecraftVersion=1.20.4 -Pminecraft_version=1.20.4 -Pforge_version=49.1.4 -Pmapping_version=1.20.4 build
 
 
     - name: Upload Mod
@@ -466,8 +488,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      #Here, we have a little override for the minecraft version. Stops us needing a branch whilst still producing a separate jar.
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd forge/1.20.6
+        ./gradlew -Pversion=${{ inputs.version }} build
 
 
     - name: Upload Mod
@@ -500,7 +523,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.20
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -534,7 +559,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.20.2
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -569,7 +596,9 @@ jobs:
   
     - name: Build Mod
       #Here, we have a little override for the minecraft version. Stops us needing a branch whilst still producing a separate jar.
-      run: ./gradlew -Pversion=${{ inputs.version }} -PminecraftVersion=1.20.4 -Pminecraft_version=1.20.4 -Pyarn_mappings=1.20.4+build.3 -Ploader_version=0.16.2 -Pfabric_version-0.97.1+1.20.4 build
+      run: |
+        cd fabric/1.20.2
+        ./gradlew -Pversion=${{ inputs.version }} -PminecraftVersion=1.20.4 -Pminecraft_version=1.20.4 -Pyarn_mappings=1.20.4+build.3 -Ploader_version=0.16.2 -Pfabric_version-0.97.1+1.20.4 build
 
 
     - name: Upload Mod
@@ -602,7 +631,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.20.6
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -636,7 +667,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd fabric/1.21
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -670,7 +703,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd neoforge/1.20.2
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -704,7 +739,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd neoforge/1.20.4
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -739,7 +776,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd neoforge/1.20.6
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -774,7 +813,9 @@ jobs:
         distribution: 'temurin'
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd neoforge/1.21
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
@@ -814,7 +855,9 @@ jobs:
         java -jar BuildTools.jar --nogui --rev 1.21.1 --remapped 
   
     - name: Build Mod
-      run: ./gradlew -Pversion=${{ inputs.version }} build
+      run: |
+        cd spigot/1.21
+        ./gradlew -Pversion=${{ inputs.version }} build
       #run: ls -la advancedbackups-corelib.jar
 
 
