@@ -10,6 +10,8 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 
 [FAQ](#faq)
 
+[Version differences](#version-differences)
+
 [What does each backup type mean?](#backup-types)
 
 [Ingame Usage](#ingame)
@@ -41,6 +43,12 @@ Many Minecraft versions are supported - request more if the one you want isn't y
 - How do I run the commandline tool?
   - There's scripts provided in your backup folder, or you can use `java -jar` to run it. Java is required on your PATH. 
   - See the readme in your backup folder for more information.
+
+
+## Version Differences:
+- Spigot has no client.
+- 1.7.10 uses a text overlay to show progress instead of the toast system.
+
 
 ## Backup Types:
 - Zip backups are fairly self explanatory - zip up the whole world and there's your backup.
