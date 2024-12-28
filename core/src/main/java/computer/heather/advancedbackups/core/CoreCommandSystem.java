@@ -47,13 +47,13 @@ public class CoreCommandSystem {
         chat.accept("Done!");
     }
 
-    public static void snapshot(Consumer<String> chat) {
+    public static void snapshot(Consumer<String> chat, String snapshotName) {
         BackupWrapper.checkBackups(); //makes sure the backups folder is present etc
         if (ThreadedBackup.running) {
             chat.accept("Cannot start a snapshot whilst a backup is already running!");
             return;
         }
-        BackupWrapper.makeSnapshot(chat);
+        BackupWrapper.makeSnapshot(chat, snapshotName);
     }
 
     public static void resetChainLength(Consumer<String> chat) {

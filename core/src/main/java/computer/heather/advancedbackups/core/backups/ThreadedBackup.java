@@ -46,6 +46,7 @@ public class ThreadedBackup extends Thread {
     private boolean snapshot = false;
     private boolean shutdown = false;
     private ArrayList<String> erroringFiles = new ArrayList<>();
+    private String snapshotName = "";
 
     public static final ArrayList<Pattern> blacklist = new ArrayList<>();
 
@@ -164,8 +165,8 @@ public class ThreadedBackup extends Thread {
         try {
 
             File zip = new File(file.toString() + (this.snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
-            ABCore.infoLogger.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", "backup"));
-            this.output.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", "backup"));
+            ABCore.infoLogger.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
+            this.output.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name: " + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -459,8 +460,9 @@ public class ThreadedBackup extends Thread {
 
     }
 
-    public void snapshot() {
+    public void snapshot(String snapshotName) {
         this.snapshot = true;
+        this.snapshotName = snapshotName;
     }
 
     public void shutdown() {
@@ -492,14 +494,14 @@ public class ThreadedBackup extends Thread {
     }
 
 
-    public static void performRename(File location) {
+    private void performRename(File location) {
         //Renames all incomplete backups to no longer have the incomplete marker. This is only done after a successful backup!
         for (String string : new String[]{"/zips/", "/snapshots/", "/differential/", "/incremental/"}) {
             File file = new File(location, string);
             for (String backupName : file.list()) {
                 if (backupName.contains("incomplete")) {
                     File file2 = new File(file, backupName);
-                    File file3 = new File(file, backupName.replace("incomplete", "backup"));
+                    File file3 = new File(file, backupName.replace("incomplete", this.snapshot ? snapshotName : "backup"));
                     file2.renameTo(file3);
                 }
             }
