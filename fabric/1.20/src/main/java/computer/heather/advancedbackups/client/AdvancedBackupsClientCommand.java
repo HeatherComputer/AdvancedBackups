@@ -4,6 +4,8 @@ package computer.heather.advancedbackups.client;
 import java.time.Instant;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.arguments.StringArgumentType;
 
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -40,7 +42,15 @@ public class AdvancedBackupsClientCommand {
             Acknowledgment acknowledgment = MinecraftClient.getInstance().player.networkHandler.lastSeenMessagesCollector.collect().update();
             MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup snapshot", Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, acknowledgment));
             return 1;
-         }))
+         })
+         
+         .then(ClientCommandManager.argument("name", StringArgumentType.greedyString()).executes((runner) -> {
+            ParseResults<FabricClientCommandSource> parseResults = dispatcher.parse(StringArgumentType.getString(runner, "name"), runner.getSource());
+            String snapshotName = parseResults.getReader().getString();
+            Acknowledgment acknowledgment = MinecraftClient.getInstance().player.networkHandler.lastSeenMessagesCollector.collect().update();
+            MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup snapshot " + snapshotName, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, acknowledgment));
+            return 1;
+         })))
          
          .then(ClientCommandManager.literal("cancel").executes((runner) -> {
             Acknowledgment acknowledgment = MinecraftClient.getInstance().player.networkHandler.lastSeenMessagesCollector.collect().update();
