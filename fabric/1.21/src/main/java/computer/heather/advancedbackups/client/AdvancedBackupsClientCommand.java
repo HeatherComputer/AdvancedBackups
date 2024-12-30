@@ -2,6 +2,8 @@ package computer.heather.advancedbackups.client;
 
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.arguments.StringArgumentType;
 
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -32,7 +34,14 @@ public class AdvancedBackupsClientCommand {
          .then(ClientCommandManager.literal("snapshot").executes((runner) -> {
             MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup snapshot"));
             return 1;
-         }))
+         })
+         
+         .then(ClientCommandManager.argument("name", StringArgumentType.greedyString()).executes((runner) -> {
+            ParseResults<FabricClientCommandSource> parseResults = dispatcher.parse(StringArgumentType.getString(runner, "name"), runner.getSource());
+            String snapshotName = parseResults.getReader().getString();
+            MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup snapshot " + snapshotName));
+            return 1;
+         })))
          
          .then(ClientCommandManager.literal("cancel").executes((runner) -> {
             MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket("backup cancel"));
