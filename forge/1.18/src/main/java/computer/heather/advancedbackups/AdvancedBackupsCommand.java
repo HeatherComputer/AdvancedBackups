@@ -1,6 +1,7 @@
 package computer.heather.advancedbackups;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.commands.CommandSourceStack;
@@ -36,9 +37,15 @@ public class AdvancedBackupsCommand {
          .then(Commands.literal("snapshot").executes((runner) -> {
             CoreCommandSystem.snapshot((response) -> {
                 runner.getSource().sendSuccess(new TextComponent(response), true);
-            });
+            }, "snapshot");
             return 1;
-         }))
+         })
+            .then(Commands.argument("snapshot", StringArgumentType.greedyString()).executes((runner) -> {
+                CoreCommandSystem.snapshot((response) -> {
+                    runner.getSource().sendSuccess(new TextComponent(response), true);
+                }, StringArgumentType.getString(runner, "snapshot"));
+                return 1;
+            })))
 
          .then(Commands.literal("cancel").executes((runner) -> {
             CoreCommandSystem.cancelBackup((response) -> {
