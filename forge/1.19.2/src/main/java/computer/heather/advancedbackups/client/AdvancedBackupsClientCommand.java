@@ -3,11 +3,13 @@ package computer.heather.advancedbackups.client;
 import java.time.Instant;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ArgumentSignatures;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundChatCommandPacket;
@@ -38,7 +40,13 @@ public class AdvancedBackupsClientCommand {
             Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup snapshot", Instant.now(), 0, 
                 ArgumentSignatures.EMPTY, false, Minecraft.getInstance().player.connection.generateMessageAcknowledgements()));
             return 1;
-         }))
+         })
+            .then(Commands.argument("name", StringArgumentType.greedyString()).executes((runner) -> {
+                String name = StringArgumentType.getString(runner, "name");
+                Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup snapshot " + name, Instant.now(), 0, 
+                    ArgumentSignatures.EMPTY, false, Minecraft.getInstance().player.connection.generateMessageAcknowledgements()));
+                return 1;
+            })))
 
          .then(literal("cancel").executes((runner) -> {
             Minecraft.getInstance().player.connection.send(new ServerboundChatCommandPacket("backup cancel", Instant.now(), 0, 
