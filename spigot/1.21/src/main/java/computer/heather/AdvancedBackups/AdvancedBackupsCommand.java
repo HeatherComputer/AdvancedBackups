@@ -38,7 +38,7 @@ public class AdvancedBackupsCommand implements CommandExecutor, TabCompleter {
             ResetChain.execute(sender);
         }
         else if ("snapshot".equals(args[0])) {
-            Snapshot.execute(sender);
+            Snapshot.execute(sender, args);
         }
         else if ("cancel".equals(args[0])) {
             Cancel.execute(sender);
@@ -81,10 +81,15 @@ public class AdvancedBackupsCommand implements CommandExecutor, TabCompleter {
     }
 
     public static class Snapshot {
-        public static void execute(CommandSender sender) {
+        public static void execute(CommandSender sender, String[] args) {
+            String name;
+            if (args.length > 1) {
+                name = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+            }
+            else name = "snapshot";
             CoreCommandSystem.snapshot((response) -> {
                 sender.sendMessage(response);
-            });
+            }, name);
         }
 
     }
