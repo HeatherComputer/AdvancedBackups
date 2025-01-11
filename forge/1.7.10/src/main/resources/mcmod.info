@@ -5,9 +5,9 @@
     "version": "${modVersion}",
     "mcversion": "1.7.10",
     "description": "A highly advanced backup mod.",
-    "url": "https://github.com/MommyHeather/AdvancedBackups",
+    "url": "https://github.com/HeatherComputer/AdvancedBackups",
     "credits": "",
-    "authorList": ["mommyheather"],
+    "authorList": ["Heather White"],
     "dependencies": []
   }
 ]

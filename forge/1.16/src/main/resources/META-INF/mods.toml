@@ -34,7 +34,7 @@ displayName="Advanced Backups" #mandatory
 authors="Mommy Heather" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A powerful and highly configurable backup mod. Visit https://github.com/MommyHeather/AdvancedBackups for more info.
+A powerful and highly configurable backup mod. Visit https://github.com/HeatherComputer/AdvancedBackups for more info.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.advancedbackups]] #optional

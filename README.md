@@ -152,7 +152,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 
 \- It will read your config. Then, it will check for backups from other mods.
 - If you have backups from other mods, you'll be asked if you wish to work with those, or ones made by Advanced Backups.
-- ![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/6b2a3b87-e25b-4c24-9d14-a022ad8471f6)
+- ![image](https://github.com/HeatherComputer/AdvancedBackups/assets/66441550/6b2a3b87-e25b-4c24-9d14-a022ad8471f6)
 - If you choose to use the other mod, it will skip world selection and backup type selection. Note that the export feature does *not* work with backups from other mods.
 
   
@@ -163,13 +163,13 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 - Exporting will export the entire world state at the time of the chosen backup. Restoring the entire backup does the same, but in place of the existing world, and choosing to restore a singular file will let you choose which file.
 - The export option will ask which backup to export, and present a confirmation message. Once accepted, the program will export for you and exit.
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/e0402c55-5bf6-4662-a890-a4cda900d02b)
+![image](https://github.com/HeatherComputer/AdvancedBackups/assets/66441550/e0402c55-5bf6-4662-a890-a4cda900d02b)
 
 
 \- Then it will help find a world - first asking if you play on a client or server, then by listing world names.
 - Backups not labelled as for the world you chose will be hidden. The export option can be used if your backup was made in an older version or you wish to restore into a fresh world.
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/854da5f7-c5ea-4233-b772-3952bfa37cbd)
+![image](https://github.com/HeatherComputer/AdvancedBackups/assets/66441550/854da5f7-c5ea-4233-b772-3952bfa37cbd)
 
 
 \- Then it will prompt you to choose a backup to restore. The most recent are listed last. With differential and incremental upgrades, the backups will be labelled as partial or full.
@@ -178,7 +178,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 
 \- The below image shows this for a differential backup.
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/f580e348-4aee-40fb-9ab4-5c7c8d97ff7c)
+![image](https://github.com/HeatherComputer/AdvancedBackups/assets/66441550/f580e348-4aee-40fb-9ab4-5c7c8d97ff7c)
 
     
 Finally, you can accept the warning prompt it gives you.
@@ -194,7 +194,7 @@ If your selected backup type is differential or incremental, files will be marke
 
 Once you select a file, it will be restored. The program will then exit.
 
-![image](https://github.com/MommyHeather/AdvancedBackups/assets/66441550/ca7846b5-e326-449e-852a-9e0d670ea65c)
+![image](https://github.com/HeatherComputer/AdvancedBackups/assets/66441550/ca7846b5-e326-449e-852a-9e0d670ea65c)
 
 
 

@@ -14,7 +14,7 @@ TROUBLESHOOTING
 
 DOCUMENTATION
 
-All documentation is available at https://github.com/MommyHeather/AdvancedBackups#usage
+All documentation is available at https://github.com/HeatherComputer/AdvancedBackups#usage
 
 
 

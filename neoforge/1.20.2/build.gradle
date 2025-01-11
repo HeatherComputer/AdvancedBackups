@@ -148,11 +148,11 @@ tasks.named('jar', Jar).configure {
         attributes([
                 "Main-Class"              : "computer.heather.advancedbackups.cli.AdvancedBackupsCLI",
                 "Specification-Title"     : "advancedbackups",
-                "Specification-Vendor"    : "mommyheather",
+                "Specification-Vendor"    : "Heather White",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "mommyheather",
+                "Implementation-Vendor"   : "Heather White",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }    
