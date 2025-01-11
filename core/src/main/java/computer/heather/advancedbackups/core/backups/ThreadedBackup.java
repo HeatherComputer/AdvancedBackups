@@ -165,8 +165,8 @@ public class ThreadedBackup extends Thread {
         try {
 
             File zip = new File(file.toString() + (this.snapshot ? "/snapshots/" : "/zips/"), backupName + ".zip");
-            ABCore.infoLogger.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name:\n" + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
-            this.output.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name:\n" + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
+            ABCore.infoLogger.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name:\n  " + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
+            this.output.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name:\n  " + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             zipOutputStream.setLevel((int) ConfigManager.compression.get());
@@ -256,8 +256,8 @@ public class ThreadedBackup extends Thread {
 
     private void makeDifferentialOrIncrementalBackup(File location, boolean differential) throws InterruptedException, IOException {
         try {
-            ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name:\n" + backupName.replace("incomplete", "backup"));
-            this.output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name:\n" + backupName.replace("incomplete", "backup"));
+            ABCore.infoLogger.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name:\n  " + backupName.replace("incomplete", "backup"));
+            this.output.accept("Preparing " + (differential ? "differential" : "incremental") + " backup with name:\n  " + backupName.replace("incomplete", "backup"));
             long time = 0;
 
 
