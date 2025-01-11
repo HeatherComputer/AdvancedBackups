@@ -42,7 +42,7 @@ public class ABCore {
     public static String backupPath;
 
     
-    private static final String savesDisabledMessage =
+    private static final String savesDisabledMessage = "\n" +
     "***************************************\n" +
     "SAVING DISABLED - PREPARING FOR BACKUP!\n" +
     "***************************************\n";
@@ -54,7 +54,7 @@ public class ABCore {
         } 
     }
     
-    private static final String savesEnabledMessage =
+    private static final String savesEnabledMessage = "\n" +
     "*********************************\n" +
     "SAVING ENABLED - BACKUP COMPLETE!\n" +
     "*********************************\n";
@@ -68,7 +68,7 @@ public class ABCore {
         }
     }
 
-    private static final String saveCompleteMessage =
+    private static final String saveCompleteMessage = "\n" +
     "*************************************\n" +
     "SAVE COMPLETE - PREPARING FOR BACKUP!\n" +
     "*************************************\n";
