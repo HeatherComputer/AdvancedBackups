@@ -45,7 +45,7 @@ public class ABCore {
     private static final String savesDisabledMessage = "\n" +
     "***************************************\n" +
     "SAVING DISABLED - PREPARING FOR BACKUP!\n" +
-    "***************************************\n";
+    "***************************************";
     
     public static void disableSaving() {
         if (ConfigManager.toggleSave.get()){
@@ -57,7 +57,7 @@ public class ABCore {
     private static final String savesEnabledMessage = "\n" +
     "*********************************\n" +
     "SAVING ENABLED - BACKUP COMPLETE!\n" +
-    "*********************************\n";
+    "*********************************";
     public static void enableSaving(boolean boot) {
         //Technically there's an edgecase here where someone could let saving be disabled, then adjust + reload config to stop it being enabled again...
         //but I don't know a good way to counter this right now and there's a failsafe on server boot regardless.
@@ -71,7 +71,7 @@ public class ABCore {
     private static final String saveCompleteMessage = "\n" +
     "*************************************\n" +
     "SAVE COMPLETE - PREPARING FOR BACKUP!\n" +
-    "*************************************\n";
+    "*************************************";
     public static void saveOnce() {
         saveOnce.accept(ConfigManager.flush.get());
         infoLogger.accept(saveCompleteMessage);
