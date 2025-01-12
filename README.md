@@ -141,6 +141,7 @@ Because of the way this "chain" works with incrementals, they purge slightly dif
 | reload-config | Reloads the config.| 2.2 |
 | reload-client-config | Reloads the clientside config.| 3.5 |
 | snapshot | Creates a "snapshot" backup that cannot be auto-deleted.| 2.2 |
+| snapshot \<name> | Creates a "snapshot" backup with the given name.| 3.5 |
 | reset-chain | Resets any current chain length.| 1.0 |
 
 </details>
