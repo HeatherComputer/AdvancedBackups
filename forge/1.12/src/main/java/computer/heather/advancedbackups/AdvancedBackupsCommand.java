@@ -30,7 +30,7 @@ public class AdvancedBackupsCommand extends CommandTreeBase
     @Override
     public int getRequiredPermissionLevel()
     {
-        return 3;
+        return 2;
     }
     
     @Override

@@ -33,7 +33,7 @@ public class AdvancedBackupsCommand extends CommandBase
     @Override
     public int getRequiredPermissionLevel()
     {
-        return 3;
+        return 2;
     }
 
     public String getCommandUsage(ICommandSender icommandsender)
