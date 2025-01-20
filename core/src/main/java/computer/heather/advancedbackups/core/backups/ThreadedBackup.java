@@ -205,10 +205,18 @@ public class ThreadedBackup extends Thread {
             for (Path path : paths) {
                 try {
                     targetFile = ABCore.worldDir.relativize(path);
+                    File sourceFile = new File(ABCore.worldDir.toString(), path.toString());
+                    if (!sourceFile.exists()) {
+                        //Should never happen!
+                        ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
+                        ABCore.logStackTrace(new Exception());
+                        this.erroringFiles.add(path.toString());
+                        continue;
+                    }
                     zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
                     byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
                     try {
-                        FileInputStream is = new FileInputStream(path.toFile());
+                        FileInputStream is = new FileInputStream(sourceFile);
                         while (true) {
                             int i = is.read(bytes);
                             if (i < 0) break;
@@ -358,11 +366,19 @@ public class ThreadedBackup extends Thread {
                     BackupStatusInstance.setInstance(instance);
                 }
                 for (Path path : toBackup) {
+                    File sourceFile = new File(ABCore.worldDir.toString(), path.toString());
+                    if (!sourceFile.exists()) {
+                        //Should never happen!
+                        ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
+                        ABCore.logStackTrace(new Exception());
+                        this.erroringFiles.add(path.toString());
+                        continue;
+                    }
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
 
                     byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
                     try {
-                        FileInputStream is = new FileInputStream(new File(ABCore.worldDir.toString(), path.toString()));
+                        FileInputStream is = new FileInputStream(sourceFile);
                         while (true) {
                             int i = is.read(bytes);
                             if (i < 0) break;
@@ -414,8 +430,16 @@ public class ThreadedBackup extends Thread {
                     File out = new File(dest, path.toString());
                     if (!out.getParentFile().exists()) {
                         out.getParentFile().mkdirs();
+                    }                    
+                    File sourceFile = new File(ABCore.worldDir.toString(), path.toString());
+                    if (!sourceFile.exists()) {
+                        //Should never happen!
+                        ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
+                        ABCore.logStackTrace(new Exception());
+                        this.erroringFiles.add(path.toString());
+                        continue;
                     }
-                    Files.copy(new File(ABCore.worldDir.toString(), path.toString()).toPath(), out.toPath());
+                    Files.copy(sourceFile.toPath(), out.toPath());
                     index++;
                     if (!this.shutdown) {
                         BackupStatusInstance instance = new BackupStatusInstance();
