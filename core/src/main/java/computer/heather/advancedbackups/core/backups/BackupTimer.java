@@ -33,7 +33,7 @@ public class BackupTimer {
         //make the backup
 
         if (BackupCheckEnum.SUCCESS.equals(BackupWrapper.checkBackups())) {
-            BackupWrapper.makeSingleBackup(0, false);
+            BackupWrapper.makeSingleBackup(5000, false);
         } else {
             //We can just wait here if the backup check fails.
             //It'll only be a 5m wait if a backup was meant to happen - or if the next time should be extended, say, a manual backup was made, we can go back to idle rather than running checks every tick.

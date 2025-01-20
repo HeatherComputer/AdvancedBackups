@@ -314,7 +314,7 @@ public class BackupWrapper {
         }
 
         ThreadedBackup.running = true;
-        ThreadedBackup threadedBackup = new ThreadedBackup(0, output);
+        ThreadedBackup threadedBackup = new ThreadedBackup(5000, output);
         threadedBackup.snapshot(snapshotName);
         threadedBackup.start();
 
