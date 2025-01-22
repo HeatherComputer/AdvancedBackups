@@ -17,6 +17,9 @@ public class BackupTimer {
     private static long lastConsole = 0;
     private static long lastClient = 0;
 
+    //tldr it'd be better to keep a schedule but skip a backup than move the entire schedule because of a failed backup attempt or two.
+    private static long lastAttempt = 0;
+
     private static long nextBackup = System.currentTimeMillis() + BackupTimer.calculateNextBackupTime();
 
     public static void check() {
@@ -32,6 +35,8 @@ public class BackupTimer {
         if (currentTime < BackupTimer.nextBackup) return;
         //make the backup
 
+        lastAttempt = currentTime;
+
         if (BackupCheckEnum.SUCCESS.equals(BackupWrapper.checkBackups())) {
             BackupWrapper.makeSingleBackup(5000, false);
         } else {
@@ -44,7 +49,8 @@ public class BackupTimer {
 
 
     private static long calculateNextBackupTime() {
-        long forcedMillis = BackupWrapper.mostRecentBackupTime() + (long) (ConfigManager.maxFrequency.get() * 3600000L);
+        //Go off of the last attempted backup rather than the last actual backup if any attempts have been made this cycle.
+        long forcedMillis = (lastAttempt == 0 ? BackupWrapper.mostRecentBackupTime() : lastAttempt) + (long) (ConfigManager.maxFrequency.get() * 3600000L);
         if (forcedMillis <= System.currentTimeMillis()) {
             forcedMillis = 300000; //sets it to 5m if no backup exists or the timer is already execeeded to get the chain going
         }
