@@ -620,8 +620,10 @@ jobs:
         loaders: |
             fabric
             quilt
-        game-versions: |
-            [1.21.2,1.21.3,1.21.4]
+        game-versions: |    
+            1.21.2
+            1.21.3
+            1.21.4
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
@@ -760,8 +762,10 @@ jobs:
         version-type: release
         loaders: |
             neoforge
-        game-versions: |
-            [1.21.2,1.21.3,1.21.4]
+        game-versions: |    
+            1.21.2
+            1.21.3
+            1.21.4
         java: |
             Java 21
         changelog: ${{ vars.CHANGELOG }}
