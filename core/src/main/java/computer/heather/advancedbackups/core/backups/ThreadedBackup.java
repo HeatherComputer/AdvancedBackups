@@ -186,6 +186,19 @@ public class ThreadedBackup extends Thread {
                     paths.add(file);
                     return FileVisitResult.CONTINUE;
                 }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path path, IOException exc) {
+                    //Should never happen!
+                    if (!path.toFile().exists()) {
+                        ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
+                    } else {
+                        ABCore.errorLogger.accept("Error preparing file! " + path.toString());
+                    }
+                    ABCore.logStackTrace(new Exception());
+                    erroringFiles.add(path.toString());
+                    return FileVisitResult.CONTINUE;
+                }
             });
 
             Path targetFile;
@@ -322,6 +335,19 @@ public class ThreadedBackup extends Thread {
                         partialSize += attributes.size();
                         newHashes.put(targetFile.toString(), hash);
                     }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path path, IOException exc) {
+                    //Should never happen!
+                    if (!path.toFile().exists()) {
+                        ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
+                    } else {
+                        ABCore.errorLogger.accept("Error preparing file! " + path.toString());
+                    }
+                    ABCore.logStackTrace(new Exception());
+                    erroringFiles.add(path.toString());
                     return FileVisitResult.CONTINUE;
                 }
             });
