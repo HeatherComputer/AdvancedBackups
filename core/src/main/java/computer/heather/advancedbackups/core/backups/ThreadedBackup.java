@@ -218,7 +218,7 @@ public class ThreadedBackup extends Thread {
             for (Path path : paths) {
                 try {
                     targetFile = ABCore.worldDir.relativize(path);
-                    File sourceFile = new File(ABCore.worldDir.toString(), path.toString());
+                    File sourceFile = path.toFile();
                     if (!sourceFile.exists()) {
                         //Should never happen!
                         ABCore.errorLogger.accept("File doesn't exist! " + path.toString());
