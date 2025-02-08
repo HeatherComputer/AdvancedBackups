@@ -75,7 +75,7 @@ public class CoreCommandSystem {
                     writer.flush();
                     writer.close();
 
-                } catch (JsonParseException e) {
+                } catch (JsonParseException | NullPointerException e) {
                     chat.accept("Malformed backup manifest! Will be completely replaced, with no side effects...");
                     chat.accept("Check logs for more info.");
                     ABCore.logStackTrace(e);

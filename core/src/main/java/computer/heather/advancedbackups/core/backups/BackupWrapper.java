@@ -37,7 +37,7 @@ public class BackupWrapper {
                 try {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
                     ABCore.activity = manifest.general.activity;
-                } catch (JsonParseException e) {
+                } catch (JsonParseException | NullPointerException e) {
                     ABCore.errorLogger.accept("Malformed backup manifest! Will be completely replaced, and will assume player activity has changed...");
 
                     BackupManifest manifest = BackupManifest.defaults();

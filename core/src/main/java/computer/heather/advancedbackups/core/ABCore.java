@@ -99,7 +99,7 @@ public class ABCore {
                         writer.write(gson.toJson(manifest));
                         writer.flush();
                         writer.close();
-                    } catch (JsonParseException e) {
+                    } catch (JsonParseException | NullPointerException e) {
                         ABCore.errorLogger.accept("Malformed backup manifest! Overwriting, meaning next backup has to be a full backup...");
                         ABCore.logStackTrace(e);
 

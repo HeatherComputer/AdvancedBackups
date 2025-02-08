@@ -288,7 +288,7 @@ public class ThreadedBackup extends Thread {
                 try {
                     manifest = gson.fromJson(new String(Files.readAllBytes(manifestFile.toPath())), BackupManifest.class);
 
-                } catch (JsonParseException e) {
+                } catch (JsonParseException | NullPointerException e) {
 
                     ABCore.errorLogger.accept("Malformed backup manifest! It will have to be reset...");
                     this.output.accept("Malformed backup manifest! It will have to be reset...");
