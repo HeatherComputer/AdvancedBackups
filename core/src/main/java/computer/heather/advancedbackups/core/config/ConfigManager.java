@@ -21,10 +21,6 @@ import computer.heather.simpleconfig.types.StringArrayValue;
 import computer.heather.simpleconfig.types.ValidatedStringValue;
 
 public class ConfigManager {
-
-    private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
-        .setConfigLocation(Paths.get("config/Advancedbackups.properties"))
-        .setPremadeLocation("advancedbackups-properties.txt");
     
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true);
     public static final BooleanValue save = new BooleanValue("config.advancedbackups.save", true);
@@ -64,8 +60,12 @@ public class ConfigManager {
     public static final BooleanValue purgeIncrementals = new BooleanValue("config.advancedbackups.purge.incrementals", true);
     public static final LongValue incrementalChains = new LongValue("config.advancedbackups.purge.incrementalchains", 1, 1, Long.MAX_VALUE);
 
-    static {
-        MANAGER.register(
+    
+    //Make the manager. Chaining!
+    private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
+        .setConfigLocation(Paths.get("config/Advancedbackups.properties"))
+        .setPremadeLocation("advancedbackups-properties.txt")
+        .register(
             enabled, save, toggleSave,
             buffer, flush, activity,
             blacklist, type, path,
@@ -77,7 +77,7 @@ public class ConfigManager {
             chainsPercent, size, daysToKeep,
             backupsToKeep, purgeIncrementals, incrementalChains
         );
-    }
+
 
     public static void loadOrCreateConfig() throws IOException {
         ArrayList<String> missingProperties = new ArrayList<>();

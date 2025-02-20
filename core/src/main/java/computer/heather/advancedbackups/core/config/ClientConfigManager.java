@@ -15,10 +15,6 @@ import java.util.ArrayList;
 
 public class ClientConfigManager {
 
-    private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
-        .setConfigLocation(Paths.get("config/Advancedbackups-client.properties"))
-        .setPremadeLocation("advancedbackups-client-properties.txt");
-
 
     public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true);
 
@@ -40,15 +36,18 @@ public class ClientConfigManager {
     public static final LongValue progressBackgroundGreen = new LongValue("config.advancedbackups.colours.background.green", 255, 0, 255);
     public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255);
 
-    static {
-        MANAGER.register(
+    
+    //Make the manager. Chaining!
+    private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
+        .setConfigLocation(Paths.get("config/Advancedbackups-client.properties"))
+        .setPremadeLocation("advancedbackups-client-properties.txt")
+        .register(
             showProgress, darkMode,
             progressTextRed, progressTextGreen, progressTextBlue,
             errorTextRed, errorTextGreen, errorTextBlue,
             progressBarRed, progressBarGreen, progressBarBlue,
             progressBackgroundRed, progressBackgroundGreen, progressBackgroundBlue
         );
-    }
 
 
     public static void loadOrCreateConfig() throws IOException {
