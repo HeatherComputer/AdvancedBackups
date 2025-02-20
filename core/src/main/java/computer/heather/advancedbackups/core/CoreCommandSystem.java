@@ -11,6 +11,7 @@ import com.google.gson.JsonParseException;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.function.Consumer;
 
@@ -35,7 +36,7 @@ public class CoreCommandSystem {
         BackupWrapper.makeSingleBackup(0, chat, false);
     }
 
-    public static void reloadConfig(Consumer<String> chat) {
+    public static void reloadConfig(Consumer<String> chat) throws IOException {
         chat.accept("Reloading config...");
         ConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
@@ -66,8 +67,8 @@ public class CoreCommandSystem {
                 try {
                     BackupManifest manifest = gson.fromJson(new String(Files.readAllBytes(backupManifest.toPath())), BackupManifest.class);
 
-                    manifest.incremental.chainLength += (int) ConfigManager.length.get();
-                    manifest.differential.chainLength += (int) ConfigManager.length.get();
+                    manifest.incremental.chainLength += ConfigManager.length.get().intValue();
+                    manifest.differential.chainLength += ConfigManager.length.get().intValue();
 
 
                     FileWriter writer = new FileWriter(backupManifest);
