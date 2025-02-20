@@ -23,7 +23,7 @@ import computer.heather.simpleconfig.types.ValidatedStringValue;
 public class ConfigManager {
 
     private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
-        .setConfigLocation(Paths.get("config/advancedbackups.properties"))
+        .setConfigLocation(Paths.get("config/Advancedbackups.properties"))
         .setPremadeLocation("advancedbackups-properties.txt");
     
     public static final BooleanValue enabled = new BooleanValue("config.advancedbackups.enabled", true);
