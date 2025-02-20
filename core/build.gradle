@@ -36,6 +36,11 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
     mavenCentral()
+    maven {
+        name "heatherComputer"
+        url "https://maven.heather.computer/public"
+    }
+
 }
 
 tasks.named('shadowJar', ShadowJar) {
@@ -50,6 +55,9 @@ dependencies {
     //extraLibs 'com.sun.jna.platform:5.13.0'
     compileOnly 'com.google.code.gson:gson:2.10.1'
     implementation 'org.fusesource.jansi:jansi:2.4.0'
+    //The + allows us to pin to the latest version. This is fine and useful.
+    implementation "computer.heather:SimpleConfig:+"
+
  
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -70,11 +78,11 @@ jar {
         attributes([
                 "Main-Class"              : "computer.heather.advancedbackups.cli.AdvancedBackupsCLI",
                 "Specification-Title"     : "advancedbackups",
-                "Specification-Vendor"    : "raveninthedark",
+                "Specification-Vendor"    : "heathercomputer",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "raveninthedark",
+                "Implementation-Vendor"   : "heathercomputer",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
