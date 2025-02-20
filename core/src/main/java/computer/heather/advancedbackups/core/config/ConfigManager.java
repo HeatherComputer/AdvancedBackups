@@ -64,7 +64,20 @@ public class ConfigManager {
     public static final BooleanValue purgeIncrementals = new BooleanValue("config.advancedbackups.purge.incrementals", true);
     public static final LongValue incrementalChains = new LongValue("config.advancedbackups.purge.incrementalchains", 1, 1, Long.MAX_VALUE);
 
-
+    static {
+        MANAGER.register(
+            enabled, save, toggleSave,
+            buffer, flush, activity,
+            blacklist, type, path,
+            minFrequency, maxFrequency, uptime,
+            timesArray, shutdown, startup,
+            delay, clients, clientFrequency,
+            console, consoleFrequency, compression,
+            length, compressChains, smartChains,
+            chainsPercent, size, daysToKeep,
+            backupsToKeep, purgeIncrementals, incrementalChains
+        );
+    }
 
     public static void loadOrCreateConfig() throws IOException {
         ArrayList<String> missingProperties = new ArrayList<>();
