@@ -42,7 +42,7 @@ public class CoreCommandSystem {
         chat.accept("Done!");
     }
 
-    public static void reloadClientConfig(Consumer<String> chat) {
+    public static void reloadClientConfig(Consumer<String> chat) throws IOException {
         chat.accept("Reloading client config...");
         ClientConfigManager.loadOrCreateConfig();
         chat.accept("Done!");
