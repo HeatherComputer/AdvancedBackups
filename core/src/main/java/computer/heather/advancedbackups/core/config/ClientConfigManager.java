@@ -1,136 +1,106 @@
 package computer.heather.advancedbackups.core.config;
 
 import computer.heather.advancedbackups.core.ABCore;
-import computer.heather.advancedbackups.core.config.ConfigTypes.BooleanValue;
-import computer.heather.advancedbackups.core.config.ConfigTypes.ConfigValidationEnum;
-import computer.heather.advancedbackups.core.config.ConfigTypes.LongValue;
+import computer.heather.simpleconfig.exceptions.validation.BaseValidationException;
+import computer.heather.simpleconfig.exceptions.validation.MissingOptionException;
+import computer.heather.simpleconfig.exceptions.validation.MissingValueException;
+import computer.heather.simpleconfig.managers.PremadePropertiesManager;
+import computer.heather.simpleconfig.types.BaseConfigType;
+import computer.heather.simpleconfig.types.BooleanValue;
+import computer.heather.simpleconfig.types.LongValue;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class ClientConfigManager {
 
-    private static HashMap<String, ConfigTypes> entries = new HashMap<>();
+
+    public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true);
+
+    public static final BooleanValue darkMode = new BooleanValue("config.advancedbackups.darkToasts", true);
+
+    public static final LongValue progressTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255);
+    public static final LongValue progressTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255);
+    public static final LongValue progressTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255);
+
+    public static final LongValue errorTextRed = new LongValue("config.advancedbackups.colours.error.red", 255, 0, 255);
+    public static final LongValue errorTextGreen = new LongValue("config.advancedbackups.colours.error.green", 50, 0, 255);
+    public static final LongValue errorTextBlue = new LongValue("config.advancedbackups.colours.error.blue", 50, 0, 255);
+
+    public static final LongValue progressBarRed = new LongValue("config.advancedbackups.colours.bar.red", 88, 0, 255);
+    public static final LongValue progressBarGreen = new LongValue("config.advancedbackups.colours.bar.green", 242, 0, 255);
+    public static final LongValue progressBarBlue = new LongValue("config.advancedbackups.colours.bar.blue", 82, 0, 255);
+
+    public static final LongValue progressBackgroundRed = new LongValue("config.advancedbackups.colours.background.red", 255, 0, 255);
+    public static final LongValue progressBackgroundGreen = new LongValue("config.advancedbackups.colours.background.green", 255, 0, 255);
+    public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255);
+
+    
+    //Make the manager. Chaining!
+    private static final PremadePropertiesManager MANAGER = new PremadePropertiesManager()
+        .setConfigLocation(Paths.get("config/Advancedbackups-client.properties"))
+        .setPremadeLocation("advancedbackups-client-properties.txt")
+        .register(
+            showProgress, darkMode,
+            progressTextRed, progressTextGreen, progressTextBlue,
+            errorTextRed, errorTextGreen, errorTextBlue,
+            progressBarRed, progressBarGreen, progressBarBlue,
+            progressBackgroundRed, progressBackgroundGreen, progressBackgroundBlue
+        );
 
 
-    public static void register(String key, ConfigTypes configType) {
-        entries.put(key, configType);
-    }
-
-
-    public static final BooleanValue showProgress = new BooleanValue("config.advancedbackups.showProgress", true, ClientConfigManager::register);
-
-    public static final BooleanValue darkMode = new BooleanValue("config.advancedbackups.darkToasts", true, ClientConfigManager::register);
-
-    public static final LongValue progressTextRed = new LongValue("config.advancedbackups.colours.progress.red", 82, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressTextGreen = new LongValue("config.advancedbackups.colours.progress.green", 255, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressTextBlue = new LongValue("config.advancedbackups.colours.progress.blue", 82, 0, 255, ClientConfigManager::register);
-
-    public static final LongValue errorTextRed = new LongValue("config.advancedbackups.colours.error.red", 255, 0, 255, ClientConfigManager::register);
-    public static final LongValue errorTextGreen = new LongValue("config.advancedbackups.colours.error.green", 50, 0, 255, ClientConfigManager::register);
-    public static final LongValue errorTextBlue = new LongValue("config.advancedbackups.colours.error.blue", 50, 0, 255, ClientConfigManager::register);
-
-    public static final LongValue progressBarRed = new LongValue("config.advancedbackups.colours.bar.red", 88, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressBarGreen = new LongValue("config.advancedbackups.colours.bar.green", 242, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressBarBlue = new LongValue("config.advancedbackups.colours.bar.blue", 82, 0, 255, ClientConfigManager::register);
-
-    public static final LongValue progressBackgroundRed = new LongValue("config.advancedbackups.colours.background.red", 255, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressBackgroundGreen = new LongValue("config.advancedbackups.colours.background.green", 255, 0, 255, ClientConfigManager::register);
-    public static final LongValue progressBackgroundBlue = new LongValue("config.advancedbackups.colours.background.blue", 255, 0, 255, ClientConfigManager::register);
-
-
-    public static void loadOrCreateConfig() {
-        // Called when the config needs to be loaded, but one may not exist.
-        // Creates a new config it one doesn't exist, then loads it.
-        File dir = new File("./config");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(dir, "AdvancedBackups-client.properties");
-        if (!file.exists()) {
-            writeConfig();
-        }
-        loadConfig();
-    }
-
-    private static void writeConfig() {
-        // Called to write to a config file.
-        // Create a complete properties file in the cwd, including any existing changes
-        ABCore.infoLogger.accept("Preparing to write to client properties file...");
-        File file = new File("./config/AdvancedBackups-client.properties");
+    public static void loadOrCreateConfig() throws IOException {
+        ArrayList<String> missingProperties = new ArrayList<>();
+        ArrayList<String> erroringProperties = new ArrayList<>();
         try {
-            file.createNewFile();
-            file.setWritable(true);
-            InputStream is = ClientConfigManager.class.getClassLoader().getResourceAsStream("advancedbackups-client-properties.txt");
-
-            String text = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
-                .lines().collect(Collectors.joining("\n"));
-
-            for (String key : entries.keySet()) {
-                text = text.replace(key, key + "=" + entries.get(key).save());
-            }
-
-            FileWriter writer = new FileWriter(file);
-            writer.write(text);
-            writer.close();
-        } catch (IOException e) {
-            // TODO : Scream to user
-            ABCore.logStackTrace(e);
-        }
-    }
-
-
-    private static void loadConfig() {
-        //Load the config file.
-        Properties props = new Properties();
-        File file = new File("./config/AdvancedBackups-client.properties");
-        FileReader reader;
-        try {
-            reader = new FileReader(file);
-            props.load(reader);
-            reader.close();
-        } catch (IOException e) {
-            // TODO : Scream to user
-            ABCore.logStackTrace(e);
-            return;
+            MANAGER.loadOrCreate((configType, value, exception) -> {
+                //MissingOptionException is used for config types that don't exist in code. This means we can migrate stuff. 
+                if (exception instanceof MissingOptionException) {
+                    handleMigration(configType, value);
+                }
+                else if (exception instanceof MissingValueException) {
+                    missingProperties.add(configType.getKey());
+                }
+                else {
+                    erroringProperties.add(configType.getKey() + exception);
+                }
+            });
+        } catch (IOException e) {            
+            ABCore.errorLogger.accept("Failed to load config! Cannot proceed due to IO error.");
+            throw e;
+        } catch (BaseValidationException e) {
+            // Nothing to do here. This catch will never trigger.
         }
 
-        ArrayList<String> missingProps = new ArrayList<>();
 
-        for (String key : entries.keySet()) {
-            if (!props.containsKey(key)) {
-                missingProps.add(key);
-                ABCore.warningLogger.accept("Missing key : " + key);
-                continue;
-            }
-            ConfigValidationEnum valid = entries.get(key).validate(props.getProperty(key));
-            if (valid != ConfigValidationEnum.VALID) {
-                missingProps.add(key);
-                ABCore.warningLogger.accept(valid.getError() + " : " + key);
-                continue;
+        //We use this flat just so we can ensure the final error message is only logged once.
+        boolean flag = false;
 
-            }
-            entries.get(key).load(props.getProperty(key));
-        }
-
-        if (!missingProps.isEmpty()) {
-            ABCore.warningLogger.accept("The following properties were missing from the loaded file :");
-            for (String string : missingProps) {
+        //Now, we have loaded and created with our error handler. But let's make sure we log missing options properly!
+        if (!missingProperties.isEmpty()) {
+            flag = true;
+            ABCore.warningLogger.accept("The following options were missing from the loaded file :");
+            for (String string : missingProperties) {
                 ABCore.warningLogger.accept(string);
             }
-            ABCore.warningLogger.accept("Client properties file will be regenerated! Existing config values will be preserved.");
-
-            writeConfig();
         }
+
+        //And now the same for erroring options.
+        if (!erroringProperties.isEmpty()) {
+            ABCore.warningLogger.accept("The following options failed to validate :");
+            for (String string : erroringProperties) {
+                ABCore.warningLogger.accept(string);
+            }
+        }
+
+        if (flag) ABCore.warningLogger.accept("Client config file has been regenerated! Existing config values have been preserved.");
+    }
+
+
+
+    private static void handleMigration(BaseConfigType<?> configType, String value) {
+        //For now, do nothing! Migratory code from the past is unneeded now.
+        ABCore.warningLogger.accept("Discarding unused config option: " + configType.getKey() + " with value: " + value);
     }
 }
