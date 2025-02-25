@@ -44,7 +44,21 @@ jobs:
     - name : "Create label if it doesn't exist"
       id: create-label
       run: |
-        gh label list   
+        if ! gh issue list | grep -q ${{ steps.version.outputs.VERSION }}; then
+          echo "Label doesn't exist, creating"
+          gh label create ${{ steps.version.outputs.VERSION }}; --description "A release target." --color 4900CB
+        fi
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }} #this has to be specified because i'm not checking out the repo
+
+    - name : "Assign label to the target issue"
+      id: assign-label
+      run: |
+        if ! gh issue list | grep -q ${{ steps.version.outputs.VERSION }}; then
+          echo "Label doesn't exist, creating"
+          gh issue edit ${{ github.event.issue.id }} --add-label "${{ steps.version.outputs.VERSION }};"
+        fi
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }} #this has to be specified because i'm not checking out the repo
