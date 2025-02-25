@@ -1,8 +1,6 @@
 name: Version Target
 
-on:
-  issues:
-    types: [labeled, unlabeled, reopened]
+on: issue_comment
 
 
 jobs:
