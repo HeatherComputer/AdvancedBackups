@@ -44,4 +44,6 @@ jobs:
     - name : "Create label if it doesn't exist"
       id: create-label
       run: |
-        gh label list
+        gh label list   
+      env:
+        GH_TOKEN: ${{ github.token }}
