@@ -39,7 +39,7 @@ jobs:
       run: |
         echo ${{ github.event.comment.body }}
         X=`echo ${{ github.event.comment.body }}  | grep -o '!target.*' | awk '{print $2}'`; echo "Target: $X"
-        echo "Target \: $X" >> "$GITHUB_OUTPUT"
+        echo "Target $X" >> "$GITHUB_OUTPUT"
 
     - name : "Create label if it doesn't exist"
       id: create-label
