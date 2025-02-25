@@ -47,3 +47,4 @@ jobs:
         gh label list   
       env:
         GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ env.GITHUB_REPOSITORY }} #this has to be specified because i'm not checking out the repo
