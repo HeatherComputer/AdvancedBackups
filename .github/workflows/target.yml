@@ -29,18 +29,6 @@ jobs:
 
 
   run-command:      
-    runs-on: ubuntu-latest
-    name: Run command
-    steps:
-      # Check for write permission
-      - name: Check user permission
-        id: check
-        uses: scherermichael-oss/action-has-permission@master
-        with:
-          required-permission: write
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Run label check
-        if: steps.check.outputs.has-permission
-        uses: HeatherComputer/.github/.github/workflows/target-label.yml@master
+    name: Run label check
+    if: steps.check.outputs.has-permission
+    uses: HeatherComputer/.github/.github/workflows/target-label.yml@master
