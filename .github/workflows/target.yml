@@ -1,0 +1,24 @@
+name: Version Target
+
+on:
+  issues:
+    types: [labeled, unlabeled, reopened]
+
+
+jobs:
+  version-target:      
+    runs-on: ubuntu-latest
+    name: Check permission
+    steps:
+      # Check for write permission
+      - name: Check user permission
+        id: check
+        uses: scherermichael-oss/action-has-permission@master
+        with:
+          required-permission: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Use the output from the `check` step
+      - name: Run label check
+        if: steps.check.outputs.has-permission
+        uses: HeatherComputer/.github/.github/workflows/target-label.yml@master
