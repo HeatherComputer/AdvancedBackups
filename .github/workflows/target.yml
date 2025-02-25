@@ -4,7 +4,7 @@ on: issue_comment
 
 
 jobs:
-  version-target:      
+  check-permission:      
     runs-on: ubuntu-latest
     name: Check permission
     steps:
@@ -28,5 +28,5 @@ jobs:
 
   run-command:      
     name: Run label check
-    if: steps.check.outputs.has-permission
+    needs: [check-permission]
     uses: HeatherComputer/.github/.github/workflows/target-label.yml@master
