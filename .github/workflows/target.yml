@@ -55,7 +55,7 @@ jobs:
     - name : "Assign label to the target issue"
       id: assign-label
       run: |
-        gh issue edit ${{ github.event.issue.id }} --add-label "${{ steps.version.outputs.VERSION }}"
+        gh issue edit ${{ github.event.issue.number }} --add-label "${{ steps.version.outputs.VERSION }}"
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }} #this has to be specified because i'm not checking out the repo
