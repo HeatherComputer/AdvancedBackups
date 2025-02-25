@@ -29,7 +29,8 @@ jobs:
 
   run-command:      
     name: Run label check
-    needs: [check-permission]runs-on: ubuntu-latest
+    needs: [check-permission]
+    runs-on: ubuntu-latest
 
     steps:
 
