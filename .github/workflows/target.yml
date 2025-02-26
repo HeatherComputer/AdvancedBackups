@@ -37,7 +37,7 @@ jobs:
     - name: Get Version
       id: version
       run: |
-        echo ${{ github.event.comment.body }}
+        echo "${{ github.event.comment.body }}"
         X=`echo "${{ github.event.comment.body }}" | grep -o '!target.*' | awk '{print $2}'`; echo "Target: $X"
         echo VERSION="Target : ${X%.}" >> "$GITHUB_OUTPUT"
 
