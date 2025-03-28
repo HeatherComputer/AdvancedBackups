@@ -1,5 +1,8 @@
 package computer.heather.advancedbackups.network;
 
+import java.io.IOException;
+
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -34,7 +37,12 @@ public class PacketToastTest implements IMessage{
         @Override
         public IMessage onMessage(PacketToastTest message, MessageContext ctx) {
             
-            ClientConfigManager.loadOrCreateConfig();
+            try {
+                ClientConfigManager.loadOrCreateConfig();
+            } catch (IOException e) {
+                ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+                ABCore.logStackTrace(e);
+            }
             NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));
 
             return null;

@@ -62,15 +62,15 @@ public class BackupToast implements IToast {
         
         if (starting) {
             title = I18n.format("advancedbackups.backup_starting");
-            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
         }
         else if (started) {
             title = I18n.format("advancedbackups.progress", round(percent * 100));
-            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
         }
         else if (failed) {
             title = I18n.format("advancedbackups.backup_failed");
-            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.errorTextRed.get(), ClientConfigManager.errorTextGreen.get(), ClientConfigManager.errorTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
@@ -78,7 +78,7 @@ public class BackupToast implements IToast {
         }
         else if (cancelled) {
             title = I18n.format("advancedbackups.backup_cancelled");
-            textColour = ColourHelper.colour(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.errorTextRed.get(), ClientConfigManager.errorTextGreen.get(), ClientConfigManager.errorTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
@@ -86,7 +86,7 @@ public class BackupToast implements IToast {
         }
         else if (finished) {
             title = I18n.format("advancedbackups.backup_finished");
-            textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
             if (!timeSet) {
                 time = System.currentTimeMillis();
                 timeSet = true;
