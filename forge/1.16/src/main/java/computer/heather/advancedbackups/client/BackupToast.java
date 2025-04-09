@@ -10,7 +10,6 @@ import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ColorHelper;
 
 public class BackupToast implements IToast {
         
@@ -43,21 +42,21 @@ public class BackupToast implements IToast {
 
         float percent = finished ? 100 : (float) progress / (float) max;
         
-        AbstractGui.fill(matrix, 4, 28, 156, 29, ColorHelper.PackedColor.color
-            (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
+        AbstractGui.fill(matrix, 4, 28, 156, 29, ColourHelper.colour
+            (255, ClientConfigManager.progressBackgroundRed.get(), ClientConfigManager.progressBackgroundGreen.get(), ClientConfigManager.progressBackgroundBlue.get()));
         float f = Math.min(156, (
             156 * percent
         ));
 
         if (!exists) {
             if (title.equals(I18n.get("advancedbackups.backup_finished"))){
-                textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+                textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
                 toastGui.getMinecraft().font.draw(matrix, I18n.get(title), 25, 11, textColour);
-                AbstractGui.fill(matrix, 3, 28, 156, 29, ColorHelper.PackedColor.color
-                    (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+                AbstractGui.fill(matrix, 3, 28, 156, 29, ColourHelper.colour
+                    (255, ClientConfigManager.progressBarRed.get(), ClientConfigManager.progressBarGreen.get(), ClientConfigManager.progressBarBlue.get()));
             }
             else {
-                textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+                textColour = ColourHelper.colour(255, ClientConfigManager.errorTextRed.get(), ClientConfigManager.errorTextGreen.get(), ClientConfigManager.errorTextBlue.get());
                 toastGui.getMinecraft().font.draw(matrix, I18n.get(title), 25, 11, textColour);
             }
             return Visibility.HIDE;
@@ -66,15 +65,15 @@ public class BackupToast implements IToast {
 
         
         if (starting) {
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
             title = I18n.get("advancedbackups.backup_starting");
         }
         else if (started) {
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
             title = I18n.get("advancedbackups.progress", round(percent * 100));
         }
         else if (failed) {
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.errorTextRed.get(), ClientConfigManager.errorTextGreen.get(), ClientConfigManager.errorTextBlue.get());
             title = I18n.get("advancedbackups.backup_failed");
             if (!timeSet) {
                 time = System.currentTimeMillis();
@@ -82,7 +81,7 @@ public class BackupToast implements IToast {
             }
         }
         else if (finished) {
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.progressTextRed.get(), ClientConfigManager.progressTextGreen.get(), ClientConfigManager.progressTextBlue.get());
             title = I18n.get("advancedbackups.backup_finished");
             if (!timeSet) {
                 time = System.currentTimeMillis();
@@ -90,7 +89,7 @@ public class BackupToast implements IToast {
             }
         }
         else if (cancelled) {            
-            textColour = ColorHelper.PackedColor.color(255, (int) ClientConfigManager.errorTextRed.get(), (int) ClientConfigManager.errorTextGreen.get(), (int) ClientConfigManager.errorTextBlue.get());
+            textColour = ColourHelper.colour(255, ClientConfigManager.errorTextRed.get(), ClientConfigManager.errorTextGreen.get(), ClientConfigManager.errorTextBlue.get());
             title = I18n.get("advancedbackups.backup_cancelled");
             if (!timeSet) {
                 time = System.currentTimeMillis();
@@ -117,8 +116,8 @@ public class BackupToast implements IToast {
             return Visibility.HIDE;
         }
 
-        AbstractGui.fill(matrix, 4, 28, Math.max(3, (int) f), 29, ColorHelper.PackedColor.color
-            (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
+        AbstractGui.fill(matrix, 4, 28, Math.max(3, (int) f), 29, ColourHelper.colour
+            (255, ClientConfigManager.progressBarRed.get(), ClientConfigManager.progressBarGreen.get(), ClientConfigManager.progressBarBlue.get()));
         
         return Visibility.SHOW;
         

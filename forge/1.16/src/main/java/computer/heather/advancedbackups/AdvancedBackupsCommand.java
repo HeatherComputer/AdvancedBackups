@@ -1,8 +1,11 @@
 package computer.heather.advancedbackups;
 
+import java.io.IOException;
+
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -21,9 +24,15 @@ public class AdvancedBackupsCommand {
          }))
 
          .then(Commands.literal("reload-config").executes((runner) -> {
-            CoreCommandSystem.reloadConfig((response) -> {
-                runner.getSource().sendSuccess(new StringTextComponent(response), true);
-            });
+            try {
+                CoreCommandSystem.reloadConfig((response) -> {
+                    runner.getSource().sendSuccess(new StringTextComponent(response), true);
+                });
+            } catch (IOException e) {
+                runner.getSource().sendFailure(new StringTextComponent("Command failed to execute! Check log for error"));
+                ABCore.errorLogger.accept("Error reloading config :");
+                ABCore.logStackTrace(e);
+            }
             return 1;
          }))
 
