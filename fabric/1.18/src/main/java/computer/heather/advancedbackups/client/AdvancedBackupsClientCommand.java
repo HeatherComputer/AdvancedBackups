@@ -1,15 +1,17 @@
 package computer.heather.advancedbackups.client;
 
 
+import java.io.IOException;
+
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.arguments.StringArgumentType;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 public class AdvancedBackupsClientCommand {
@@ -50,9 +52,15 @@ public class AdvancedBackupsClientCommand {
          }))
          
          .then(ClientCommandManager.literal("reload-client-config").executes((runner) -> {
-            CoreCommandSystem.reloadClientConfig((response) -> {
-                runner.getSource().sendFeedback(Text.of(response));
-            });
+            try {
+               CoreCommandSystem.reloadClientConfig((response) -> {
+                   runner.getSource().sendFeedback(Text.of(response));
+               });
+            } catch (IOException e) {
+               runner.getSource().sendError(Text.of("Command failed to execute! Check log for error"));
+               ABCore.errorLogger.accept("Error reloading client config :");
+               ABCore.logStackTrace(e);
+            }
             return 1;
          }))
     

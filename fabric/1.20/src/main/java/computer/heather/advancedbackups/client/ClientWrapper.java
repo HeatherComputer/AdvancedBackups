@@ -1,5 +1,7 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
+
 import computer.heather.advancedbackups.AdvancedBackups;
 import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
@@ -28,7 +30,12 @@ public class ClientWrapper implements ClientModInitializer {
 
         ClientPlayNetworking.registerGlobalReceiver(NetworkHandler.STATUS_PACKET_ID, ClientWrapper::handle);
         ClientLifecycleEvents.CLIENT_STARTED.register((client) -> {
-            ClientConfigManager.loadOrCreateConfig();
+            try {
+                ClientConfigManager.loadOrCreateConfig();
+            } catch (IOException e) {
+                ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+                ABCore.logStackTrace(e);
+            }
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {

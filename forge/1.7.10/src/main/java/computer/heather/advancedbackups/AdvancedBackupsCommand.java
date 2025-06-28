@@ -1,7 +1,9 @@
 package computer.heather.advancedbackups;
 
+import java.io.IOException;
 import java.util.Arrays;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketClientReload;
@@ -84,9 +86,15 @@ public class AdvancedBackupsCommand extends CommandBase
 
     public static class Reload {
         public static void execute(ICommandSender sender) {
-            CoreCommandSystem.reloadConfig((response) -> {
-                sender.addChatMessage(new ChatComponentText(response));
-            });
+            try {
+                CoreCommandSystem.reloadConfig((response) -> {
+                    sender.addChatMessage(new ChatComponentText(response));
+                });
+            } catch (IOException e) {
+                sender.addChatMessage(new ChatComponentText("Command failed to execute! Check log for error"));
+                ABCore.errorLogger.accept("Error reloading config :");
+                ABCore.logStackTrace(e);
+            }
         }
     }   
 

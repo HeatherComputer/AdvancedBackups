@@ -1,6 +1,7 @@
 package computer.heather.advancedbackups;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,8 +66,13 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().getPaths().get(0).toAbsolutePath().toString());
             
             
-            ConfigManager.loadOrCreateConfig();
-            LOGGER.info("Config loaded!!");
+            try {
+                ConfigManager.loadOrCreateConfig();
+                LOGGER.info("Config loaded!!");
+            } catch (IOException e) {
+                LOGGER.error("Unable to load config! Falling back to defaults...");
+                ABCore.logStackTrace(e);
+            }
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {

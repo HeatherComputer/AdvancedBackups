@@ -1,8 +1,12 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
+
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import computer.heather.advancedbackups.network.PacketBackupStatus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatEvent;
 
 public class ClientBridge {
@@ -32,7 +36,15 @@ public class ClientBridge {
     public static void onClientChat(ClientChatEvent event) {
         if (event.getMessage().equals("/backup reload-client-config")) {
             event.setCanceled(true);
-            CoreCommandSystem.reloadClientConfig(Minecraft.getMinecraft().player::sendChatMessage);
+            try {
+                CoreCommandSystem.reloadClientConfig((response) -> {
+                    Minecraft.getMinecraft().player.sendMessage(new TextComponentString(response));
+                });
+            } catch (IOException e) {
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Command failed to execute! Check log for error"));
+                ABCore.errorLogger.accept("Error reloading client config :");
+                ABCore.logStackTrace(e);
+            }
         }
     }
     

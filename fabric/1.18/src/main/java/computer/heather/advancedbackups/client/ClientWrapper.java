@@ -1,13 +1,15 @@
 package computer.heather.advancedbackups.client;
 
 import computer.heather.advancedbackups.core.ABCore;
+
+import java.io.IOException;
+
 import computer.heather.advancedbackups.AdvancedBackups;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketBackupStatus;
 import computer.heather.advancedbackups.network.PacketToastSubscribe;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -46,7 +48,12 @@ public class ClientWrapper implements ClientModInitializer {
 
         ClientPlayNetworking.registerGlobalReceiver(NetworkHandler.STATUS_PACKET_ID, PacketBackupStatus::handle);
         ClientLifecycleEvents.CLIENT_STARTED.register((client) -> {
-            ClientConfigManager.loadOrCreateConfig();
+            try {
+                ClientConfigManager.loadOrCreateConfig();
+            } catch (IOException e) {
+                ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+                ABCore.logStackTrace(e);
+            }
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {

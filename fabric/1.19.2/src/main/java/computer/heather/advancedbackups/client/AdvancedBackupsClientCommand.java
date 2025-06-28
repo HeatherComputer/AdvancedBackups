@@ -1,12 +1,14 @@
 package computer.heather.advancedbackups.client;
 
 
+import java.io.IOException;
 import java.time.Instant;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.arguments.StringArgumentType;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -60,9 +62,15 @@ public class AdvancedBackupsClientCommand {
          }))
          
          .then(ClientCommandManager.literal("reload-client-config").executes((runner) -> {
-            CoreCommandSystem.reloadClientConfig((response) -> {
-                runner.getSource().sendFeedback(Text.of(response));
-            });
+            try {
+               CoreCommandSystem.reloadClientConfig((response) -> {
+                   runner.getSource().sendFeedback(Text.of(response));
+               });
+            } catch (IOException e) {
+               runner.getSource().sendError(Text.of("Command failed to execute! Check log for error"));
+               ABCore.errorLogger.accept("Error reloading client config :");
+               ABCore.logStackTrace(e);
+            }
             return 1;
          }))
     

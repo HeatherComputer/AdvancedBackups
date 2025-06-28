@@ -169,7 +169,7 @@ public class ThreadedBackup extends Thread {
             this.output.accept("Preparing " + (this.snapshot ? "snapshot" : "zip") + " backup with name:\n  " + zip.getName().replace("incomplete", this.snapshot ? snapshotName : "backup"));
             FileOutputStream outputStream = new FileOutputStream(zip);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-            zipOutputStream.setLevel((int) ConfigManager.compression.get());
+            zipOutputStream.setLevel(ConfigManager.compression.get().intValue());
 
             ArrayList<Path> paths = new ArrayList<>();
 
@@ -227,7 +227,7 @@ public class ThreadedBackup extends Thread {
                         continue;
                     }
                     zipOutputStream.putNextEntry(new ZipEntry(targetFile.toString()));
-                    byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
+                    byte[] bytes = new byte[ConfigManager.buffer.get().intValue()];
                     try {
                         FileInputStream is = new FileInputStream(sourceFile);
                         while (true) {
@@ -378,7 +378,7 @@ public class ThreadedBackup extends Thread {
                 File zip = differential ? new File(location.toString() + "/differential/", backupName + ".zip") : new File(location.toString() + "/incremental/", backupName + ".zip");
                 FileOutputStream outputStream = new FileOutputStream(zip);
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-                zipOutputStream.setLevel((int) ConfigManager.compression.get());
+                zipOutputStream.setLevel(ConfigManager.compression.get().intValue());
 
                 int max = toBackup.size();
                 int index = 0;
@@ -402,7 +402,7 @@ public class ThreadedBackup extends Thread {
                     }
                     zipOutputStream.putNextEntry(new ZipEntry(path.toString()));
 
-                    byte[] bytes = new byte[(int) ConfigManager.buffer.get()];
+                    byte[] bytes = new byte[ConfigManager.buffer.get().intValue()];
                     try {
                         FileInputStream is = new FileInputStream(sourceFile);
                         while (true) {
@@ -523,7 +523,7 @@ public class ThreadedBackup extends Thread {
     private String getFileHash(Path path) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] data = new byte[(int) ConfigManager.buffer.get()];
+            byte[] data = new byte[ConfigManager.buffer.get().intValue()];
             FileInputStream is = new FileInputStream(path.toFile());
             while (true) {
                 int i = is.read(data);

@@ -1,5 +1,8 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
+
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketBackupStatus;
@@ -30,10 +33,15 @@ public class ClientWrapper {
         }
     }
 
-    public static void init(FMLClientSetupEvent e) {
+    public static void init(FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.addListener(ClientWrapper::registerClientCommands);
         MinecraftForge.EVENT_BUS.addListener(ClientWrapper::onServerConnected);
-        ClientConfigManager.loadOrCreateConfig();
+        try {
+            ClientConfigManager.loadOrCreateConfig();
+        } catch (IOException e) {
+            ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+            ABCore.logStackTrace(e);
+        }
     }
 
     public static void registerClientCommands(RegisterClientCommandsEvent event) {

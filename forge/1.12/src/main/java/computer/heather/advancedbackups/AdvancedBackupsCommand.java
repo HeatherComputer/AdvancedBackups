@@ -1,5 +1,8 @@
 package computer.heather.advancedbackups;
 
+import java.io.IOException;
+
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.command.CommandException;
 
@@ -49,9 +52,15 @@ public class AdvancedBackupsCommand extends CommandTreeBase
         public Reload(){}
         @Override
         public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            CoreCommandSystem.reloadConfig((response) -> {
-                sender.sendMessage(new TextComponentString(response));
-            });
+            try {
+                CoreCommandSystem.reloadConfig((response) -> {
+                    sender.sendMessage(new TextComponentString(response));
+                });
+            } catch (IOException e) {
+                sender.sendMessage(new TextComponentString("Command failed to execute! Check log for error"));
+                ABCore.errorLogger.accept("Error reloading config :");
+                ABCore.logStackTrace(e);
+            }
         }    
         @Override
         public String getName()

@@ -1,11 +1,13 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
 import java.time.Instant;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
@@ -54,10 +56,16 @@ public class AdvancedBackupsClientCommand {
             return 1;
          }))
 
-         .then(literal("reload-client-config").executes((runner) -> {
-            CoreCommandSystem.reloadClientConfig((response) -> {
-                runner.getSource().sendSuccess(Component.literal(response), true);
-            });
+         .then(literal("reload-client-config").executes((runner) -> {          
+            try {
+               CoreCommandSystem.reloadClientConfig((response) -> {
+                   runner.getSource().sendSuccess(Component.literal(response), true);
+               });
+            } catch (IOException e) {
+               runner.getSource().sendFailure(Component.literal("Command failed to execute! Check log for error"));
+               ABCore.errorLogger.accept("Error reloading client config :");
+               ABCore.logStackTrace(e);
+            }
             return 1;
          }))
     

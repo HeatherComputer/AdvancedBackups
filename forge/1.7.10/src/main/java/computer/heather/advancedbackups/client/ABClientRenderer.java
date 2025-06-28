@@ -1,7 +1,10 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
+
 import com.mojang.realmsclient.gui.ChatFormatting;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketToastSubscribe;
@@ -83,7 +86,12 @@ public class ABClientRenderer {
     @SubscribeEvent
     public void onServerConnected(ClientConnectedToServerEvent event) {
         //may aswell just do it here. 1.7 is so horribly documented
-        ClientConfigManager.loadOrCreateConfig();
+        try {
+            ClientConfigManager.loadOrCreateConfig();
+        } catch (IOException e) {
+            ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+            ABCore.logStackTrace(e);
+        }
 
 
         //NetworkHandler.HANDLER.sendToServer(new PacketToastSubscribe(ClientConfigManager.showProgress.get()));

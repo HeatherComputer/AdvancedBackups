@@ -1,6 +1,7 @@
 package computer.heather.advancedbackups;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,7 +17,7 @@ import computer.heather.advancedbackups.core.config.ConfigManager;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketToastSubscribe;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -37,13 +38,14 @@ public class AdvancedBackups implements ModInitializer {
     public static final Consumer<String> infoLogger = LOGGER::info;
     public static final Consumer<String> warningLogger = LOGGER::warn;
     public static final Consumer<String> errorLogger = LOGGER::error;
+
+    public static MinecraftServer server;
     
     public static final ArrayList<String> players = new ArrayList<>();
 
-    public static MinecraftServer server;
-
     @Override
     public void onInitialize() {
+
 
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             AdvancedBackups.server = server;
@@ -61,11 +63,17 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.resetActivity = AdvancedBackups::resetActivity;
 
             ABCore.clientContactor = new ClientContactor();
+            
             ABCore.modJar = new File(FabricLoaderImpl.INSTANCE.getModContainer("advancedbackups").get().getOrigin().getPaths().get(0).toAbsolutePath().toString());
             
             
-            ConfigManager.loadOrCreateConfig();
-            LOGGER.info("Config loaded!!");
+            try {
+                ConfigManager.loadOrCreateConfig();
+                LOGGER.info("Config loaded!!");
+            } catch (IOException e) {
+                LOGGER.error("Unable to load config! Falling back to defaults...");
+                ABCore.logStackTrace(e);
+            }
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
@@ -79,9 +87,10 @@ public class AdvancedBackups implements ModInitializer {
             ABCore.setActivity(true);
         });
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, isDedicated) -> {
             AdvancedBackupsCommand.register(dispatcher);
         });
+
 
         ServerTickEvents.END_SERVER_TICK.register((server) -> {
             BackupTimer.check();
@@ -89,7 +98,6 @@ public class AdvancedBackups implements ModInitializer {
 
         
         ServerPlayNetworking.registerGlobalReceiver(NetworkHandler.TOAST_SUBSCRIBE_ID, PacketToastSubscribe::handle);
-
         
             
     }

@@ -1,13 +1,16 @@
 package computer.heather.advancedbackups.client;
 
+import java.io.IOException;
 import java.util.function.Supplier;
 
+import computer.heather.advancedbackups.core.ABCore;
 import computer.heather.advancedbackups.core.CoreCommandSystem;
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import computer.heather.advancedbackups.network.NetworkHandler;
 import computer.heather.advancedbackups.network.PacketBackupStatus;
 import computer.heather.advancedbackups.network.PacketToastSubscribe;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,17 +41,28 @@ public class ClientWrapper {
         });
     }
 
-    public static void init(FMLClientSetupEvent e) {
+    public static void init(FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.addListener(ClientWrapper::onClientChat);
         MinecraftForge.EVENT_BUS.addListener(ClientWrapper::onServerConnected);
-        ClientConfigManager.loadOrCreateConfig();
+            try {
+                ClientConfigManager.loadOrCreateConfig();
+            } catch (IOException e) {
+                ABCore.errorLogger.accept("Unable to load client config! Default will be used...");
+                ABCore.logStackTrace(e);
+            }
     }
 
     public static void onClientChat(ClientChatEvent event) {
         if (event.getMessage().equals("/backup reload-client-config")) {
             event.setCanceled(true);
-
-            CoreCommandSystem.reloadClientConfig(Minecraft.getInstance().player::chat);
+            try {
+                CoreCommandSystem.reloadClientConfig((response) -> {
+                    Minecraft.getInstance().player.sendMessage(new StringTextComponent(response), null);
+                });
+            } catch (IOException e) {
+                Minecraft.getInstance().player.sendMessage(new StringTextComponent("Command failed to execute! Check log for error"), null);
+                ABCore.errorLogger.accept("Error reloading client config :");
+            }
         }
 
     }

@@ -1,6 +1,7 @@
 package computer.heather.advancedbackups;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -100,9 +101,13 @@ public class AdvancedBackups
         
         ABCore.modJar = Loader.instance().getIndexedModList().get("advancedbackups").getSource(); 
         //ModList.get().getModFileById("advancedbackups").getFile().getFilePath().toFile();
-        ConfigManager.loadOrCreateConfig();
-        LOGGER.info("Config loaded!!");
-
+        try {
+            ConfigManager.loadOrCreateConfig();
+            LOGGER.info("Config loaded!!");
+        } catch (IOException e) {
+            LOGGER.error("Unable to load config! Falling back to defaults...");
+            ABCore.logStackTrace(e);
+        }
 
 
         event.registerServerCommand(new AdvancedBackupsCommand());
