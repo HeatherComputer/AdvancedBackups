@@ -9,4 +9,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'fabric-1.21'
+rootProject.name = 'fabric-1.21.7'
