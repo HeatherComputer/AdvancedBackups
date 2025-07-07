@@ -3,6 +3,7 @@ package computer.heather.advancedbackups.client;
 
 import computer.heather.advancedbackups.core.config.ClientConfigManager;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
@@ -13,7 +14,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 public class BackupToast implements Toast {
-        
+
     public static boolean starting;
     public static boolean started;
     public static boolean failed;
@@ -29,7 +30,7 @@ public class BackupToast implements Toast {
     private static boolean timeSet = false;
 
     public static final ItemStack stack = new ItemStack(Items.PAPER);
-    private static final Identifier TEXTURE = Identifier.of("toast/advancement"); 
+    private static final Identifier TEXTURE = Identifier.of("toast/advancement");
 
     public static String title = "You shouldn't see this!";
     public static int textColour = 0;
@@ -38,12 +39,12 @@ public class BackupToast implements Toast {
 
     @Override
     public void draw(DrawContext context, TextRenderer renderer, long startTime) {
-        context.drawGuiTexture(RenderLayer::getGuiTextured, TEXTURE, 0, ClientConfigManager.darkMode.get() ? 0 : this.getHeight(), this.getWidth(), this.getHeight());
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, 0, ClientConfigManager.darkMode.get() ? 0 : this.getHeight(), this.getWidth(), this.getHeight());
 
         context.drawItemWithoutEntity(stack, 8, 8);;
-        
+
         float percent = finished ? 100 : (float) progress / (float) max;
-        
+
         context.fill(4, 28, 156, 29, ColourHelper.colour
         (255, (int) ClientConfigManager.progressBackgroundRed.get(), (int) ClientConfigManager.progressBackgroundGreen.get(), (int) ClientConfigManager.progressBackgroundBlue.get()));
 
@@ -68,7 +69,7 @@ public class BackupToast implements Toast {
 
         title = "You shouldn't see this!";
 
-        
+
         if (starting) {
             textColour = ColourHelper.colour(255, (int) ClientConfigManager.progressTextRed.get(), (int) ClientConfigManager.progressTextGreen.get(), (int) ClientConfigManager.progressTextBlue.get());
             title = I18n.translate("advancedbackups.backup_starting");
@@ -119,11 +120,11 @@ public class BackupToast implements Toast {
 
         context.fill(4, 28, Math.max(4, (int) f), 29, ColourHelper.colour
         (255, (int) ClientConfigManager.progressBarRed.get(), (int) ClientConfigManager.progressBarGreen.get(), (int) ClientConfigManager.progressBarBlue.get()));
-        
+
         visibility = Visibility.SHOW;
     }
-    
-    
+
+
     private static String round (float value) {
         return String.format("%.1f", value);
     }

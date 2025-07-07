@@ -10,14 +10,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public record PacketToastSubscribe(boolean enable) implements CustomPayload {
-    
+
     public static final Id<PacketToastSubscribe> ID = new CustomPayload.Id<PacketToastSubscribe>(Identifier.of("advancedbackups:toast_subscribe"));
-    
+
     public PacketToastSubscribe(boolean enable) {
         this.enable = enable;
     }
 
-    public static final PacketCodec<PacketByteBuf, PacketToastSubscribe> CODEC = PacketCodec.tuple(PacketCodecs.BOOL, PacketToastSubscribe::enable, PacketToastSubscribe::new);
+    public static final PacketCodec<PacketByteBuf, PacketToastSubscribe> CODEC = PacketCodec.tuple(PacketCodecs.BOOLEAN, PacketToastSubscribe::enable, PacketToastSubscribe::new);
 
 
     public static void handle(PacketToastSubscribe message, ServerPlayNetworking.Context context) {
@@ -30,16 +30,16 @@ public record PacketToastSubscribe(boolean enable) implements CustomPayload {
         else if (!message.enable()) {
             AdvancedBackups.players.remove(player.getUuidAsString());
         }
-        
+
     }
-    
+
 
 
     @Override
     public Id<? extends CustomPayload> getId() {
         return ID;
     }
-    
-    
-    
+
+
+
 }
