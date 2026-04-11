@@ -1,0 +1,7 @@
+{
+    "advancedbackups.backup_starting" : "开始备份！",
+    "advancedbackups.progress": "备份进行中: %1$s%%",
+    "advancedbackups.backup_failed": "备份失败！\n请检查日志以获取更多信息。",
+    "advancedbackups.backup_finished": "备份已完成！",
+    "advancedbackups.backup_cancelled": "备份已取消！"
+}
